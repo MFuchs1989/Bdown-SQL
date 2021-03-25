@@ -1,7 +1,7 @@
 # Bdown-Python
 
 <p align="center">
-  <img src="https://github.com/MFuchs1989/Bdown-SQL/blob/master/static/images/Database.jpg?raw=true" alt="Database"/>
+  <img src="https://github.com/MFuchs1989/Bdown-SQL/blob/master/static/images/Database.png?raw=true" alt="Database"/>
 </p>
 
 This is a collection of blog posts written in SQL.
