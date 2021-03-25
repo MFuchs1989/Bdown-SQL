@@ -18,25 +18,110 @@ output:
 <div id="TOC">
 <ul>
 <li><a href="#introduction">1 Introduction</a></li>
-<li><a href="#loading-the-libraries">2 Loading the libraries</a>
+<li><a href="#what-is-a-entity-relationship-diagram">2 What is a Entity Relationship Diagram?</a></li>
+<li><a href="#main-components-of-erds">3 Main components of ERDs</a>
 <ul>
-<li><a href="#test">2.1 test</a></li>
+<li><a href="#entity">3.1 Entity</a></li>
+<li><a href="#attributes">3.2 Attributes</a></li>
+<li><a href="#relationships">3.3 Relationships</a></li>
+</ul></li>
+<li><a href="#special-circumstances">4 Special circumstances</a>
+<ul>
+<li><a href="#strong-entity">4.1 Strong Entity</a></li>
+<li><a href="#weak-entity">4.2 Weak Entity</a></li>
+<li><a href="#associative-entity">4.3 Associative entity</a></li>
+</ul></li>
+<li><a href="#cardinality">5 Cardinality</a>
+<ul>
+<li><a href="#chen-notation">5.1 Chen-Notation</a></li>
 </ul></li>
 </ul>
 </div>
 
 <div id="introduction" class="section level1">
 <h1>1 Introduction</h1>
+<p>Before we start creating databases with SQL, we need to ask ourselves what the database should look like in the end. Which tables and columns are needed and how should they be connected? Such considerations about the structures can be visualized with an Entity Relationship Diagram.</p>
+<p>And that’s what this post is all about.</p>
 </div>
-<div id="loading-the-libraries" class="section level1">
-<h1>2 Loading the libraries</h1>
-<div id="test" class="section level2">
-<h2>2.1 test</h2>
-<p>This is in production !</p>
-<p>test22</p>
-<pre class="r"><code>my syntax
-
-asdfjasdlfjasldflasjdlfjaslödfjsdfjsdflsadjfsadljflasdjfasdljflkasdjfjasdlfj</code></pre>
+<div id="what-is-a-entity-relationship-diagram" class="section level1">
+<h1>2 What is a Entity Relationship Diagram?</h1>
+<p>Entity Relationship Diagrams (ERD) or Entity Relationship Models (ERM) represent the data in any system. ERDs are mostly used to show in detail how data is stored in relational databases. Entity Relationship Diagrams do not necessarily show how data is manipulated or the exact process it goes through, but how data entities are structured and related to each other.</p>
+</div>
+<div id="main-components-of-erds" class="section level1">
+<h1>3 Main components of ERDs</h1>
+<p>There are three main components in ERDs:</p>
+<ul>
+<li>Entity</li>
+<li>Attributes</li>
+<li>Relationships</li>
+</ul>
+<div id="entity" class="section level2">
+<h2>3.1 Entity</h2>
+<p>A individually identifiable object of reality such as a person, concept or event for which there may be stored data. The entity is typically represented as a rectangle.</p>
 <p><img src="/post/2021-03-03-entity-relationship-diagram-erd_files/p2p1.png" /></p>
+</div>
+<div id="attributes" class="section level2">
+<h2>3.2 Attributes</h2>
+<p>The attributes specify what is of interest about an entity (in context).
+They are usually drawn as ellipses floating around the entity.</p>
+<p><img src="/post/2021-03-03-entity-relationship-diagram-erd_files/p2p2.png" /></p>
+</div>
+<div id="relationships" class="section level2">
+<h2>3.3 Relationships</h2>
+<p>The relationship indicates how entities affect or are connected to each other.
+It is usually represented as a diamond.</p>
+<p><img src="/post/2021-03-03-entity-relationship-diagram-erd_files/p2p3.png" /></p>
+</div>
+</div>
+<div id="special-circumstances" class="section level1">
+<h1>4 Special circumstances</h1>
+<div id="strong-entity" class="section level2">
+<h2>4.1 Strong Entity</h2>
+<p>The identification of an entity is possible by one or more values of attributes of the same entity type.</p>
+<p>For example, the StudentID is identifying for the Students entity type.</p>
+<p><img src="/post/2021-03-03-entity-relationship-diagram-erd_files/p2p4.png" /></p>
+</div>
+<div id="weak-entity" class="section level2">
+<h2>4.2 Weak Entity</h2>
+<p>To identify such an entity, an attribute value of another entity of strong type related to the weak entity is required.
+The weak entity is represented by a double rectangle.</p>
+<p>For example - a bank account cannot be uniquely identified without knowing the bank to which the account belongs, so the bank account is a weak entity.</p>
+<p><img src="/post/2021-03-03-entity-relationship-diagram-erd_files/p2p5.png" /></p>
+</div>
+<div id="associative-entity" class="section level2">
+<h2>4.3 Associative entity</h2>
+<p>Associative entities are connections that describe a relationship between two different entities. These entities can have many-to-many relationships, which means that one of the associative entities can have multiple relationships and connections to a parent or child entity.</p>
+<p>Associative entities convey information about their attributes and their connections. They are considered as entity because they have attributes and they are considered as relationship because they connect entities. These types of entities very often have many relationships and connections because they are relatable, but they can have independent meaning from other entities. In a relational model, it is also common for the associative entity to have at least one attribute that is distinct from the identifier entity. Associative entities can also be participants in relationships that are separate from the relationships of the associated entities.</p>
+<p>Primary keys should also be a part of associative entities because they are identifiers that join specific tables in a relational model. Although tables may contain only one, primary keys are combinations of columns that uniquely specify rows. One difference between unique keys and primary keys is that primary keys can enforce a “non-null” constraint on a table or entity. Another aspect that distinguishes primary keys from unique keys is that primary keys are selected as keys of greatest or first importance. Primary indexes are created for primary key management and for ease of use and enforcement by a database manager.</p>
+<p>Associative entities are contained in and used by junction tables - tables in a relational model that contain common fields from two or more other tables. Junction tables are used because they can handle many-to-many relationships in a given database. An example of a database that employs the associative entity through the use of a junction table is student enrollment in a course. In this case, a table containing data about students is indirectly linked to a table containing data about courses through an intermediate table that contains data associated with student and course data from the join tables.</p>
+<p>Source: <a href="https://www.easytechjunkie.com/what-are-associative-entities.htm">EasyTechJunkie</a></p>
+<p>Associative entities are usually represented as a diamond with a surrounding rectangle.</p>
+<p><img src="/post/2021-03-03-entity-relationship-diagram-erd_files/p2p6.png" /></p>
+<p>To be quite precise, you can also add the attributes here.</p>
+<p><img src="/post/2021-03-03-entity-relationship-diagram-erd_files/p2p7.png" /></p>
+</div>
+</div>
+<div id="cardinality" class="section level1">
+<h1>5 Cardinality</h1>
+<p>Cardinality specifies at the relationship type level for each of the entity types involved how many concrete relationships of that type its entities can or must be involved in.
+Different <strong>notations</strong> can be used to define the cardinality.</p>
+<p>Notation forms in ER diagrams:</p>
+<ul>
+<li>Chen-Notation</li>
+<li>Modified Chen Notation (MC-Notation)</li>
+<li>Min-Max-Notation</li>
+<li>Martin-Notation (Crow’s foot notation)</li>
+</ul>
+<div id="chen-notation" class="section level2">
+<h2>5.1 Chen-Notation</h2>
+<p>To represent the cardinalities of binary relation types, the digit 1, in the sense of 0 or 1, and the letters n and m, in the sense of 0 to infinity, are used.</p>
+<p><strong>1:1 ([0 or 1] to [1 or 0])</strong></p>
+<p>Any entity from the first entity set can be related to at most one entity from the second entity set and vice versa.</p>
+<p><strong>1:n ([0 or 1] to any number)</strong></p>
+<p>Any entity from the first entity set can be related to any number of entities from the second entity set. Each entity from the second entity set can be related to at most one entity from the first entity set.</p>
+<p><strong>n:m (any number to any number)</strong></p>
+<p>Any entity from the first entity set can be related to any number of entities from the second entity set and vice versa.</p>
+<p>Source: <a href="https://www.wikiwand.com/de/Chen-Notation#/Kardinalit%C3%A4ten">Wikiwand</a></p>
+<p><img src="/post/2021-03-03-entity-relationship-diagram-erd_files/p2p.png" /></p>
 </div>
 </div>
