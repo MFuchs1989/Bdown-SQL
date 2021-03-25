@@ -116,11 +116,11 @@ Different <strong>notations</strong> can be used to define the cardinality.</p>
 <div id="chen-notation" class="section level2">
 <h2>5.1 Chen-Notation</h2>
 <p>To represent the cardinalities of binary relation types, the digit 1, in the sense of 0 or 1, and the letters n and m, in the sense of 0 to infinity, are used.</p>
-<p><strong>1:1 ([0 or 1] to [1 or 0])</strong></p>
+<p><strong>1:1</strong> ([0 or 1] to [1 or 0])</p>
 <p>Any entity from the first entity set can be related to at most one entity from the second entity set and vice versa.</p>
-<p><strong>1:n ([0 or 1] to any number)</strong></p>
+<p><strong>1:n</strong> ([0 or 1] to any number)</p>
 <p>Any entity from the first entity set can be related to any number of entities from the second entity set. Each entity from the second entity set can be related to at most one entity from the first entity set.</p>
-<p><strong>n:m (any number to any number)</strong></p>
+<p><strong>n:m</strong> (any number to any number)</p>
 <p>Any entity from the first entity set can be related to any number of entities from the second entity set and vice versa.</p>
 <p>Source: <a href="https://www.wikiwand.com/de/Chen-Notation">Wikiwand</a></p>
 <p><img src="/post/2021-03-03-entity-relationship-diagram-erd_files/p2p8.png" /></p>
@@ -130,25 +130,25 @@ Different <strong>notations</strong> can be used to define the cardinality.</p>
 <div id="modified-chen-notation-mc-notation" class="section level2">
 <h2>5.2 Modified Chen Notation (MC-Notation)</h2>
 <p>Modified Chen Notation (MC Notation) is an extension of Chen Notation in which the statement “no or one element” is indicated by the letter c (choice, can), and the statement “one or more element(s)” is indicated by the letter m (must, multiple).</p>
-<p><strong>1:1 (1 to 1) </strong></p>
+<p><strong>1:1</strong> (1 to 1)</p>
 <p>Each entity of the first entity set is related to exactly one entity of the second entity set, and vice versa.</p>
-<p><strong>1:c (1 to [0 or 1]) </strong></p>
+<p><strong>1:c</strong> (1 to [0 or 1])</p>
 <p>Each entity of the first entity set can be related to at most one entity of the second entity set. Each entity of the second entity set is related to exactly one entity of the first entity set.</p>
-<p><strong>1:m (1 to [at least 1]) </strong></p>
+<p><strong>1:m</strong> (1 to [at least 1])</p>
 <p>Each entity of the first entity set is related to at least one entity of the second entity set. Each entity of the second entity set is related to exactly one entity of the first entity set.</p>
-<p><strong>1:mc (1 to [any number]) </strong></p>
+<p><strong>1:mc</strong> (1 to [any number])</p>
 <p>Each entity of the first entity set can be related to any number of entities of the second entity set. Each entity of the second entity set is related to exactly one entity of the first entity set.</p>
-<p><strong>c:c ([0 or 1] to [0 or 1]) </strong> Equivalent to 1:1 in Chen notation</p>
+<p><strong>c:c</strong> ([0 or 1] to [0 or 1]) <em>Equivalent to 1:1 in Chen notation</em></p>
 <p>Each entity of the first entity set can be related to at most one entity of the second entity set, and vice versa.</p>
-<p><strong>c:m ([0 or 1] to [at least 1]) </strong></p>
+<p><strong>c:m</strong> ([0 or 1] to [at least 1])</p>
 <p>Each entity of the first entity set is related to at least one entity of the second entity set. Each entity of the second entity set can be related to at most one entity of the first entity set.</p>
-<p><strong>c:mc ([0 or 1] to [any number]) </strong> Equivalent to 1:n in Chen notation</p>
+<p><strong>c:mc</strong> ([0 or 1] to [any number]) <em>Equivalent to 1:n in Chen notation</em></p>
 <p>Each entity of the first entity set can be related to any number of entities of the second entity set. Each entity of the second entity set can be related to at most one entity of the first entity set.</p>
-<p><strong>m:m ([at least 1] to [at least 1]) </strong></p>
+<p><strong>m:m</strong> ([at least 1] to [at least 1])</p>
 <p>Each entity of the first entity set is related to at least one entity of the second entity set, and vice versa.</p>
-<p><strong>m:mc ([at least 1] to [any number]) </strong></p>
+<p><strong>m:mc</strong> ([at least 1] to [any number])</p>
 <p>Each entity of the first entity set can be related to any number of entities of the second entity set. Each entity of the second entity set is related to at least one entity of the first entity set.</p>
-<p><strong>mc:mc ([any number] to [any number]) </strong> Equivalent to m:n in Chen notation</p>
+<p><strong>mc:mc</strong> ([any number] to [any number]) <em>Equivalent to m:n in Chen notation</em></p>
 <p>Any entity of the first entity set can be related to any number of entities of the second entity set, and vice versa.</p>
 <p>Source: <a href="https://www.wikiwand.com/de/Chen-Notation">Wikiwand</a></p>
 <p><img src="/post/2021-03-03-entity-relationship-diagram-erd_files/p2p9.png" /></p>
