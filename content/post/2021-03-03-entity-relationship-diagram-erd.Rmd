@@ -5,10 +5,33 @@ date: '2021-03-03'
 slug: entity-relationship-diagram-erd
 categories: []
 tags: []
+output:
+  blogdown::html_page:
+    toc: true
+    toc_depth: 5
 ---
+
+
+# 1 Introduction
+# 2 Loading the libraries
+## 2.1 test
 
 
 
 This is in production !
+
+
+
+
+
+
+
+```{r, eval=F, echo=T}
+my syntax
+
+asdfjasdlfjasldflasjdlfjaslödfjsdfjsdflsadjfsadljflasdjfasdljflkasdjfjasdlfj
+```
+
+![](/post/2021-03-03-entity-relationship-diagram-erd_files/p2p1.png)
 
 
