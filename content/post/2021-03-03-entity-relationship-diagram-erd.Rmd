@@ -224,6 +224,12 @@ How to read the Chen and Min-Max-Notation:
 ![](/post/2021-03-03-entity-relationship-diagram-erd_files/p2p11.png)
 
 
+If you follow the red arrows, you will see that each student can enroll in n courses. No course can be taken twice by a student (blue arrows).
+
+The Min-Max notation is written exactly the other way around than the Chen notation (which still includes additional lower and upper bounds as information).
+
+
+
 This is how to express this relationship with MC notation:
 
 ![](/post/2021-03-03-entity-relationship-diagram-erd_files/p2p12.png)
