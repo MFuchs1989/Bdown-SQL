@@ -40,7 +40,7 @@ ignoreFiles = ["\\.Rmd$", "\\.Rmarkdown$", "_cache$", "\\.knit\\.md$", "\\.utf8\
     MathJaxVersion = "2.7.5"
 
     # path to the favicon, under "static"
-    favicon = "test2.ico"
+    favicon = "MFuchs.ico"
 
     [params.logo]
     url = "MFuchs.png"
