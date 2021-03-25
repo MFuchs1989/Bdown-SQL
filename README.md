@@ -27,4 +27,4 @@ In this repository I want to cover all topics around SQL and databases.
 </p>
 
 
-
+[![IMAGE ALT TEXT HERE](https://github.com/MFuchs1989/Bdown-SQL/blob/master/static/images/Database.png)](https://www.youtube.com/watch?v=XM2CJtYcVvY&list=RDMMXM2CJtYcVvY&start_radio=1)
