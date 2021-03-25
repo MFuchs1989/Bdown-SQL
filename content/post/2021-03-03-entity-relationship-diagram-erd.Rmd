@@ -19,6 +19,7 @@ Before we start creating databases with SQL, we need to ask ourselves what the d
 And that's what this post is all about.
 
 To draw ER diagrams I used [Drawio](https://app.diagrams.net/).
+If you need an overview sheet for the notation forms shown later, you can download it from my [GitHub Account](https://github.com/MFuchs1989/Datasets-and-Miscellaneous/blob/main/miscellaneous/Notations%20Overview.pdf). 
 
 
 # 2	What is a Entity Relationship Diagram?
@@ -263,11 +264,42 @@ ER Diagrams can be displayed in different ways. Here I have compared two of the 
 
 ![](/post/2021-03-03-entity-relationship-diagram-erd_files/p2p17.png)
 
+**Note:** 
+For a 1:1 connection as is the case with Stundets-Contact Info, for example, I only need a Foreign Key for one of the two tables.
+
+
 ![](/post/2021-03-03-entity-relationship-diagram-erd_files/p2p18.png)
 
+**Note:** 
+If there is a 1:n connection, then the foreign key is usually written to the table of n.
 
 
 
-![](/post/2021-03-03-entity-relationship-diagram-erd_files/p2p.png)
+# 7 Best Practice for Developing Effective ER Diagrams
+
+
+![](/post/2021-03-03-entity-relationship-diagram-erd_files/p2p19.png)
+
+
++ Eliminate any redundant entities or relationships 
++ You need to make sure that all your entities and relationships are properly labeled 
++ There may be various valid approaches to an ER diagram. You need to make sure that the ER diagram supports all the data you need to store 
++ You should assure that each entity only appears a single time in the ER diagram 
++ Name every relationship, entity, and attribute are represented on your diagram 
++ Never connect relationships to each other 
++ You should use colors to highlight important portions of the ER diagram
+
+
+
+# 8 Conclusion 
+
+In this post, I introduced what ER diagrams are and what they consist of. Furthermore, I explained different notation forms and how to use them. Finally, I showed two different variants of how to display ER diagrams. 
+
+
+
+
+
+
+
 
 

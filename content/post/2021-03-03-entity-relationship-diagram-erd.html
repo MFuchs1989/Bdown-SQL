@@ -39,6 +39,8 @@ output:
 <li><a href="#martin-notation-crows-foot-notation">5.4 Martin-Notation (Crow’s foot notation)</a></li>
 </ul></li>
 <li><a href="#different-styles-of-displaying-er-diagrams">6 Different styles of displaying ER diagrams</a></li>
+<li><a href="#best-practice-for-developing-effective-er-diagrams">7 Best Practice for Developing Effective ER Diagrams</a></li>
+<li><a href="#conclusion">8 Conclusion</a></li>
 </ul>
 </div>
 
@@ -46,7 +48,8 @@ output:
 <h1>1 Introduction</h1>
 <p>Before we start creating databases with SQL, we need to ask ourselves what the database should look like in the end. Which tables and columns are needed and how should they be connected? Such considerations about the structures can be visualized with an Entity Relationship Diagram.</p>
 <p>And that’s what this post is all about.</p>
-<p>To draw ER diagrams I used <a href="https://app.diagrams.net/">Drawio</a>.</p>
+<p>To draw ER diagrams I used <a href="https://app.diagrams.net/">Drawio</a>.
+If you need an overview sheet for the notation forms shown later, you can download it from my <a href="https://github.com/MFuchs1989/Datasets-and-Miscellaneous/blob/main/miscellaneous/Notations%20Overview.pdf">GitHub Account</a>.</p>
 </div>
 <div id="what-is-a-entity-relationship-diagram" class="section level1">
 <h1>2 What is a Entity Relationship Diagram?</h1>
@@ -189,6 +192,26 @@ Her naming comes from the fact that she uses so-called crow’s feet for a 1:n r
 <h1>6 Different styles of displaying ER diagrams</h1>
 <p>ER Diagrams can be displayed in different ways. Here I have compared two of the most common variants.</p>
 <p><img src="/post/2021-03-03-entity-relationship-diagram-erd_files/p2p17.png" /></p>
+<p><strong>Note:</strong>
+For a 1:1 connection as is the case with Stundets-Contact Info, for example, I only need a Foreign Key for one of the two tables.</p>
 <p><img src="/post/2021-03-03-entity-relationship-diagram-erd_files/p2p18.png" /></p>
-<p><img src="/post/2021-03-03-entity-relationship-diagram-erd_files/p2p.png" /></p>
+<p><strong>Note:</strong>
+If there is a 1:n connection, then the foreign key is usually written to the table of n.</p>
+</div>
+<div id="best-practice-for-developing-effective-er-diagrams" class="section level1">
+<h1>7 Best Practice for Developing Effective ER Diagrams</h1>
+<p><img src="/post/2021-03-03-entity-relationship-diagram-erd_files/p2p19.png" /></p>
+<ul>
+<li>Eliminate any redundant entities or relationships</li>
+<li>You need to make sure that all your entities and relationships are properly labeled</li>
+<li>There may be various valid approaches to an ER diagram. You need to make sure that the ER diagram supports all the data you need to store</li>
+<li>You should assure that each entity only appears a single time in the ER diagram</li>
+<li>Name every relationship, entity, and attribute are represented on your diagram</li>
+<li>Never connect relationships to each other</li>
+<li>You should use colors to highlight important portions of the ER diagram</li>
+</ul>
+</div>
+<div id="conclusion" class="section level1">
+<h1>8 Conclusion</h1>
+<p>In this post, I introduced what ER diagrams are and what they consist of. Furthermore, I explained different notation forms and how to use them. Finally, I showed two different variants of how to display ER diagrams.</p>
 </div>
