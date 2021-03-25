@@ -18,6 +18,8 @@ Before we start creating databases with SQL, we need to ask ourselves what the d
 
 And that's what this post is all about.
 
+To draw ER diagrams I used [Drawio](https://app.diagrams.net/).
+
 
 # 2	What is a Entity Relationship Diagram?
 
@@ -199,10 +201,69 @@ Source: [Wikiwand](https://www.wikiwand.com/de/Chen-Notation)
 Using the modified Chen notation, we can now see that it is mandatory for each registered student to have their contact information stored (1:1 connection). If he cannot do this, he cannot register at the university. 
 
 
+## 5.3 Min-Max-Notation
+
+Min-Max notation is a way of constraining the cardinality of a relationship between entity types in an entity-relationship model. It was introduced because Chen notation allows only restricted statements about a relationship. With the (min,max) notation, both lower and upper bounds can be expressed precisely.
+
+In Min-Max notation, an ordered pair with a minimum and a maximum value is specified for each entity type involved in a relationship. These values indicate the minimum number of relationship expressions in which the entity expressions must participate and the maximum number in which they may participate.
+
+Source: [Wikiwand](https://www.wikiwand.com/de/Min-Max-Notation)
 
 
 
 
+Here is a comparison of the Min-Max notation with the Chen notation:
+
+![](/post/2021-03-03-entity-relationship-diagram-erd_files/p2p10.png)
+
+
+
+How to read the Chen and Min-Max-Notation:
+
+![](/post/2021-03-03-entity-relationship-diagram-erd_files/p2p11.png)
+
+
+This is how to express this relationship with MC notation:
+
+![](/post/2021-03-03-entity-relationship-diagram-erd_files/p2p12.png)
+
+
+Comparison of Min-Max Notation, Chen Notation and MC Notation:
+
+![](/post/2021-03-03-entity-relationship-diagram-erd_files/p2p13.png)
+
+Source: [Wikiwand](https://www.wikiwand.com/de/Min-Max-Notation)
+
+
+This applied to our example would result in the following diagram:
+
+![](/post/2021-03-03-entity-relationship-diagram-erd_files/p2p14.png)
+
+
+## 5.4 Martin-Notation (Crow's foot notation)
+
+The Martin notation (also called crow's foot notation) is a notation form to represent simplified entity-relationship models.
+Her naming comes from the fact that she uses so-called crow's feet for a 1:n relationship.
+
+
+Here again is an overview comparing Martin notation with MC notation:
+
+![](/post/2021-03-03-entity-relationship-diagram-erd_files/p2p15.png)
+
+This applied to our example would result in the following diagram:
+
+![](/post/2021-03-03-entity-relationship-diagram-erd_files/p2p16.png)
+
+
+# 6 Different styles of displaying ER diagrams
+
+ER Diagrams can be displayed in different ways. Here I have compared two of the most common variants. 
+
+
+
+![](/post/2021-03-03-entity-relationship-diagram-erd_files/p2p17.png)
+
+![](/post/2021-03-03-entity-relationship-diagram-erd_files/p2p18.png)
 
 
 

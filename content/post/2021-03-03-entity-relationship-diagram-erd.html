@@ -35,7 +35,10 @@ output:
 <ul>
 <li><a href="#chen-notation">5.1 Chen-Notation</a></li>
 <li><a href="#modified-chen-notation-mc-notation">5.2 Modified Chen Notation (MC-Notation)</a></li>
+<li><a href="#min-max-notation">5.3 Min-Max-Notation</a></li>
+<li><a href="#martin-notation-crows-foot-notation">5.4 Martin-Notation (Crow’s foot notation)</a></li>
 </ul></li>
+<li><a href="#different-styles-of-displaying-er-diagrams">6 Different styles of displaying ER diagrams</a></li>
 </ul>
 </div>
 
@@ -43,6 +46,7 @@ output:
 <h1>1 Introduction</h1>
 <p>Before we start creating databases with SQL, we need to ask ourselves what the database should look like in the end. Which tables and columns are needed and how should they be connected? Such considerations about the structures can be visualized with an Entity Relationship Diagram.</p>
 <p>And that’s what this post is all about.</p>
+<p>To draw ER diagrams I used <a href="https://app.diagrams.net/">Drawio</a>.</p>
 </div>
 <div id="what-is-a-entity-relationship-diagram" class="section level1">
 <h1>2 What is a Entity Relationship Diagram?</h1>
@@ -153,6 +157,38 @@ Different <strong>notations</strong> can be used to define the cardinality.</p>
 <p>Source: <a href="https://www.wikiwand.com/de/Chen-Notation">Wikiwand</a></p>
 <p><img src="/post/2021-03-03-entity-relationship-diagram-erd_files/p2p9.png" /></p>
 <p>Using the modified Chen notation, we can now see that it is mandatory for each registered student to have their contact information stored (1:1 connection). If he cannot do this, he cannot register at the university.</p>
-<p><img src="/post/2021-03-03-entity-relationship-diagram-erd_files/p2p.png" /></p>
 </div>
+<div id="min-max-notation" class="section level2">
+<h2>5.3 Min-Max-Notation</h2>
+<p>Min-Max notation is a way of constraining the cardinality of a relationship between entity types in an entity-relationship model. It was introduced because Chen notation allows only restricted statements about a relationship. With the (min,max) notation, both lower and upper bounds can be expressed precisely.</p>
+<p>In Min-Max notation, an ordered pair with a minimum and a maximum value is specified for each entity type involved in a relationship. These values indicate the minimum number of relationship expressions in which the entity expressions must participate and the maximum number in which they may participate.</p>
+<p>Source: <a href="https://www.wikiwand.com/de/Min-Max-Notation">Wikiwand</a></p>
+<p>Here is a comparison of the Min-Max notation with the Chen notation:</p>
+<p><img src="/post/2021-03-03-entity-relationship-diagram-erd_files/p2p10.png" /></p>
+<p>How to read the Chen and Min-Max-Notation:</p>
+<p><img src="/post/2021-03-03-entity-relationship-diagram-erd_files/p2p11.png" /></p>
+<p>This is how to express this relationship with MC notation:</p>
+<p><img src="/post/2021-03-03-entity-relationship-diagram-erd_files/p2p12.png" /></p>
+<p>Comparison of Min-Max Notation, Chen Notation and MC Notation:</p>
+<p><img src="/post/2021-03-03-entity-relationship-diagram-erd_files/p2p13.png" /></p>
+<p>Source: <a href="https://www.wikiwand.com/de/Min-Max-Notation">Wikiwand</a></p>
+<p>This applied to our example would result in the following diagram:</p>
+<p><img src="/post/2021-03-03-entity-relationship-diagram-erd_files/p2p14.png" /></p>
+</div>
+<div id="martin-notation-crows-foot-notation" class="section level2">
+<h2>5.4 Martin-Notation (Crow’s foot notation)</h2>
+<p>The Martin notation (also called crow’s foot notation) is a notation form to represent simplified entity-relationship models.
+Her naming comes from the fact that she uses so-called crow’s feet for a 1:n relationship.</p>
+<p>Here again is an overview comparing Martin notation with MC notation:</p>
+<p><img src="/post/2021-03-03-entity-relationship-diagram-erd_files/p2p15.png" /></p>
+<p>This applied to our example would result in the following diagram:</p>
+<p><img src="/post/2021-03-03-entity-relationship-diagram-erd_files/p2p16.png" /></p>
+</div>
+</div>
+<div id="different-styles-of-displaying-er-diagrams" class="section level1">
+<h1>6 Different styles of displaying ER diagrams</h1>
+<p>ER Diagrams can be displayed in different ways. Here I have compared two of the most common variants.</p>
+<p><img src="/post/2021-03-03-entity-relationship-diagram-erd_files/p2p17.png" /></p>
+<p><img src="/post/2021-03-03-entity-relationship-diagram-erd_files/p2p18.png" /></p>
+<p><img src="/post/2021-03-03-entity-relationship-diagram-erd_files/p2p.png" /></p>
 </div>
