@@ -26,5 +26,3 @@ In this repository I want to cover all topics around SQL and databases.
   <img src="https://media.giphy.com/media/l0HlOBZcl7sbV6LnO/giphy.gif?raw=true" alt="Enjoy reading"/>
 </p>
 
-
-[![IMAGE ALT TEXT HERE](https://github.com/MFuchs1989/Bdown-SQL/blob/master/static/images/Database.png)](https://www.youtube.com/watch?v=XM2CJtYcVvY&list=RDMMXM2CJtYcVvY&start_radio=1)
