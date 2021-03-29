@@ -32,7 +32,7 @@ output:
 <li><a href="#delete-specific-columns">3.2.1 Delete specific Columns</a></li>
 <li><a href="#add-new-columns">3.2.2 Add new columns</a></li>
 <li><a href="#delete-the-whole-table">3.2.3 Delete the whole table</a></li>
-<li><a href="#delete-the-database">3.2.4 Delete the Database</a></li>
+<li><a href="#delete-the-whole-database">3.2.4 Delete the whole Database</a></li>
 </ul></li>
 </ul></li>
 <li><a href="#conclusion">4 Conclusion</a></li>
@@ -85,8 +85,8 @@ But it is logically still completely empty. So we will first fill it with a tabl
     ;</code></pre>
 <p>The table is named ‘Customer’ and consists of the following columns:</p>
 <ul>
-<li>ID (which must not be zero)</li>
-<li>First_Name (with a maximum number of 100 characters; must also not be zero)</li>
+<li>ID (which must <strong>not be zero</strong>)</li>
+<li>First_Name (with a maximum number of <strong>100 characters</strong>; must also <strong>not be zero</strong>)</li>
 <li>Last_Name (same defaults as for First_Name)</li>
 </ul>
 <p>Here we can see that the ‘Customers’ table has been created under the ‘MyDB’ database:</p>
@@ -156,8 +156,8 @@ ALTER TABLE Table_2 DROP COLUMN First_Name, Last_Name;</code></pre>
 <p>By executing the command shown above, we have deleted the entire table (‘Table_2’).</p>
 <p><img src="/post/2021-03-07-create-a-database_files/p3p13.png" /></p>
 </div>
-<div id="delete-the-database" class="section level3">
-<h3>3.2.4 Delete the Database</h3>
+<div id="delete-the-whole-database" class="section level3">
+<h3>3.2.4 Delete the whole Database</h3>
 <p>Like tables, entire databases can be deleted.</p>
 <p>Since I would like to have the output of <a href="https://docs.microsoft.com/en-us/sql/ssms/sql-server-management-studio-ssms?view=sql-server-ver15">SSMS</a> always in English I use the following syntax and try to delete the database.</p>
 <pre class="r"><code>SET LANGUAGE ENGLISH

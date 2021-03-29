@@ -90,8 +90,8 @@ CREATE TABLE Customer
 
 The table is named 'Customer' and consists of the following columns:
 
-+ ID (which must not be zero)
-+ First_Name (with a maximum number of 100 characters; must also not be zero)
++ ID (which must **not be zero**)
++ First_Name (with a maximum number of **100 characters**; must also **not be zero**)
 + Last_Name (same defaults as for First_Name)
 
 Here we can see that the 'Customers' table has been created under the 'MyDB' database:
@@ -221,7 +221,7 @@ By executing the command shown above, we have deleted the entire table ('Table_2
 ![](/post/2021-03-07-create-a-database_files/p3p13.png)
 
 
-### 3.2.4 Delete the Database
+### 3.2.4 Delete the whole Database
 
 Like tables, entire databases can be deleted.
 
