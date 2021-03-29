@@ -94,6 +94,9 @@ The table is named 'Customer' and consists of the following columns:
 + First_Name (with a maximum number of **100 characters**; must also **not be zero**)
 + Last_Name (same defaults as for First_Name)
 
+Of course you have the possibility to add a lot of [other columns with different data types](https://www.w3schools.com/sql/sql_datatypes.asp). 
+
+
 Here we can see that the 'Customers' table has been created under the 'MyDB' database:
 
 ![](/post/2021-03-07-create-a-database_files/p3p5.png)
