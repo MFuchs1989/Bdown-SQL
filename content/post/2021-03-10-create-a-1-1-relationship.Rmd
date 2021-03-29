@@ -1,0 +1,218 @@
+---
+title: Create a 1:1 Relationship
+author: Michael Fuchs
+date: '2021-03-10'
+slug: create-a-1-1-relationship
+categories: []
+tags: []
+output:
+  blogdown::html_page:
+    toc: true
+    toc_depth: 5
+---
+
+
+# 1 Introduction
+
+After I showed in my last post [how to create a SQL database](https://michael-fuchs-sql.netlify.app/2021/03/07/create-a-database/) and how to insert tables with values into it, let's go one step further.
+
+As we know from the [ERD post](https://michael-fuchs-sql.netlify.app/2021/03/03/entity-relationship-diagram-erd/), the tables in a database are always related to each other with some [relationship](https://michael-fuchs-sql.netlify.app/2021/03/03/entity-relationship-diagram-erd/#relationships). 
+
+In this post I would like to point out a circumstance where it is a 1:1 relationship. 
+
+
+
+# 2 The assumed Situation
+
+Let's say we are asked to design a database for a registry office. 
+We have information about the groom and about the bride. 
+This information should be stored in a husband and a wife table which are in a 1:1 relationship to each other. 
+
+![](/post/2021-03-10-create-a-1-1-relationship_files/p4p1.png)
+
+
+# 3 Setting up the database and the required tables
+
+How I do this can be read in my post [Create a Database](https://michael-fuchs-sql.netlify.app/2021/03/07/create-a-database/#create-a-new-database). 
+
+
+
+```{r, eval=F, echo=T}
+CREATE DATABASE Registry_Office;
+
+
+USE Registry_Office;
+
+CREATE TABLE Husband
+	(Husband_ID INT NOT NULL PRIMARY KEY,
+	First_Name VARCHAR(100) NOT NULL,
+	Last_Name VARCHAR(100) NOT NULL)
+	;
+
+CREATE TABLE Wife
+	(Wife_ID INT NOT NULL PRIMARY KEY,
+	First_Name VARCHAR(100) NOT NULL,
+	Last_Name VARCHAR(100) NOT NULL)
+	;
+```
+
+
+Here is the result:
+
+![](/post/2021-03-10-create-a-1-1-relationship_files/p4p2.png)
+
+
+## 3.1 Primary Key
+
+Short and sweet:
+
+A primary key is used to ensure that the data in a particular column is unique. It is a column that must not contain null values. Either this column is already provided in the table or it is specially created by the database according to a defined sequence. 
+
+As you have probably already noticed, I had the columns `Husband_ID` and `Wife_ID` stored as Primary Key when I created the two tables. The relationship should be as follows:
+
+![](/post/2021-03-10-create-a-1-1-relationship_files/p4p4.png)
+
+
+One can view the relationships of the tables stored in a database in SSMS. To do this, right-click on 'Views' in the Object Explorer and select 'New View'. Afterwards you will be asked which tables should be displayed. Select your desired tables and click on OK. 
+
+![](/post/2021-03-10-create-a-1-1-relationship_files/p4p3.png)
+
+What we see now is the following output:
+
+![](/post/2021-03-10-create-a-1-1-relationship_files/p4p5.png)
+
+Here, there is still no connection between the two tables ... Why is that?
+The answer has to do with the Foreign Key. 
+
+
+
+## 3.2 Foreign Key
+
+A foreign key is a column or a group of columns in a relational database table that creates a link between data in two tables. It is a column that refers to a column (usually the primary key) of another table.
+
+We have not yet assigned this foreign key.
+So we do this now as the next step. 
+
+
+
+# 4 Connecting the two tables
+
+Since this is a 1:1 relationship, only one foreign key is needed. It does not matter in which table it is stored. 
+We add it to the 'Husband' table in this example. 
+
+
+```{r, eval=F, echo=T}
+ALTER TABLE Husband ADD Wife_ID INT NOT NULL FOREIGN KEY REFERENCES Wife(Wife_ID);
+```
+
+
+
+The underlying ERD now looks like this:
+
+![](/post/2021-03-10-create-a-1-1-relationship_files/p4p6.png)
+
+
+Let's take another look at Views.
+
+![](/post/2021-03-10-create-a-1-1-relationship_files/p4p7.png)
+
+Now we can also see in SSMS that and what relationship exists between the two tables. 
+
+
+
+# 5 Filling the tables
+
+To see how we can use this relationship we first fill the two tables with values.   
+
+
+```{r, eval=F, echo=T}
+INSERT INTO Husband (Husband_ID, First_Name, Last_Name, Wife_ID) VALUES (1, 'Max', 'Steel', 1)
+INSERT INTO Husband (Husband_ID, First_Name, Last_Name, Wife_ID) VALUES (2, 'Alex', 'Smith', 2)
+INSERT INTO Husband (Husband_ID, First_Name, Last_Name, Wife_ID) VALUES (3, 'Marc', 'Pike', 3)
+
+
+INSERT INTO Wife (Wife_ID, First_Name, Last_Name) VALUES (1, 'Klara', 'Brown')
+INSERT INTO Wife (Wife_ID, First_Name, Last_Name) VALUES (2, 'Jessy', 'Williams')
+INSERT INTO Wife (Wife_ID, First_Name, Last_Name) VALUES (3, 'Emily', 'Taylor')
+
+
+
+
+SELECT * FROM Husband
+SELECT * FROM Wife
+```
+
+![](/post/2021-03-10-create-a-1-1-relationship_files/p4p8.png)
+
+
+Now we perform a simple merge of the two tables using the Primary Key and Foreign Key.
+
+
+```{r, eval=F, echo=T}
+SELECT * 
+	FROM Husband JOIN Wife 
+	ON Husband.Wife_ID = Wife.Wife_ID;
+```
+
+![](/post/2021-03-10-create-a-1-1-relationship_files/p4p9.png)
+
+At this point, it should be mentioned that this is a rather simple combination that should exemplify the usefulness of primary and foreign keys. 
+I will report on the topic of how to execute joins correctly and sensibly in a later post. 
+
+
+
+# 6 Shorter method
+
+In the previous example, I first created two tables and added the Foreign Key afterwards. You can also add it right when you create the tables. I will show you how to do this in the following example: 
+
+
+
+```{r, eval=F, echo=T}
+CREATE DATABASE Registry_Office2;
+
+USE Registry_Office2;
+
+
+CREATE TABLE Wife
+	(Wife_ID INT NOT NULL PRIMARY KEY,
+	First_Name VARCHAR(100) NOT NULL,
+	Last_Name VARCHAR(100) NOT NULL)
+	;
+
+
+CREATE TABLE Husband
+	(Husband_ID INT NOT NULL PRIMARY KEY,
+	First_Name VARCHAR(100) NOT NULL,
+	Last_Name VARCHAR(100) NOT NULL,
+	Wife_ID INT NOT NULL FOREIGN KEY REFERENCES Wife(Wife_ID))
+	;
+
+
+SELECT * FROM Husband
+SELECT * FROM Wife
+```
+
+![](/post/2021-03-10-create-a-1-1-relationship_files/p4p10.png)
+
+It is only important to create the wife table first, otherwise the error will be thrown that the column 'Wife_ID' from the table 'Wife' does not exist. 
+
+
+
+# 7 Conclusion
+
+In this post I have shown a simple example of a 1:1 relationship of two tables and how to create them in a database respectively how to build the relationship to them among themselves accordingly.
+
+In addition, I have shown how to output relationships of tables within a database from SSMS. 
+
+In subsequent posts, I will discuss other forms of relationships. 
+
+
+
+
+
+
+
+
+
+
+
