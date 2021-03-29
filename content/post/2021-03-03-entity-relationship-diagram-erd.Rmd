@@ -288,12 +288,12 @@ If there is a 1:n connection, then the foreign key is usually written to the tab
 
 
 + Eliminate any redundant entities or relationships 
-+ You need to make sure that all your entities and relationships are properly labeled 
-+ There may be various valid approaches to an ER diagram. You need to make sure that the ER diagram supports all the data you need to store 
-+ You should assure that each entity only appears a single time in the ER diagram 
-+ Name every relationship, entity, and attribute are represented on your diagram 
-+ Never connect relationships to each other 
-+ You should use colors to highlight important portions of the ER diagram
++ Make sure all entities and relationships are labeled correctly 
++ Make sure the ER diagram supports all the data you need to store 
++ Make sure that each entity appears only once in the ER diagram 
++ All relationships, entities and attributes to be represented in the diagram must be named. 
++ Relationships with each other should never be connected
++ Important parts of the ER diagram should be highlighted with colors
 
 
 
