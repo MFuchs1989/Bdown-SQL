@@ -1,0 +1,285 @@
+---
+title: Create a Database
+author: Michael Fuchs
+date: '2021-03-07'
+slug: create-a-database
+categories: []
+tags: []
+output:
+  blogdown::html_page:
+    toc: true
+    toc_depth: 5
+---
+
+
+# 1 Introduction
+
+
+Now that we have learned about the [different types of databases](https://michael-fuchs-sql.netlify.app/2021/03/01/types-of-databases/) and what an [entity-relationship diagram](https://michael-fuchs-sql.netlify.app/2021/03/03/entity-relationship-diagram-erd/) is, it is time to create the first SQL database. I use [Server Management Studio (SSMS)](https://docs.microsoft.com/en-us/sql/ssms/sql-server-management-studio-ssms?view=sql-server-ver15) from Microsoft for this. 
+
+
+# 2 Getting Started
+
+
+First of all you need an on-premise SQL Server from Microsoft . You can download it here: 
+
++ [Free specialized edition: Developer](https://www.microsoft.com/en-us/sql-server/sql-server-downloads)
+
+
+Next, please download SSMS:
+
++ [SQL Server Management Studio (SSMS)](https://docs.microsoft.com/en-us/sql/ssms/download-sql-server-management-studio-ssms?view=sql-server-ver15)
+
+
+
+After we have performed both installations and started SSMS the following window appears:
+
+
+![](/post/2021-03-07-create-a-database_files/p3p1.png)
+
+Select `Server type: 'Database Engine'` and the `default server name`. 
+
+
+
+# 3 Microsoft SQL Server Management Studio
+
+First of all we need a New Query.
+We can request these as follows:
+
+![](/post/2021-03-07-create-a-database_files/p3p2.png)
+
+
+## 3.1 Create a new Database
+
+To create a new database we need the following syntax:
+
+```{r, eval=F, echo=T}
+CREATE DATABASE MyDB;
+```
+
+This command can be executed as follows (mark the desired syntax):
+
+![](/post/2021-03-07-create-a-database_files/p3p3.png)
+
+Now let's have a look at our Object Explorer on the left. 
+
+![](/post/2021-03-07-create-a-database_files/p3p4.png)
+
+As we can see, the database has been created. 
+But it is logically still completely empty. So we will first fill it with a table:
+
+
+
+## 3.2 Create a new Table
+
+If we want to create a new table in the created database, we must first tell the system which database I want to use: 
+
+```{r, eval=F, echo=T}
+USE MyDB;
+```
+
+Now we are ready to create a new table in the 'MyDB' database.
+
+```{r, eval=F, echo=T}
+CREATE TABLE Customer
+	(ID INT NOT NULL,
+	First_Name VARCHAR(100) NOT NULL,
+	Last_Name VARCHAR(100) NOT NULL)
+	;
+```
+
+The table is named 'Customer' and consists of the following columns:
+
++ ID (which must not be zero)
++ First_Name (with a maximum number of 100 characters; must also not be zero)
++ Last_Name (same defaults as for First_Name)
+
+Here we can see that the 'Customers' table has been created under the 'MyDB' database:
+
+![](/post/2021-03-07-create-a-database_files/p3p5.png)
+
+
+### 3.2.1 A glimpse at the new table
+
+To take a look at the table, a select statement can be executed:
+
+```{r, eval=F, echo=T}
+SELECT * FROM Customer
+```
+
+![](/post/2021-03-07-create-a-database_files/p3p6.png)
+
+
+### 3.2.2 Inserting values into the table
+
+The next step is to fill the table with values. This is done using the insert command.
+
+```{r, eval=F, echo=T}
+INSERT INTO Customer (ID, First_Name, Last_Name) VALUES (1, 'Michael', 'Fuchs')
+```
+
+
+Let's take another look at the table:
+
+```{r, eval=F, echo=T}
+SELECT * FROM Customer
+```
+
+![](/post/2021-03-07-create-a-database_files/p3p7.png)
+
+
+
+## 3.2 Create a database for deletion
+
+Now I want to create another database with two tables, which I want to delete afterwards. 
+Tip: Execute the command `USE DB_to_Delete` separately, otherwise the two tables will be written to the database 'MyDB'.
+
+
+```{r, eval=F, echo=T}
+REATE DATABASE DB_to_Delete;
+
+
+USE DB_to_Delete;
+
+
+CREATE TABLE Table_1
+	(ID INT NOT NULL,
+	First_Name VARCHAR(100) NOT NULL,
+	Last_Name VARCHAR(100) NOT NULL)
+	;
+
+CREATE TABLE Table_2
+	(ID INT NOT NULL,
+	First_Name VARCHAR(100) NOT NULL,
+	Last_Name VARCHAR(100) NOT NULL)
+	;
+```
+
+
+Here is the created database:
+
+![](/post/2021-03-07-create-a-database_files/p3p8.png)
+
+
+And here are the tables created:
+
+![](/post/2021-03-07-create-a-database_files/p3p9.png)
+
+
+Let's have a look at the tables again (they are displayed according to the order in which the commands are written, so Table_1 is shown at the top and Table_2 at the bottom). 
+
+
+```{r, eval=F, echo=T}
+SELECT * FROM Table_1
+SELECT * FROM Table_2
+```
+
+![](/post/2021-03-07-create-a-database_files/p3p10.png)
+
+
+
+### 3.2.1 Delete specific Columns 
+
+
+The following command can be used to delete certain columns:
+
+```{r, eval=F, echo=T}
+ALTER TABLE Table_1 DROP COLUMN ID;
+
+ALTER TABLE Table_2 DROP COLUMN First_Name, Last_Name;
+```
+
+![](/post/2021-03-07-create-a-database_files/p3p11.png)
+
+We can see that in Table_1 the column 'ID' is missing and in Table_2 the columns 'First_Name' and 'Last_Name'. 
+
+
+
+### 3.2.2 Add new columns
+
+Just as we can delete columns, we can also add new columns to existing tables.
+
+```{r, eval=F, echo=T}
+ALTER TABLE Table_1 ADD Further_Column VARCHAR(100) NOT NULL;
+```
+
+![](/post/2021-03-07-create-a-database_files/p3p12.png)
+
+
+
+
+### 3.2.3 Delete the whole table
+
+
+```{r, eval=F, echo=T}
+DROP TABLE Table_2;
+```
+
+
+By executing the command shown above, we have deleted the entire table ('Table_2'). 
+
+![](/post/2021-03-07-create-a-database_files/p3p13.png)
+
+
+### 3.2.4 Delete the Database
+
+Like tables, entire databases can be deleted.
+
+Since I would like to have the output of [SSMS](https://docs.microsoft.com/en-us/sql/ssms/sql-server-management-studio-ssms?view=sql-server-ver15) always in English I use the following syntax and try to delete the database. 
+
+
+```{r, eval=F, echo=T}
+SET LANGUAGE ENGLISH
+DROP DATABASE DB_to_Delete;
+```
+
+![](/post/2021-03-07-create-a-database_files/p3p14.png)
+
+We get the error message shown above. 
+To be able to delete the database, it must not be in use. A simple workaround is to tell the system to use another database (here 'MyDB') and then execute the drop command. 
+
+
+```{r, eval=F, echo=T}
+USE MyDB;
+DROP DATABASE DB_to_Delete;
+```
+
+![](/post/2021-03-07-create-a-database_files/p3p15.png)
+
+Worked.
+
+But what do we do if we do not have the possibility to switch to another database like here:
+
+```{r, eval=F, echo=T}
+USE MyDB;
+DROP DATABASE MyDB;
+```
+
+![](/post/2021-03-07-create-a-database_files/p3p16.png)
+
+At [SSMS](https://docs.microsoft.com/en-us/sql/ssms/sql-server-management-studio-ssms?view=sql-server-ver15) we also have the possibility to delete tables and databases via Object Explorer. 
+
+To do this, we right-click on the database and select *Delete*. Don't forget to check the box 'Close existing connections'. 
+
+
+![](/post/2021-03-07-create-a-database_files/p3p17.png)
+
+
+
+# 4 Conclusion
+
+This was a small introduction to the topic of how to create databases and tables with SQL statements and fill them with values. Furthermore I showed how to delete columns, tables and whole databases. 
+
+
+
+
+
+
+
+
+
+
+
+
+
+

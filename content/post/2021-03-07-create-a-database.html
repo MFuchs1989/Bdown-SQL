@@ -1,0 +1,185 @@
+---
+title: Create a Database
+author: Michael Fuchs
+date: '2021-03-07'
+slug: create-a-database
+categories: []
+tags: []
+output:
+  blogdown::html_page:
+    toc: true
+    toc_depth: 5
+---
+
+<script src="/rmarkdown-libs/header-attrs/header-attrs.js"></script>
+<link href="/rmarkdown-libs/anchor-sections/anchor-sections.css" rel="stylesheet" />
+<script src="/rmarkdown-libs/anchor-sections/anchor-sections.js"></script>
+
+<div id="TOC">
+<ul>
+<li><a href="#introduction">1 Introduction</a></li>
+<li><a href="#getting-started">2 Getting Started</a></li>
+<li><a href="#microsoft-sql-server-management-studio">3 Microsoft SQL Server Management Studio</a>
+<ul>
+<li><a href="#create-a-new-database">3.1 Create a new Database</a></li>
+<li><a href="#create-a-new-table">3.2 Create a new Table</a>
+<ul>
+<li><a href="#a-glimpse-at-the-new-table">3.2.1 A glimpse at the new table</a></li>
+<li><a href="#inserting-values-into-the-table">3.2.2 Inserting values into the table</a></li>
+</ul></li>
+<li><a href="#create-a-database-for-deletion">3.2 Create a database for deletion</a>
+<ul>
+<li><a href="#delete-specific-columns">3.2.1 Delete specific Columns</a></li>
+<li><a href="#add-new-columns">3.2.2 Add new columns</a></li>
+<li><a href="#delete-the-whole-table">3.2.3 Delete the whole table</a></li>
+<li><a href="#delete-the-database">3.2.4 Delete the Database</a></li>
+</ul></li>
+</ul></li>
+<li><a href="#conclusion">4 Conclusion</a></li>
+</ul>
+</div>
+
+<div id="introduction" class="section level1">
+<h1>1 Introduction</h1>
+<p>Now that we have learned about the <a href="https://michael-fuchs-sql.netlify.app/2021/03/01/types-of-databases/">different types of databases</a> and what an <a href="https://michael-fuchs-sql.netlify.app/2021/03/03/entity-relationship-diagram-erd/">entity-relationship diagram</a> is, it is time to create the first SQL database. I use <a href="https://docs.microsoft.com/en-us/sql/ssms/sql-server-management-studio-ssms?view=sql-server-ver15">Server Management Studio (SSMS)</a> from Microsoft for this.</p>
+</div>
+<div id="getting-started" class="section level1">
+<h1>2 Getting Started</h1>
+<p>First of all you need an on-premise SQL Server from Microsoft . You can download it here:</p>
+<ul>
+<li><a href="https://www.microsoft.com/en-us/sql-server/sql-server-downloads">Free specialized edition: Developer</a></li>
+</ul>
+<p>Next, please download SSMS:</p>
+<ul>
+<li><a href="https://docs.microsoft.com/en-us/sql/ssms/download-sql-server-management-studio-ssms?view=sql-server-ver15">SQL Server Management Studio (SSMS)</a></li>
+</ul>
+<p>After we have performed both installations and started SSMS the following window appears:</p>
+<p><img src="/post/2021-03-07-create-a-database_files/p3p1.png" /></p>
+<p>Select <code>Server type: 'Database Engine'</code> and the <code>default server name</code>.</p>
+</div>
+<div id="microsoft-sql-server-management-studio" class="section level1">
+<h1>3 Microsoft SQL Server Management Studio</h1>
+<p>First of all we need a New Query.
+We can request these as follows:</p>
+<p><img src="/post/2021-03-07-create-a-database_files/p3p2.png" /></p>
+<div id="create-a-new-database" class="section level2">
+<h2>3.1 Create a new Database</h2>
+<p>To create a new database we need the following syntax:</p>
+<pre class="r"><code>CREATE DATABASE MyDB;</code></pre>
+<p>This command can be executed as follows (mark the desired syntax):</p>
+<p><img src="/post/2021-03-07-create-a-database_files/p3p3.png" /></p>
+<p>Now let’s have a look at our Object Explorer on the left.</p>
+<p><img src="/post/2021-03-07-create-a-database_files/p3p4.png" /></p>
+<p>As we can see, the database has been created.
+But it is logically still completely empty. So we will first fill it with a table:</p>
+</div>
+<div id="create-a-new-table" class="section level2">
+<h2>3.2 Create a new Table</h2>
+<p>If we want to create a new table in the created database, we must first tell the system which database I want to use:</p>
+<pre class="r"><code>USE MyDB;</code></pre>
+<p>Now we are ready to create a new table in the ‘MyDB’ database.</p>
+<pre class="r"><code>CREATE TABLE Customer
+    (ID INT NOT NULL,
+    First_Name VARCHAR(100) NOT NULL,
+    Last_Name VARCHAR(100) NOT NULL)
+    ;</code></pre>
+<p>The table is named ‘Customer’ and consists of the following columns:</p>
+<ul>
+<li>ID (which must not be zero)</li>
+<li>First_Name (with a maximum number of 100 characters; must also not be zero)</li>
+<li>Last_Name (same defaults as for First_Name)</li>
+</ul>
+<p>Here we can see that the ‘Customers’ table has been created under the ‘MyDB’ database:</p>
+<p><img src="/post/2021-03-07-create-a-database_files/p3p5.png" /></p>
+<div id="a-glimpse-at-the-new-table" class="section level3">
+<h3>3.2.1 A glimpse at the new table</h3>
+<p>To take a look at the table, a select statement can be executed:</p>
+<pre class="r"><code>SELECT * FROM Customer</code></pre>
+<p><img src="/post/2021-03-07-create-a-database_files/p3p6.png" /></p>
+</div>
+<div id="inserting-values-into-the-table" class="section level3">
+<h3>3.2.2 Inserting values into the table</h3>
+<p>The next step is to fill the table with values. This is done using the insert command.</p>
+<pre class="r"><code>INSERT INTO Customer (ID, First_Name, Last_Name) VALUES (1, &#39;Michael&#39;, &#39;Fuchs&#39;)</code></pre>
+<p>Let’s take another look at the table:</p>
+<pre class="r"><code>SELECT * FROM Customer</code></pre>
+<p><img src="/post/2021-03-07-create-a-database_files/p3p7.png" /></p>
+</div>
+</div>
+<div id="create-a-database-for-deletion" class="section level2">
+<h2>3.2 Create a database for deletion</h2>
+<p>Now I want to create another database with two tables, which I want to delete afterwards.
+Tip: Execute the command <code>USE DB_to_Delete</code> separately, otherwise the two tables will be written to the database ‘MyDB’.</p>
+<pre class="r"><code>REATE DATABASE DB_to_Delete;
+
+
+USE DB_to_Delete;
+
+
+CREATE TABLE Table_1
+    (ID INT NOT NULL,
+    First_Name VARCHAR(100) NOT NULL,
+    Last_Name VARCHAR(100) NOT NULL)
+    ;
+
+CREATE TABLE Table_2
+    (ID INT NOT NULL,
+    First_Name VARCHAR(100) NOT NULL,
+    Last_Name VARCHAR(100) NOT NULL)
+    ;</code></pre>
+<p>Here is the created database:</p>
+<p><img src="/post/2021-03-07-create-a-database_files/p3p8.png" /></p>
+<p>And here are the tables created:</p>
+<p><img src="/post/2021-03-07-create-a-database_files/p3p9.png" /></p>
+<p>Let’s have a look at the tables again (they are displayed according to the order in which the commands are written, so Table_1 is shown at the top and Table_2 at the bottom).</p>
+<pre class="r"><code>SELECT * FROM Table_1
+SELECT * FROM Table_2</code></pre>
+<p><img src="/post/2021-03-07-create-a-database_files/p3p10.png" /></p>
+<div id="delete-specific-columns" class="section level3">
+<h3>3.2.1 Delete specific Columns</h3>
+<p>The following command can be used to delete certain columns:</p>
+<pre class="r"><code>ALTER TABLE Table_1 DROP COLUMN ID;
+
+ALTER TABLE Table_2 DROP COLUMN First_Name, Last_Name;</code></pre>
+<p><img src="/post/2021-03-07-create-a-database_files/p3p11.png" /></p>
+<p>We can see that in Table_1 the column ‘ID’ is missing and in Table_2 the columns ‘First_Name’ and ‘Last_Name’.</p>
+</div>
+<div id="add-new-columns" class="section level3">
+<h3>3.2.2 Add new columns</h3>
+<p>Just as we can delete columns, we can also add new columns to existing tables.</p>
+<pre class="r"><code>ALTER TABLE Table_1 ADD Further_Column VARCHAR(100) NOT NULL;</code></pre>
+<p><img src="/post/2021-03-07-create-a-database_files/p3p12.png" /></p>
+</div>
+<div id="delete-the-whole-table" class="section level3">
+<h3>3.2.3 Delete the whole table</h3>
+<pre class="r"><code>DROP TABLE Table_2;</code></pre>
+<p>By executing the command shown above, we have deleted the entire table (‘Table_2’).</p>
+<p><img src="/post/2021-03-07-create-a-database_files/p3p13.png" /></p>
+</div>
+<div id="delete-the-database" class="section level3">
+<h3>3.2.4 Delete the Database</h3>
+<p>Like tables, entire databases can be deleted.</p>
+<p>Since I would like to have the output of <a href="https://docs.microsoft.com/en-us/sql/ssms/sql-server-management-studio-ssms?view=sql-server-ver15">SSMS</a> always in English I use the following syntax and try to delete the database.</p>
+<pre class="r"><code>SET LANGUAGE ENGLISH
+DROP DATABASE DB_to_Delete;</code></pre>
+<p><img src="/post/2021-03-07-create-a-database_files/p3p14.png" /></p>
+<p>We get the error message shown above.
+To be able to delete the database, it must not be in use. A simple workaround is to tell the system to use another database (here ‘MyDB’) and then execute the drop command.</p>
+<pre class="r"><code>USE MyDB;
+DROP DATABASE DB_to_Delete;</code></pre>
+<p><img src="/post/2021-03-07-create-a-database_files/p3p15.png" /></p>
+<p>Worked.</p>
+<p>But what do we do if we do not have the possibility to switch to another database like here:</p>
+<pre class="r"><code>USE MyDB;
+DROP DATABASE MyDB;</code></pre>
+<p><img src="/post/2021-03-07-create-a-database_files/p3p16.png" /></p>
+<p>At <a href="https://docs.microsoft.com/en-us/sql/ssms/sql-server-management-studio-ssms?view=sql-server-ver15">SSMS</a> we also have the possibility to delete tables and databases via Object Explorer.</p>
+<p>To do this, we right-click on the database and select <em>Delete</em>. Don’t forget to check the box ‘Close existing connections’.</p>
+<p><img src="/post/2021-03-07-create-a-database_files/p3p17.png" /></p>
+</div>
+</div>
+</div>
+<div id="conclusion" class="section level1">
+<h1>4 Conclusion</h1>
+<p>This was a small introduction to the topic of how to create databases and tables with SQL statements and fill them with values. Furthermore I showed how to delete columns, tables and whole databases.</p>
+</div>
