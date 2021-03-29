@@ -140,7 +140,8 @@ Regardless of whether you choose an SQL or NoSQL database (or both), there are a
 + AWS with with [DynamoDB](https://aws.amazon.com/dynamodb/?trk=ps_a134p000006paY4AAI&trkCampaign=acq_paid_search_brand&sc_channel=PS&sc_campaign=acquisition_DACH&sc_publisher=Google&sc_category=Database&sc_country=DACH&sc_geo=EMEA&sc_outcome=acq&sc_detail=dynamodb&sc_content=DynamoDB_e&sc_matchtype=e&sc_segment=495027756154&sc_medium=ACQ-P|PS-GO|Brand|Desktop|SU|Database|DynamoDB|DACH|EN|Text|xx|EU&s_kwcid=AL!4422!3!495027756154!e!!g!!dynamodb&ef_id=Cj0KCQjw9YWDBhDyARIsADt6sGbtQmUqFNATZ4Cb8Jx3qzh3iLimZYSJDY_9Ne9xLBe3G_AUZiYS_ioaAum9EALw_wcB:G:s&s_kwcid=AL!4422!3!495027756154!e!!g!!dynamodb) and [DocumentDB](https://aws.amazon.com/documentdb/?trk=ps_a134p000006BpCyAAK&trkCampaign=pac_q1_0320_paidsearch_documentdb_de_DocumentDB_br_prosp_en&sc_channel=ps&sc_campaign=pac_q1_2020_paidsearch_documentdb_de&sc_outcome=PaaS_Digital_Marketing&sc_geo=EMEA&sc_country=DE&sc_publisher=Google&sc_category=Database&sc_detail=documentdb&sc_content=DocumentDB_exact&sc_matchtype=e&sc_segment=481116485420&sc_medium=PAC-PaaS-P|PS-GO|Brand|All|PA|Database|DocumentDB|DE|EN|Text&s_kwcid=AL!4422!3!481116485420!e!!g!!documentdb&ef_id=Cj0KCQjw9YWDBhDyARIsADt6sGbvLQseGu1bA9AELYAPPAY-gRkR9WHHpvEQDsRjajeUfWNTSEo2N_saAnc8EALw_wcB:G:s&s_kwcid=AL!4422!3!481116485420!e!!g!!documentdb)
 + Microsoft Azure with [CosmosDB](https://azure.microsoft.com/en-us/free/cosmos-db/search/?&ef_id=Cj0KCQjw9YWDBhDyARIsADt6sGapeV-LeBT6gzrT2JKdx3eUNXrFH1k9D7ObhtfAAq2rl_B_bDp-CEoaAnzyEALw_wcB:G:s&OCID=AID2100049_SEM_Cj0KCQjw9YWDBhDyARIsADt6sGapeV-LeBT6gzrT2JKdx3eUNXrFH1k9D7ObhtfAAq2rl_B_bDp-CEoaAnzyEALw_wcB:G:s&dclid=COCgtPuf1e8CFVay3godOFgAlg)
 + Google Cloud Platforms with [Bigtable](https://cloud.google.com/bigtable/?utm_source=google&utm_medium=cpc&utm_campaign=emea-de-all-en-dr-bkws-all-all-trial-e-gcp-1009139&utm_content=text-ad-none-any-DEV_c-CRE_167320881754-ADGP_Hybrid%20%7C%20BKWS%20-%20EXA%20%7C%20Txt%20~%20Databases%20~%20Cloud%20Bigtable%23v4-KWID_43700053279868543-aud-606988877934%3Akwd-42477138857-userloc_9042434&utm_term=KW_big%20table%20google-NET_g-PLAC_&gclid=Cj0KCQjw9YWDBhDyARIsADt6sGYceN58wieR8hKTA6oFQNPOZs3e36daTi_dIshDNoWtYn7z0nSjmkcaAqfGEALw_wcB&gclsrc=aw.ds), [Cloud Datastore](https://cloud.google.com/products/storage/?utm_source=google&utm_medium=cpc&utm_campaign=emea-de-all-en-dr-bkws-all-all-trial-e-gcp-1009139&utm_content=text-ad-none-any-DEV_c-CRE_253506241831-ADGP_Hybrid%20%7C%20BKWS%20-%20EXA%20%7C%20Txt%20~%20Storage%20~%20Cloud%20Storage%23v17-KWID_43700053279873421-aud-606988877934%3Akwd-46116414696-userloc_9042434&utm_term=KW_google%20data%20store-NET_g-PLAC_&gclid=Cj0KCQjw9YWDBhDyARIsADt6sGbGXsPAazhvFuG-yNvSeOAIrhibPVt0vb06zVuQwZIs6RryGAwqHJ0aAqJMEALw_wcB&gclsrc=aw.ds) and [Cloud Firestore](https://cloud.google.com/firestore?utm_source=google&utm_medium=cpc&utm_campaign=emea-de-all-en-dr-bkws-all-all-trial-e-gcp-1009139&utm_content=text-ad-none-any-DEV_c-CRE_485007164615-ADGP_Hybrid%20%7C%20BKWS%20-%20EXA%20%7C%20Txt%20~%20Databases%20~%20Firestore-KWID_43700059347332080-aud-606988877974%3Akwd-1115197366767-userloc_9042434&utm_term=KW_cloud%20firestore-NET_g-PLAC_&gclid=Cj0KCQjw9YWDBhDyARIsADt6sGamrzDgktx3LW7fu91gEeIg95_FomJVKhBQiUav9Jia2_rDqealAuwaAucLEALw_wcB&gclsrc=aw.ds)
-
++ [Elasticsearch](https://www.elastic.co/ece)
++ [CouchDB](https://docs.couchdb.org/en/stable/)
 
 
 
@@ -153,9 +154,15 @@ Furthermore, I have reported on which preliminary considerations should be made 
 
 
 
+**References:**
 
+Here are my references for the creation of this article:
 
-
++ [geeksforgeeks](https://www.geeksforgeeks.org/sql-vs-nosql-which-one-is-better-to-use/)
++ [ibm](https://www.ibm.com/cloud/blog/sql-vs-nosql)
++ [guru99](https://www.guru99.com/sql-vs-nosql.html)
++ [xplenty](https://www.xplenty.com/blog/the-sql-vs-nosql-difference/)
++ [thorntech](https://www.thorntech.com/sql-vs-nosql/#convergence)
 
 
 
