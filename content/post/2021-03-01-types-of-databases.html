@@ -1,0 +1,131 @@
+---
+title: Types of Databases
+author: Michael Fuchs
+date: '2021-03-01'
+slug: types-of-databases
+categories: []
+tags: []
+output:
+  blogdown::html_page:
+    toc: true
+    toc_depth: 5
+---
+
+<script src="/rmarkdown-libs/header-attrs/header-attrs.js"></script>
+<link href="/rmarkdown-libs/anchor-sections/anchor-sections.css" rel="stylesheet" />
+<script src="/rmarkdown-libs/anchor-sections/anchor-sections.js"></script>
+
+<div id="TOC">
+<ul>
+<li><a href="#introduction">1 Introduction</a></li>
+<li><a href="#sql-vs.-nosql">2 SQL vs. NoSQL</a>
+<ul>
+<li><a href="#data-structure">2.1 Data Structure</a></li>
+<li><a href="#ability-to-query-data">2.2 Ability to query Data</a></li>
+<li><a href="#scaling">2.3 Scaling</a></li>
+</ul></li>
+<li><a href="#database-options">3 Database Options</a>
+<ul>
+<li><a href="#on-premise-sql-databases">3.1 On-premise SQL Databases</a></li>
+<li><a href="#sql-databases-on-cloud-service-platforms">3.2 SQL Databases on Cloud-Service Platforms</a></li>
+<li><a href="#on-premise-nosql-databases">3.3 On-premise NoSQL Databases</a></li>
+<li><a href="#nosql-databases-on-cloud-service-platforms">3.4 NoSQL Databases on Cloud-Service Platforms</a></li>
+</ul></li>
+<li><a href="#conclusion">4 Conclusion</a></li>
+</ul>
+</div>
+
+<div id="introduction" class="section level1">
+<h1>1 Introduction</h1>
+<p><img src="/post/2021-03-01-types-of-databases_files/p1s1.png" /></p>
+<p>Herewith I start a new blog series.</p>
+<p>After covering all kinds of topics about Data Science on my <a href="https://michael-fuchs.netlify.app/">R page</a> and <a href="https://michael-fuchs-python.netlify.app/">Python page</a>, I now want to get into the topic of databases and SQL.</p>
+<p>The first question is which databases are available and which one is the right one for my project.</p>
+</div>
+<div id="sql-vs.-nosql" class="section level1">
+<h1>2 SQL vs. NoSQL</h1>
+<p>Roughly, databases can be divided into two categories:</p>
+<ul>
+<li>SQL databases</li>
+<li>No SQL databases</li>
+</ul>
+<div id="data-structure" class="section level2">
+<h2>2.1 Data Structure</h2>
+<p>The primary factor that determines the choice of SQL or No SQL database is the way the data is structured.
+If your data is primarily structured, a SQL database is likely the right choice.</p>
+<p><img src="/post/2021-03-01-types-of-databases_files/p1p1.png" /></p>
+<p>An SQL database is excellent if each row is a specific entity and each column is an attribute describing that entity.
+Because of these distinct, structured relationships between rows and columns in a table, SQL databases are best when you need <a href="https://mariadb.com/de/resources/blog/acid-compliance-what-it-means-and-why-you-should-care/">ACID compliance</a>.</p>
+<p>If the data requirements are not clear or if there is unstructured data, a NoSQL database may be the best choice. Data stored in a NoSQL database does not require a predefined schema, as would be the case with an SQL database.</p>
+<p>Rather, the data can be stored as follows:</p>
+<p><img src="/post/2021-03-01-types-of-databases_files/p1p2.png" /></p>
+<p><img src="/post/2021-03-01-types-of-databases_files/p1p3.png" /></p>
+<p><img src="/post/2021-03-01-types-of-databases_files/p1p4.png" /></p>
+<p><img src="/post/2021-03-01-types-of-databases_files/p1p5.png" /></p>
+<p>With NoSQL, you can:</p>
+<ul>
+<li>Create documents without carefully defining their structure upfront</li>
+<li>Add fields to the database without changing the fields of existing documents</li>
+<li>Store documents that have their own unique structure</li>
+<li>Have multiple databases with different structures and syntax</li>
+</ul>
+<p>A NoSQL database is much better suited to store data that does not fit in a table. NoSQL databases are designed with flexibility and scalability in mind and follow the <a href="https://www.dataversity.net/what-is-base/">BASE consistency model</a>.</p>
+<p>Here is another good description regarding the <a href="https://neo4j.com/blog/acid-vs-base-consistency-models-explained/">trade-off between ACID and BASE</a>.</p>
+</div>
+<div id="ability-to-query-data" class="section level2">
+<h2>2.2 Ability to query Data</h2>
+<p>Another factor that should be considered when selecting a database is how often the data should be queried. It also plays a role how fast these queries have to be executed and who should be responsible for these queries in the future.</p>
+<p>If the data is well structured and organized, it is very efficient to query this data with an SQL database. SQL is a very popular and widely used programming language that can efficiently execute queries. Furthermore, it is easy to learn and can therefore be executed by a large group of people such as business analysts or managers.</p>
+<p>A NoSQL database offers great flexibility in the types of data that should be stored, but because of the potentially large differences in data structures, querying is not as efficient as with an SQL database. When executing NoSQL queries, additional preprocessing of the data must be performed. Which preprocessing steps are necessary depends on the respective NoSQL database used. Many developers build the query functionality into the application layer instead of taking care of it in the database layer. Querying NoSQL databases usually requires developers or data scientists. This is expected to be somewhat more costly and less efficient.</p>
+</div>
+<div id="scaling" class="section level2">
+<h2>2.3 Scaling</h2>
+<p>Scaling turns out differently for SQL and NoSQL databases.
+Therefore, if you plan ahead, this factor also plays an important role when choosing a database. The question to be asked at this point is how far the database is expected to grow in the future.</p>
+<p>SQL databases scale vertically, so the capacity of a single server must be increased to allow the database to scale. Since SQL databases are designed to run on a single server (to ensure data integrity) they are not easy to scale.</p>
+<p>In contrast, NoSQL databases scale horizontally, which means that more servers can be added to keep the growing database running. Since NoSQL databases require much less structure than SQL databases, each stored object is virtually self-contained and independent, so these objects can be easily stored on multiple servers without having to be linked. With SQL databases, each table row and table column must be related.</p>
+</div>
+</div>
+<div id="database-options" class="section level1">
+<h1>3 Database Options</h1>
+<p>Regardless of whether you choose an SQL or NoSQL database (or both), there are a variety of options to choose from. Below I’ll mention a few, but there are many more.</p>
+<div id="on-premise-sql-databases" class="section level2">
+<h2>3.1 On-premise SQL Databases</h2>
+<ul>
+<li><a href="https://www.mysql.com/de/">MySQL</a></li>
+<li><a href="https://www.microsoft.com/en-us/sql-server/sql-server-2019">Microsoft SQL Server</a></li>
+<li><a href="https://www.postgresql.org/">PostgreSQL</a></li>
+<li><a href="https://www.oracle.com/index.html">Oracle</a></li>
+<li><a href="https://mariadb.org/">MariaDB</a></li>
+</ul>
+</div>
+<div id="sql-databases-on-cloud-service-platforms" class="section level2">
+<h2>3.2 SQL Databases on Cloud-Service Platforms</h2>
+<ul>
+<li>AWS with <a href="https://aws.amazon.com/rds/?nc1=h_ls">RDS</a> and <a href="https://aws.amazon.com/rds/aurora/?nc1=h_ls&amp;aurora-whats-new.sort-by=item.additionalFields.postDateTime&amp;aurora-whats-new.sort-order=desc">Aurora</a></li>
+<li><a href="https://azure.microsoft.com/en-us/free/sql-database/search/?&amp;ef_id=Cj0KCQjw9YWDBhDyARIsADt6sGY75bzUZEOYL7pDzhZEbHtO6gqDjmxqvyQVDCSCCe_4x2CtxCfdRr8aAj31EALw_wcB:G:s&amp;OCID=AID2100049_SEM_Cj0KCQjw9YWDBhDyARIsADt6sGY75bzUZEOYL7pDzhZEbHtO6gqDjmxqvyQVDCSCCe_4x2CtxCfdRr8aAj31EALw_wcB:G:s&amp;dclid=CKaZg_ee1e8CFYLBEQgdcT0LHg">Microsoft Azure with Azure SQL Databases</a> for MySQL, PostgreSQL and MariaDB</li>
+<li><a href="https://cloud.google.com/sql/?utm_source=google&amp;utm_medium=cpc&amp;utm_campaign=emea-de-all-de-dr-bkws-all-all-trial-b-gcp-1009139&amp;utm_content=text-ad-none-any-DEV_c-CRE_253493422500-ADGP_Hybrid%20%7C%20BKWS%20-%20BMM%20%7C%20Txt%20~%20Databases%20~%20Cloud%20SQL-KWID_43700053282383185-aud-606988878854%3Akwd-52205039731-userloc_9042434&amp;utm_term=KW_%2Bgoogle%20%2Bsql-NET_g-PLAC_&amp;gclid=Cj0KCQjw9YWDBhDyARIsADt6sGZ8l2DfQfGC-vqlKYgrqteTZOYFKeM5zhP_SWkWfY8fs0l-MfAVEGoaAmejEALw_wcB&amp;gclsrc=aw.ds">Google Cloud Platform</a> with Cloud SQL an Cloud Spanner</li>
+</ul>
+</div>
+<div id="on-premise-nosql-databases" class="section level2">
+<h2>3.3 On-premise NoSQL Databases</h2>
+<ul>
+<li><a href="https://www.mongodb.com/cloud/atlas/lp/try2-de?utm_source=google&amp;utm_campaign=gs_emea_germany_search_core_brand_atlas_desktop&amp;utm_term=mongodb&amp;utm_medium=cpc_paid_search&amp;utm_ad=e&amp;utm_ad_campaign_id=12212624524&amp;gclid=Cj0KCQjw9YWDBhDyARIsADt6sGb8__fACKqcYFmXtaye2vteRmQLQa_2FL16q0KLW76adnRIdZ5YnAwaAoqOEALw_wcB">MongoDB</a></li>
+<li><a href="https://redis.io/">Redis</a></li>
+<li><a href="https://cassandra.apache.org/">Cassandra</a></li>
+</ul>
+</div>
+<div id="nosql-databases-on-cloud-service-platforms" class="section level2">
+<h2>3.4 NoSQL Databases on Cloud-Service Platforms</h2>
+<ul>
+<li>AWS with with <a href="https://aws.amazon.com/dynamodb/?trk=ps_a134p000006paY4AAI&amp;trkCampaign=acq_paid_search_brand&amp;sc_channel=PS&amp;sc_campaign=acquisition_DACH&amp;sc_publisher=Google&amp;sc_category=Database&amp;sc_country=DACH&amp;sc_geo=EMEA&amp;sc_outcome=acq&amp;sc_detail=dynamodb&amp;sc_content=DynamoDB_e&amp;sc_matchtype=e&amp;sc_segment=495027756154&amp;sc_medium=ACQ-P%7CPS-GO%7CBrand%7CDesktop%7CSU%7CDatabase%7CDynamoDB%7CDACH%7CEN%7CText%7Cxx%7CEU&amp;s_kwcid=AL!4422!3!495027756154!e!!g!!dynamodb&amp;ef_id=Cj0KCQjw9YWDBhDyARIsADt6sGbtQmUqFNATZ4Cb8Jx3qzh3iLimZYSJDY_9Ne9xLBe3G_AUZiYS_ioaAum9EALw_wcB:G:s&amp;s_kwcid=AL!4422!3!495027756154!e!!g!!dynamodb">DynamoDB</a> and <a href="https://aws.amazon.com/documentdb/?trk=ps_a134p000006BpCyAAK&amp;trkCampaign=pac_q1_0320_paidsearch_documentdb_de_DocumentDB_br_prosp_en&amp;sc_channel=ps&amp;sc_campaign=pac_q1_2020_paidsearch_documentdb_de&amp;sc_outcome=PaaS_Digital_Marketing&amp;sc_geo=EMEA&amp;sc_country=DE&amp;sc_publisher=Google&amp;sc_category=Database&amp;sc_detail=documentdb&amp;sc_content=DocumentDB_exact&amp;sc_matchtype=e&amp;sc_segment=481116485420&amp;sc_medium=PAC-PaaS-P%7CPS-GO%7CBrand%7CAll%7CPA%7CDatabase%7CDocumentDB%7CDE%7CEN%7CText&amp;s_kwcid=AL!4422!3!481116485420!e!!g!!documentdb&amp;ef_id=Cj0KCQjw9YWDBhDyARIsADt6sGbvLQseGu1bA9AELYAPPAY-gRkR9WHHpvEQDsRjajeUfWNTSEo2N_saAnc8EALw_wcB:G:s&amp;s_kwcid=AL!4422!3!481116485420!e!!g!!documentdb">DocumentDB</a></li>
+<li>Microsoft Azure with <a href="https://azure.microsoft.com/en-us/free/cosmos-db/search/?&amp;ef_id=Cj0KCQjw9YWDBhDyARIsADt6sGapeV-LeBT6gzrT2JKdx3eUNXrFH1k9D7ObhtfAAq2rl_B_bDp-CEoaAnzyEALw_wcB:G:s&amp;OCID=AID2100049_SEM_Cj0KCQjw9YWDBhDyARIsADt6sGapeV-LeBT6gzrT2JKdx3eUNXrFH1k9D7ObhtfAAq2rl_B_bDp-CEoaAnzyEALw_wcB:G:s&amp;dclid=COCgtPuf1e8CFVay3godOFgAlg">CosmosDB</a></li>
+<li>Google Cloud Platforms with <a href="https://cloud.google.com/bigtable/?utm_source=google&amp;utm_medium=cpc&amp;utm_campaign=emea-de-all-en-dr-bkws-all-all-trial-e-gcp-1009139&amp;utm_content=text-ad-none-any-DEV_c-CRE_167320881754-ADGP_Hybrid%20%7C%20BKWS%20-%20EXA%20%7C%20Txt%20~%20Databases%20~%20Cloud%20Bigtable%23v4-KWID_43700053279868543-aud-606988877934%3Akwd-42477138857-userloc_9042434&amp;utm_term=KW_big%20table%20google-NET_g-PLAC_&amp;gclid=Cj0KCQjw9YWDBhDyARIsADt6sGYceN58wieR8hKTA6oFQNPOZs3e36daTi_dIshDNoWtYn7z0nSjmkcaAqfGEALw_wcB&amp;gclsrc=aw.ds">Bigtable</a>, <a href="https://cloud.google.com/products/storage/?utm_source=google&amp;utm_medium=cpc&amp;utm_campaign=emea-de-all-en-dr-bkws-all-all-trial-e-gcp-1009139&amp;utm_content=text-ad-none-any-DEV_c-CRE_253506241831-ADGP_Hybrid%20%7C%20BKWS%20-%20EXA%20%7C%20Txt%20~%20Storage%20~%20Cloud%20Storage%23v17-KWID_43700053279873421-aud-606988877934%3Akwd-46116414696-userloc_9042434&amp;utm_term=KW_google%20data%20store-NET_g-PLAC_&amp;gclid=Cj0KCQjw9YWDBhDyARIsADt6sGbGXsPAazhvFuG-yNvSeOAIrhibPVt0vb06zVuQwZIs6RryGAwqHJ0aAqJMEALw_wcB&amp;gclsrc=aw.ds">Cloud Datastore</a> and <a href="https://cloud.google.com/firestore?utm_source=google&amp;utm_medium=cpc&amp;utm_campaign=emea-de-all-en-dr-bkws-all-all-trial-e-gcp-1009139&amp;utm_content=text-ad-none-any-DEV_c-CRE_485007164615-ADGP_Hybrid%20%7C%20BKWS%20-%20EXA%20%7C%20Txt%20~%20Databases%20~%20Firestore-KWID_43700059347332080-aud-606988877974%3Akwd-1115197366767-userloc_9042434&amp;utm_term=KW_cloud%20firestore-NET_g-PLAC_&amp;gclid=Cj0KCQjw9YWDBhDyARIsADt6sGamrzDgktx3LW7fu91gEeIg95_FomJVKhBQiUav9Jia2_rDqealAuwaAucLEALw_wcB&amp;gclsrc=aw.ds">Cloud Firestore</a></li>
+</ul>
+</div>
+</div>
+<div id="conclusion" class="section level1">
+<h1>4 Conclusion</h1>
+<p>In this post I have listed which different database types exist and what advantages and disadvantages each database has.</p>
+<p>Furthermore, I have reported on which preliminary considerations should be made in order to be able to decide on a suitable database.</p>
+</div>
