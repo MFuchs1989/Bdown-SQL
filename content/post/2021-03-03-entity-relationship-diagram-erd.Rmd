@@ -19,7 +19,7 @@ Before we start creating databases with SQL, we need to ask ourselves what the d
 And that's what this post is all about.
 
 To draw ER diagrams I used [Drawio](https://app.diagrams.net/).
-If you need an overview sheet for the notation forms shown later, you can download it from my [GitHub Account](https://github.com/MFuchs1989/Datasets-and-Miscellaneous/blob/main/miscellaneous/Notations%20Overview.pdf). 
+If you need an overview sheet for the notation forms shown later, you can download it from my [GitHub Account](https://github.com/MFuchs1989/Datasets-and-Miscellaneous/blob/main/miscellaneous/ERD/Notations%20Overview.pdf). 
 
 
 # 2	What is a Entity Relationship Diagram?
