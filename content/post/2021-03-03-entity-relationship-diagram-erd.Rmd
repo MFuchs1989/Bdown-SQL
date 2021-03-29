@@ -291,7 +291,7 @@ If there is a 1:n connection, then the foreign key is usually written to the tab
 + Make sure all entities and relationships are labeled correctly 
 + Make sure the ER diagram supports all the data you need to store 
 + Make sure that each entity appears only once in the ER diagram 
-+ All relationships, entities and attributes to be represented in the diagram must be named. 
++ All relationships, entities and attributes to be represented in the diagram must be named
 + Relationships with each other should never be connected
 + Important parts of the ER diagram should be highlighted with colors
 
