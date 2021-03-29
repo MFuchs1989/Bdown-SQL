@@ -99,7 +99,7 @@ Here we can see that the 'Customers' table has been created under the 'MyDB' dat
 ![](/post/2021-03-07-create-a-database_files/p3p5.png)
 
 
-### 3.2.1 A glimpse at the new table
+### 3.2.1 A glimpse at the new Table
 
 To take a look at the table, a select statement can be executed:
 
@@ -110,7 +110,7 @@ SELECT * FROM Customer
 ![](/post/2021-03-07-create-a-database_files/p3p6.png)
 
 
-### 3.2.2 Inserting values into the table
+### 3.2.2 Inserting values into the Table
 
 The next step is to fill the table with values. This is done using the insert command.
 
@@ -129,7 +129,7 @@ SELECT * FROM Customer
 
 
 
-## 3.2 Create a database for deletion
+## 3.2 Create a Database for Deletion
 
 Now I want to create another database with two tables, which I want to delete afterwards. 
 Tip: Execute the command `USE DB_to_Delete` separately, otherwise the two tables will be written to the database 'MyDB'.
@@ -195,7 +195,7 @@ We can see that in Table_1 the column 'ID' is missing and in Table_2 the columns
 
 
 
-### 3.2.2 Add new columns
+### 3.2.2 Add new Columns
 
 Just as we can delete columns, we can also add new columns to existing tables.
 
@@ -208,7 +208,7 @@ ALTER TABLE Table_1 ADD Further_Column VARCHAR(100) NOT NULL;
 
 
 
-### 3.2.3 Delete the whole table
+### 3.2.3 Delete the whole Table
 
 
 ```{r, eval=F, echo=T}
