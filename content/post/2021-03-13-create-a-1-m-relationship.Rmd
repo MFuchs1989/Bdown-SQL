@@ -53,6 +53,9 @@ CREATE TABLE Teacher
 ```
 
 
+Of course, you also have the option of storing the foreign key when creating the tables so that you don't have to insert it afterwards, as in this example (see next step). Of course, you have to pay attention to the order in which you create the tables. I have described this in [my previous post here](https://michael-fuchs-sql.netlify.app/2021/03/10/create-a-1-1-relationship/#shorter-method). 
+
+
 # 4 Connecting the two tables
 
 Since this is a 1:m relationship, the foreign key should be stored in the table where multiple matches are possible. 
@@ -110,18 +113,21 @@ SELECT * FROM Teacher
 ![](/post/2021-03-13-create-a-1-m-relationship_files/p5p4.png)
 
 
-
-
-
+Now we perform a simple merge of the two tables using the Primary Key and Foreign Key.
 
 ```{r, eval=F, echo=T}
-
+SELECT * 
+    FROM Pupils JOIN Teacher 
+    ON Pupils.Teacher_ID = Teacher.Teacher_ID;
 ```
 
-![](/post/2021-03-13-create-a-1-m-relationship_files/p5p.png)
+![](/post/2021-03-13-create-a-1-m-relationship_files/p5p5.png)
+
+Again, I would like to point out that only a simple join was made for illustrative purposes. I will report on the topic of how to execute joins correctly and sensibly in a later article.
 
 
 
+# 6 Conclusion
 
 
 
