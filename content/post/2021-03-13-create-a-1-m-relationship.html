@@ -29,7 +29,7 @@ output:
 <div id="introduction" class="section level1">
 <h1>1 Introduction</h1>
 <p>In my last post I showed how to set up and use a <a href="https://michael-fuchs-sql.netlify.app/2021/03/10/create-a-1-1-relationship/">1:1 relationship</a> between two tables.</p>
-<p>Now I want to show the same for a 1:m relationship.</p>
+<p>Now I want to show the same for a <strong>1:m relationship</strong>.</p>
 </div>
 <div id="the-assumed-situation" class="section level1">
 <h1>2 The assumed Situation</h1>
@@ -73,7 +73,7 @@ In this case it would be the pupil table.</p>
 <div id="filling-the-tables" class="section level1">
 <h1>5 Filling the tables</h1>
 <p>To see how we can use this relationship we first fill the two tables with values.</p>
-<p>Important!</p>
+<p><strong>Important!</strong></p>
 <p>Again, it is important to pay attention to the order of filling. The <em>Teacher</em> table must be filled first, as the foreign key (‘Teacher_ID’) is stored in the <em>Pupils</em> table and references the other table (<em>Teacher</em>).</p>
 <p>Filling the Teacher-Table:</p>
 <pre class="r"><code>INSERT INTO Teacher (Teacher_ID, First_Name, Last_Name, Subject_) VALUES (317, &#39;Andrew&#39;, &#39;Evergreen&#39;, &#39;History&#39;)</code></pre>
@@ -96,4 +96,6 @@ SELECT * FROM Teacher</code></pre>
 </div>
 <div id="conclusion" class="section level1">
 <h1>6 Conclusion</h1>
+<p>In this post I showed how to set up a 1:m relationship between two tables and make sense of it.</p>
+<p>In my next post I will explain the structure and use of an m:m relationship.</p>
 </div>

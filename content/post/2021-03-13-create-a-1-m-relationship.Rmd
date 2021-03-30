@@ -15,7 +15,7 @@ output:
 
 In my last post I showed how to set up and use a [1:1 relationship](https://michael-fuchs-sql.netlify.app/2021/03/10/create-a-1-1-relationship/) between two tables.
 
-Now I want to show the same for a 1:m relationship. 
+Now I want to show the same for a **1:m relationship**. 
 
 
 # 2 The assumed Situation
@@ -80,7 +80,7 @@ Let's also look again at the relationship of the two tables under Views in [SSMS
 
 To see how we can use this relationship we first fill the two tables with values.
 
-Important!
+**Important!**
 
 Again, it is important to pay attention to the order of filling. The *Teacher* table must be filled first, as the foreign key ('Teacher_ID') is stored in the *Pupils* table and references the other table (*Teacher*). 
 
@@ -129,9 +129,9 @@ Again, I would like to point out that only a simple join was made for illustrati
 
 # 6 Conclusion
 
+In this post I showed how to set up a 1:m relationship between two tables and make sense of it. 
 
-
-
+In my next post I will explain the structure and use of an m:m relationship.  
 
 
 
