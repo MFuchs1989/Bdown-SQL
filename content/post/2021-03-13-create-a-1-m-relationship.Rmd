@@ -76,6 +76,8 @@ Let's also look again at the relationship of the two tables under Views in [SSMS
 ![](/post/2021-03-13-create-a-1-m-relationship_files/p5p3.png)
 
 
+Using the infinity symbol in the output, we can see that a primary key is referencing a foreign key. 
+
 # 5 Filling the tables
 
 To see how we can use this relationship we first fill the two tables with values.
