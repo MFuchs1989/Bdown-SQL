@@ -132,7 +132,7 @@ SELECT * FROM Customer
 
 
 
-## 3.2 Create a Database for Deletion
+## 3.2 Create a Database for Data Manipulation
 
 Now I want to create another database with two tables, which I want to delete afterwards. 
 Tip: Execute the command `USE DB_to_Delete` separately, otherwise the two tables will be written to the database 'MyDB'.
