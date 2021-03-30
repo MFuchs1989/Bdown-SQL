@@ -26,7 +26,9 @@ In this post I would like to point out a circumstance where it is a 1:1 relation
 
 Let's say we are asked to design a database for a registry office. 
 We have information about the groom and about the bride. 
-This information should be stored in a husband and a wife table which are in a 1:1 relationship to each other. 
+This information should be stored in a husband and a wife table which are in a 1:1 relationship to each other.
+This means that each groom is assigned exactly one bride and vice versa.
+I use the [Modified Chen Notation (MC Notation)](https://michael-fuchs-sql.netlify.app/2021/03/03/entity-relationship-diagram-erd/#modified-chen-notation-mc-notation) below.
 
 ![](/post/2021-03-10-create-a-1-1-relationship_files/p4p1.png)
 
@@ -124,20 +126,25 @@ Now we can also see in SSMS that and what relationship exists between the two ta
 
 To see how we can use this relationship we first fill the two tables with values.   
 
+**Important!**
+
+First, the table *Wife* must be filled, as the stored Foreign Key ('Wife_ID') in the table *Husband* refers to this table (*Wife*). 
+
+```{r, eval=F, echo=T}
+INSERT INTO Wife (Wife_ID, First_Name, Last_Name) VALUES (1, 'Klara', 'Brown')
+INSERT INTO Wife (Wife_ID, First_Name, Last_Name) VALUES (2, 'Jessy', 'Williams')
+INSERT INTO Wife (Wife_ID, First_Name, Last_Name) VALUES (3, 'Emily', 'Taylor')
+```
+
 
 ```{r, eval=F, echo=T}
 INSERT INTO Husband (Husband_ID, First_Name, Last_Name, Wife_ID) VALUES (1, 'Max', 'Steel', 1)
 INSERT INTO Husband (Husband_ID, First_Name, Last_Name, Wife_ID) VALUES (2, 'Alex', 'Smith', 2)
 INSERT INTO Husband (Husband_ID, First_Name, Last_Name, Wife_ID) VALUES (3, 'Marc', 'Pike', 3)
+```
 
 
-INSERT INTO Wife (Wife_ID, First_Name, Last_Name) VALUES (1, 'Klara', 'Brown')
-INSERT INTO Wife (Wife_ID, First_Name, Last_Name) VALUES (2, 'Jessy', 'Williams')
-INSERT INTO Wife (Wife_ID, First_Name, Last_Name) VALUES (3, 'Emily', 'Taylor')
-
-
-
-
+```{r, eval=F, echo=T}
 SELECT * FROM Husband
 SELECT * FROM Wife
 ```

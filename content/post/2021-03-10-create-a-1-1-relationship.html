@@ -41,7 +41,9 @@ output:
 <h1>2 The assumed Situation</h1>
 <p>Let’s say we are asked to design a database for a registry office.
 We have information about the groom and about the bride.
-This information should be stored in a husband and a wife table which are in a 1:1 relationship to each other.</p>
+This information should be stored in a husband and a wife table which are in a 1:1 relationship to each other.
+This means that each groom is assigned exactly one bride and vice versa.
+I use the <a href="https://michael-fuchs-sql.netlify.app/2021/03/03/entity-relationship-diagram-erd/#modified-chen-notation-mc-notation">Modified Chen Notation (MC Notation)</a> below.</p>
 <p><img src="/post/2021-03-10-create-a-1-1-relationship_files/p4p1.png" /></p>
 </div>
 <div id="setting-up-the-database-and-the-required-tables" class="section level1">
@@ -99,19 +101,15 @@ We add it to the ‘Husband’ table in this example.</p>
 <div id="filling-the-tables" class="section level1">
 <h1>5 Filling the tables</h1>
 <p>To see how we can use this relationship we first fill the two tables with values.</p>
+<p><strong>Important!</strong></p>
+<p>First, the table <em>Wife</em> must be filled, as the stored Foreign Key (‘Wife_ID’) in the table <em>Husband</em> refers to this table (<em>Wife</em>).</p>
+<pre class="r"><code>INSERT INTO Wife (Wife_ID, First_Name, Last_Name) VALUES (1, &#39;Klara&#39;, &#39;Brown&#39;)
+INSERT INTO Wife (Wife_ID, First_Name, Last_Name) VALUES (2, &#39;Jessy&#39;, &#39;Williams&#39;)
+INSERT INTO Wife (Wife_ID, First_Name, Last_Name) VALUES (3, &#39;Emily&#39;, &#39;Taylor&#39;)</code></pre>
 <pre class="r"><code>INSERT INTO Husband (Husband_ID, First_Name, Last_Name, Wife_ID) VALUES (1, &#39;Max&#39;, &#39;Steel&#39;, 1)
 INSERT INTO Husband (Husband_ID, First_Name, Last_Name, Wife_ID) VALUES (2, &#39;Alex&#39;, &#39;Smith&#39;, 2)
-INSERT INTO Husband (Husband_ID, First_Name, Last_Name, Wife_ID) VALUES (3, &#39;Marc&#39;, &#39;Pike&#39;, 3)
-
-
-INSERT INTO Wife (Wife_ID, First_Name, Last_Name) VALUES (1, &#39;Klara&#39;, &#39;Brown&#39;)
-INSERT INTO Wife (Wife_ID, First_Name, Last_Name) VALUES (2, &#39;Jessy&#39;, &#39;Williams&#39;)
-INSERT INTO Wife (Wife_ID, First_Name, Last_Name) VALUES (3, &#39;Emily&#39;, &#39;Taylor&#39;)
-
-
-
-
-SELECT * FROM Husband
+INSERT INTO Husband (Husband_ID, First_Name, Last_Name, Wife_ID) VALUES (3, &#39;Marc&#39;, &#39;Pike&#39;, 3)</code></pre>
+<pre class="r"><code>SELECT * FROM Husband
 SELECT * FROM Wife</code></pre>
 <p><img src="/post/2021-03-10-create-a-1-1-relationship_files/p4p8.png" /></p>
 <p>Now we perform a simple merge of the two tables using the Primary Key and Foreign Key.</p>
