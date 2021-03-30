@@ -75,7 +75,7 @@ As you have probably already noticed, I had the columns `Husband_ID` and `Wife_I
 ![](/post/2021-03-10-create-a-1-1-relationship_files/p4p4.png)
 
 
-One can view the relationships of the tables stored in a database in SSMS. To do this, right-click on 'Views' in the Object Explorer and select 'New View'. Afterwards you will be asked which tables should be displayed. Select your desired tables and click on OK. 
+One can view the relationships of the tables stored in a database in [SSMS](https://docs.microsoft.com/en-us/sql/ssms/sql-server-management-studio-ssms?view=sql-server-ver15). To do this, right-click on 'Views' in the Object Explorer and select 'New View'. Afterwards you will be asked which tables should be displayed. Select your desired tables and click on OK. 
 
 ![](/post/2021-03-10-create-a-1-1-relationship_files/p4p3.png)
 
@@ -114,11 +114,11 @@ The underlying ERD now looks like this:
 ![](/post/2021-03-10-create-a-1-1-relationship_files/p4p6.png)
 
 
-Let's take another look at Views.
+Let's take another look at Views (via [SSMS](https://docs.microsoft.com/en-us/sql/ssms/sql-server-management-studio-ssms?view=sql-server-ver15)).
 
 ![](/post/2021-03-10-create-a-1-1-relationship_files/p4p7.png)
 
-Now we can also see in SSMS that and what relationship exists between the two tables. 
+Now we can also see in [SSMS](https://docs.microsoft.com/en-us/sql/ssms/sql-server-management-studio-ssms?view=sql-server-ver15) that and what relationship exists between the two tables. 
 
 
 
@@ -130,12 +130,15 @@ To see how we can use this relationship we first fill the two tables with values
 
 First, the table *Wife* must be filled, as the stored Foreign Key ('Wife_ID') in the table *Husband* refers to this table (*Wife*). 
 
+Filling the Wife-Table:
+
 ```{r, eval=F, echo=T}
 INSERT INTO Wife (Wife_ID, First_Name, Last_Name) VALUES (1, 'Klara', 'Brown')
 INSERT INTO Wife (Wife_ID, First_Name, Last_Name) VALUES (2, 'Jessy', 'Williams')
 INSERT INTO Wife (Wife_ID, First_Name, Last_Name) VALUES (3, 'Emily', 'Taylor')
 ```
 
+Filling the Husband-Table:
 
 ```{r, eval=F, echo=T}
 INSERT INTO Husband (Husband_ID, First_Name, Last_Name, Wife_ID) VALUES (1, 'Max', 'Steel', 1)
@@ -143,6 +146,7 @@ INSERT INTO Husband (Husband_ID, First_Name, Last_Name, Wife_ID) VALUES (2, 'Ale
 INSERT INTO Husband (Husband_ID, First_Name, Last_Name, Wife_ID) VALUES (3, 'Marc', 'Pike', 3)
 ```
 
+Have a look at the two filled tables:
 
 ```{r, eval=F, echo=T}
 SELECT * FROM Husband
@@ -209,7 +213,7 @@ It is only important to create the wife table first, otherwise the error will be
 
 In this post I have shown a simple example of a 1:1 relationship of two tables and how to create them in a database respectively how to build the relationship to them among themselves accordingly.
 
-In addition, I have shown how to output relationships of tables within a database from SSMS. 
+In addition, I have shown how to output relationships of tables within a database from [SSMS](https://docs.microsoft.com/en-us/sql/ssms/sql-server-management-studio-ssms?view=sql-server-ver15). 
 
 In subsequent posts, I will discuss other forms of relationships. 
 

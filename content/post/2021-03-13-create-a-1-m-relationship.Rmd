@@ -1,0 +1,202 @@
+---
+title: Create a 1:m Relationship
+author: Michael Fuchs
+date: '2021-03-13'
+slug: create-a-1-m-relationship
+categories: []
+tags: []
+output:
+  blogdown::html_page:
+    toc: true
+    toc_depth: 5
+---
+
+# 1 Introduction
+
+In my last post I showed how to set up and use a [1:1 relationship](https://michael-fuchs-sql.netlify.app/2021/03/10/create-a-1-1-relationship/) between two tables.
+
+Now I want to show the same for a 1:m relationship. 
+
+
+# 2 The assumed Situation
+
+Let's say we are asked to develop a database for a school. In this school there are several teachers who are assigned to different classes with n pupils. A typical 1:m relationship between the teacher and the different students in a class. 
+
+I use the [Modified Chen Notation (MC Notation)](https://michael-fuchs-sql.netlify.app/2021/03/03/entity-relationship-diagram-erd/#modified-chen-notation-mc-notation) below.
+
+![](/post/2021-03-13-create-a-1-m-relationship_files/p5p1.png)
+
+# 3 Setting up the database and the required tables
+
+How I do this can be read in my post [Create a Database](https://michael-fuchs-sql.netlify.app/2021/03/07/create-a-database/#create-a-new-database). 
+
+
+```{r, eval=F, echo=T}
+CREATE DATABASE School_Class;
+
+
+USE School_Class;
+
+CREATE TABLE Pupils
+	(Pupils_ID INT NOT NULL PRIMARY KEY,
+	First_Name VARCHAR(100) NOT NULL,
+	Last_Name VARCHAR(100) NOT NULL)
+	;
+
+
+CREATE TABLE Teacher
+	(Teacher_ID INT NOT NULL PRIMARY KEY,
+	First_Name VARCHAR(100) NOT NULL,
+	Last_Name VARCHAR(100) NOT NULL,
+	Subject_ VARCHAR(100) NOT NULL)
+	;
+```
+
+
+# 4 Connecting the two tables
+
+Since this is a 1:m relationship, the foreign key should be stored in the table where multiple matches are possible. 
+In this case it would be the pupil table. 
+
+
+```{r, eval=F, echo=T}
+ALTER TABLE Pupils ADD Teacher_ID INT NOT NULL FOREIGN KEY REFERENCES Teacher(Teacher_ID);
+```
+
+
+The underlying ERD now looks like this:
+
+![](/post/2021-03-13-create-a-1-m-relationship_files/p5p2.png)
+
+Let's also look again at the relationship of the two tables under Views in [SSMS](https://docs.microsoft.com/en-us/sql/ssms/sql-server-management-studio-ssms?view=sql-server-ver15). I have described how to do this [here](https://michael-fuchs-sql.netlify.app/2021/03/10/create-a-1-1-relationship/#primary-key).
+
+![](/post/2021-03-13-create-a-1-m-relationship_files/p5p3.png)
+
+
+# 5 Filling the tables
+
+To see how we can use this relationship we first fill the two tables with values.
+
+Important!
+
+Again, it is important to pay attention to the order of filling. The *Teacher* table must be filled first, as the foreign key ('Teacher_ID') is stored in the *Pupils* table and references the other table (*Teacher*). 
+
+
+Filling the Teacher-Table:
+
+```{r, eval=F, echo=T}
+INSERT INTO Teacher (Teacher_ID, First_Name, Last_Name, Subject_) VALUES (317, 'Andrew', 'Evergreen', 'History')
+```
+
+
+Filling the Pupils-Table:
+
+```{r, eval=F, echo=T}
+INSERT INTO Pupils (Pupils_ID, First_Name, Last_Name, Teacher_ID) VALUES (1, 'Max', 'Steel', 317)
+INSERT INTO Pupils (Pupils_ID, First_Name, Last_Name, Teacher_ID) VALUES (2, 'Jessy', 'Williams', 317)
+INSERT INTO Pupils (Pupils_ID, First_Name, Last_Name, Teacher_ID) VALUES (3, 'Marc', 'Pike', 317)
+INSERT INTO Pupils (Pupils_ID, First_Name, Last_Name, Teacher_ID) VALUES (4, 'Emily', 'Taylor', 317)
+INSERT INTO Pupils (Pupils_ID, First_Name, Last_Name, Teacher_ID) VALUES (5, 'Alex', 'Smith', 317)
+```
+
+
+Have a look at the two filled tables:
+
+```{r, eval=F, echo=T}
+SELECT * FROM Pupils
+SELECT * FROM Teacher
+```
+
+![](/post/2021-03-13-create-a-1-m-relationship_files/p5p4.png)
+
+
+
+
+
+
+```{r, eval=F, echo=T}
+
+```
+
+![](/post/2021-03-13-create-a-1-m-relationship_files/p5p.png)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

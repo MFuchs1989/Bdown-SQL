@@ -73,7 +73,7 @@ CREATE TABLE Wife
 <p>A primary key is used to ensure that the data in a particular column is unique. It is a column that must not contain null values. Either this column is already provided in the table or it is specially created by the database according to a defined sequence.</p>
 <p>As you have probably already noticed, I had the columns <code>Husband_ID</code> and <code>Wife_ID</code> stored as Primary Key when I created the two tables. The relationship should be as follows:</p>
 <p><img src="/post/2021-03-10-create-a-1-1-relationship_files/p4p4.png" /></p>
-<p>One can view the relationships of the tables stored in a database in SSMS. To do this, right-click on ‘Views’ in the Object Explorer and select ‘New View’. Afterwards you will be asked which tables should be displayed. Select your desired tables and click on OK.</p>
+<p>One can view the relationships of the tables stored in a database in <a href="https://docs.microsoft.com/en-us/sql/ssms/sql-server-management-studio-ssms?view=sql-server-ver15">SSMS</a>. To do this, right-click on ‘Views’ in the Object Explorer and select ‘New View’. Afterwards you will be asked which tables should be displayed. Select your desired tables and click on OK.</p>
 <p><img src="/post/2021-03-10-create-a-1-1-relationship_files/p4p3.png" /></p>
 <p>What we see now is the following output:</p>
 <p><img src="/post/2021-03-10-create-a-1-1-relationship_files/p4p5.png" /></p>
@@ -94,21 +94,24 @@ We add it to the ‘Husband’ table in this example.</p>
 <pre class="r"><code>ALTER TABLE Husband ADD Wife_ID INT NOT NULL FOREIGN KEY REFERENCES Wife(Wife_ID);</code></pre>
 <p>The underlying ERD now looks like this:</p>
 <p><img src="/post/2021-03-10-create-a-1-1-relationship_files/p4p6.png" /></p>
-<p>Let’s take another look at Views.</p>
+<p>Let’s take another look at Views (via <a href="https://docs.microsoft.com/en-us/sql/ssms/sql-server-management-studio-ssms?view=sql-server-ver15">SSMS</a>).</p>
 <p><img src="/post/2021-03-10-create-a-1-1-relationship_files/p4p7.png" /></p>
-<p>Now we can also see in SSMS that and what relationship exists between the two tables.</p>
+<p>Now we can also see in <a href="https://docs.microsoft.com/en-us/sql/ssms/sql-server-management-studio-ssms?view=sql-server-ver15">SSMS</a> that and what relationship exists between the two tables.</p>
 </div>
 <div id="filling-the-tables" class="section level1">
 <h1>5 Filling the tables</h1>
 <p>To see how we can use this relationship we first fill the two tables with values.</p>
 <p><strong>Important!</strong></p>
 <p>First, the table <em>Wife</em> must be filled, as the stored Foreign Key (‘Wife_ID’) in the table <em>Husband</em> refers to this table (<em>Wife</em>).</p>
+<p>Filling the Wife-Table:</p>
 <pre class="r"><code>INSERT INTO Wife (Wife_ID, First_Name, Last_Name) VALUES (1, &#39;Klara&#39;, &#39;Brown&#39;)
 INSERT INTO Wife (Wife_ID, First_Name, Last_Name) VALUES (2, &#39;Jessy&#39;, &#39;Williams&#39;)
 INSERT INTO Wife (Wife_ID, First_Name, Last_Name) VALUES (3, &#39;Emily&#39;, &#39;Taylor&#39;)</code></pre>
+<p>Filling the Husband-Table:</p>
 <pre class="r"><code>INSERT INTO Husband (Husband_ID, First_Name, Last_Name, Wife_ID) VALUES (1, &#39;Max&#39;, &#39;Steel&#39;, 1)
 INSERT INTO Husband (Husband_ID, First_Name, Last_Name, Wife_ID) VALUES (2, &#39;Alex&#39;, &#39;Smith&#39;, 2)
 INSERT INTO Husband (Husband_ID, First_Name, Last_Name, Wife_ID) VALUES (3, &#39;Marc&#39;, &#39;Pike&#39;, 3)</code></pre>
+<p>Have a look at the two filled tables:</p>
 <pre class="r"><code>SELECT * FROM Husband
 SELECT * FROM Wife</code></pre>
 <p><img src="/post/2021-03-10-create-a-1-1-relationship_files/p4p8.png" /></p>
@@ -151,6 +154,6 @@ SELECT * FROM Wife</code></pre>
 <div id="conclusion" class="section level1">
 <h1>7 Conclusion</h1>
 <p>In this post I have shown a simple example of a 1:1 relationship of two tables and how to create them in a database respectively how to build the relationship to them among themselves accordingly.</p>
-<p>In addition, I have shown how to output relationships of tables within a database from SSMS.</p>
+<p>In addition, I have shown how to output relationships of tables within a database from <a href="https://docs.microsoft.com/en-us/sql/ssms/sql-server-management-studio-ssms?view=sql-server-ver15">SSMS</a>.</p>
 <p>In subsequent posts, I will discuss other forms of relationships.</p>
 </div>
