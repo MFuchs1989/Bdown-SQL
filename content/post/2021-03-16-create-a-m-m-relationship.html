@@ -22,10 +22,12 @@ output:
 <li><a href="#setting-up-the-database-and-the-required-tables">3 Setting up the database and the required tables</a></li>
 <li><a href="#connecting-the-two-tables">4 Connecting the two tables</a>
 <ul>
-<li><a href="#create-an-associative-table">4.1 Create an Associative Table</a></li>
+<li><a href="#create-an-associative-table">4.1 Create an Associative Table</a>
+<ul>
 <li><a href="#auto-increment-via-sql-server">4.1.1 AUTO INCREMENT via SQL Server</a></li>
 <li><a href="#auto-increment-via-my-sql">4.1.2 AUTO INCREMENT via My SQL</a></li>
 <li><a href="#auto-increment-via-access">4.1.3 AUTO INCREMENT via Access</a></li>
+</ul></li>
 <li><a href="#review-of-the-created-relationships">4.2 Review of the created relationships</a></li>
 </ul></li>
 <li><a href="#filling-the-tables">5 Filling the tables</a></li>
@@ -85,9 +87,8 @@ CREATE TABLE Professor
     Study_Subject VARCHAR(100) NOT NULL)
     ;</code></pre>
 <p>Compared to the other tables, I have added another field in this SQL statement which I would like to explain in more detail: <code>IDENTITY</code></p>
-</div>
-<div id="auto-increment-via-sql-server" class="section level2">
-<h2>4.1.1 AUTO INCREMENT via SQL Server</h2>
+<div id="auto-increment-via-sql-server" class="section level3">
+<h3>4.1.1 AUTO INCREMENT via SQL Server</h3>
 <p>Here again is the corresponding part from the previous SQL statement:</p>
 <pre class="r"><code>CREATE TABLE Stundent_Prof
     (StudentProf_ID INT NOT NULL IDENTITY(1,1) PRIMARY KEY,
@@ -98,8 +99,8 @@ CREATE TABLE Professor
 We use an SQL server here with <a href="https://docs.microsoft.com/en-us/sql/ssms/sql-server-management-studio-ssms?view=sql-server-ver15">SSMS</a>.
 Therefore, the syntax for <code>AUTO INCREMENT</code> here is <code>IDENTITY</code>.</p>
 </div>
-<div id="auto-increment-via-my-sql" class="section level2">
-<h2>4.1.2 AUTO INCREMENT via My SQL</h2>
+<div id="auto-increment-via-my-sql" class="section level3">
+<h3>4.1.2 AUTO INCREMENT via My SQL</h3>
 <p>As an example, the <strong>Syntax for My SQL</strong> would be:</p>
 <pre class="r"><code>CREATE TABLE Stundent_Prof
     (StudentProf_ID INT NOT NULL AUTO_INCREMENT,
@@ -107,13 +108,14 @@ Therefore, the syntax for <code>AUTO INCREMENT</code> here is <code>IDENTITY</co
     ...)
     ;</code></pre>
 </div>
-<div id="auto-increment-via-access" class="section level2">
-<h2>4.1.3 AUTO INCREMENT via Access</h2>
+<div id="auto-increment-via-access" class="section level3">
+<h3>4.1.3 AUTO INCREMENT via Access</h3>
 <p>The <strong>Syntax for Access</strong> would be:</p>
 <pre class="r"><code>CREATE TABLE Stundent_Prof
     (StudentProf_ID NOT NULL AUTOINCREMENT PRIMARY KEY,
     ...)
     ;</code></pre>
+</div>
 </div>
 <div id="review-of-the-created-relationships" class="section level2">
 <h2>4.2 Review of the created relationships</h2>
