@@ -1,0 +1,274 @@
+---
+title: Create a m:m Relationship
+author: Michael Fuchs
+date: '2021-03-16'
+slug: create-a-m-m-relationship
+categories: []
+tags: []
+output:
+  blogdown::html_page:
+    toc: true
+    toc_depth: 5
+---
+
+
+
+# 1 Introduction
+
+
+As already announced in my post [Create a 1:m Relationship](https://michael-fuchs-sql.netlify.app/2021/03/13/create-a-1-m-relationship/), we now come to the last general type of relationship between two tables that I would like to deal with here: a **m:m relationship**
+
+
+
+# 2 The assumed Situation
+
+Let's assume that this time we are to set up a database for a university with information about the students and the teaching professors. 
+
+In our example with the [school classes](https://michael-fuchs-sql.netlify.app/2021/03/13/create-a-1-m-relationship/#the-assumed-situation) it was easier, because here a teacher was assigned to a certain class (1:m relationship). 
+Since at universities a student can enrol in several courses at will, this type of relationship is somewhat more difficult, and cannot be solved with just two tables (students and professors). 
+
+I use the [Modified Chen Notation (MC Notation)](https://michael-fuchs-sql.netlify.app/2021/03/03/entity-relationship-diagram-erd/#modified-chen-notation-mc-notation) below.
+
+![](/post/2021-03-16-create-a-m-m-relationship_files/p6p1.png)
+
+If you can't read/interpret the diagram accurately, read my post on [Associative Entity](https://michael-fuchs-sql.netlify.app/2021/03/03/entity-relationship-diagram-erd/#associative-entity) where I explained this in detail. 
+
+To be even more precise, the diagram would have to look like this: 
+
+![](/post/2021-03-16-create-a-m-m-relationship_files/p6p2.png)
+
+
+# 3 Setting up the database and the required tables
+
+First, we set up the two tables *Student* and *Professor*. 
+
+How I do this can be read in my post [Create a Database](https://michael-fuchs-sql.netlify.app/2021/03/07/create-a-database/#create-a-new-database). 
+
+
+```{r, eval=F, echo=T}
+CREATE DATABASE University;
+
+USE University;
+
+
+CREATE TABLE Student
+	(Student_ID INT NOT NULL PRIMARY KEY,
+	First_Name VARCHAR(100) NOT NULL,
+	Last_Name VARCHAR(100) NOT NULL)
+	;
+
+CREATE TABLE Professor
+	(Professor_ID INT NOT NULL PRIMARY KEY,
+	First_Name VARCHAR(100) NOT NULL,
+	Last_Name VARCHAR(100) NOT NULL)
+	;
+```
+
+
+# 4 Connecting the two tables
+
+As the two tables currently stand, we cannot connect them. In order to do this, we need a so-called **Associative Table**. 
+
+The name should be chosen in such a way that it is recognisable for which two entities this table was created. The Foreign Keys are then stored within the Associative Table. 
+
+As you can see from the diagram above, our Associative Table has one more attribute. It makes sense not to create a separate table for the 'Study Subject', but to store this attribute here in a meaningful way. 
+
+
+## 4.1 Create an Associative Table 
+
+Let's create our Associative Table:
+
+```{r, eval=F, echo=T}
+CREATE TABLE Stundent_Prof
+	(StudentProf_ID INT NOT NULL IDENTITY(1,1) PRIMARY KEY,
+	Professor_ID INT NOT NULL FOREIGN KEY REFERENCES Professor(Professor_ID),
+	Student_ID INT NOT NULL FOREIGN KEY REFERENCES Student(Student_ID),
+	Study_Subject VARCHAR(100) NOT NULL)
+	;
+```
+
+
+Compared to the other tables, I have added another field in this SQL statement which I would like to explain in more detail: `IDENTITY`
+
+
+## 4.1.1 AUTO INCREMENT via SQL Server
+
+Here again is the corresponding part from the previous SQL statement:
+
+```{r, eval=F, echo=T}
+CREATE TABLE Stundent_Prof
+	(StudentProf_ID INT NOT NULL IDENTITY(1,1) PRIMARY KEY,
+	...)
+	;
+```
+
+`IDENTITY` is also known as `AUTO INCREMENT`, which allows us to automatically generate a unique number when a new record is inserted into a table. 
+
+
+Depending on the database system used, the syntax is slightly different. 
+We use an SQL server here with [SSMS](https://docs.microsoft.com/en-us/sql/ssms/sql-server-management-studio-ssms?view=sql-server-ver15). 
+Therefore, the syntax for `AUTO INCREMENT` here is `IDENTITY`.
+
+
+## 4.1.2 AUTO INCREMENT via My SQL
+
+As an example, the **Syntax for My SQL** would be:
+
+```{r, eval=F, echo=T}
+CREATE TABLE Stundent_Prof
+	(StudentProf_ID INT NOT NULL AUTO_INCREMENT,
+	PRIMARY KEY (StudentProf_ID),
+	...)
+	;
+```
+
+
+## 4.1.3 AUTO INCREMENT via Access
+
+The **Syntax for Access** would be:
+
+```{r, eval=F, echo=T}
+CREATE TABLE Stundent_Prof
+	(StudentProf_ID NOT NULL AUTOINCREMENT PRIMARY KEY,
+	...)
+	;
+```
+
+
+## 4.2 Review of the created relationships
+
+The underlying ERD now looks like this:
+
+![](/post/2021-03-16-create-a-m-m-relationship_files/p6p3.png)
+
+
+Let's also have a look at the relationship of the tables under Views in [SSMS](https://docs.microsoft.com/en-us/sql/ssms/sql-server-management-studio-ssms?view=sql-server-ver15). I have described how to do this [here](https://michael-fuchs-sql.netlify.app/2021/03/10/create-a-1-1-relationship/#primary-key).
+
+![](/post/2021-03-16-create-a-m-m-relationship_files/p6p4.png)
+
+Using the key and infinity symbols we can see how the tables are connected. 
+
+
+
+# 5 Filling the tables
+
+We can do a quick check at this point to see if the tables created really exist. 
+
+```{r, eval=F, echo=T}
+SELECT * FROM Student
+SELECT * FROM Professor	
+SELECT * FROM Stundent_Prof
+```
+
+![](/post/2021-03-16-create-a-m-m-relationship_files/p6p5.png)
+
+Perfect, then we start filling the tables with sample values. 
+
+Again, it is important to pay attention to the order of filling. The two tables *Student* and *Professor* can be filled simultaneously. 
+
+The foreign keys are stored in the Associative Table *Student_Prof*. It can only be filled when the corresponding primary keys ('Student_ID' and 'Professor_ID') are stored, as they are referenced. 
+
+
+```{r, eval=F, echo=T}
+INSERT INTO Student (Student_ID, First_Name, Last_Name) VALUES (1, 'Max', 'Steel')
+INSERT INTO Student (Student_ID, First_Name, Last_Name) VALUES (2, 'Jessy', 'Williams')
+INSERT INTO Student (Student_ID, First_Name, Last_Name) VALUES (3, 'Marc', 'Pike')
+INSERT INTO Student (Student_ID, First_Name, Last_Name) VALUES (4, 'Emily', 'Taylor')
+INSERT INTO Student (Student_ID, First_Name, Last_Name) VALUES (5, 'Alex', 'Smith')
+
+
+INSERT INTO Professor (Professor_ID, First_Name, Last_Name) VALUES (1, 'Andrew', 'Evergreen')
+INSERT INTO Professor (Professor_ID, First_Name, Last_Name) VALUES (2, 'John', 'Hope')
+```
+
+
+And now we can also fill the Associative Table:
+
+
+```{r, eval=F, echo=T}
+INSERT INTO Stundent_Prof (Professor_ID, Student_ID, Study_Subject) VALUES (1, 1, 'Law')
+INSERT INTO Stundent_Prof (Professor_ID, Student_ID, Study_Subject) VALUES (1, 2, 'Law')
+INSERT INTO Stundent_Prof (Professor_ID, Student_ID, Study_Subject) VALUES (1, 3, 'Law')
+INSERT INTO Stundent_Prof (Professor_ID, Student_ID, Study_Subject) VALUES (1, 4, 'Law')
+INSERT INTO Stundent_Prof (Professor_ID, Student_ID, Study_Subject) VALUES (1, 5, 'Law')
+
+INSERT INTO Stundent_Prof (Professor_ID, Student_ID, Study_Subject) VALUES (2, 1, 'History')
+INSERT INTO Stundent_Prof (Professor_ID, Student_ID, Study_Subject) VALUES (2, 2, 'History')
+INSERT INTO Stundent_Prof (Professor_ID, Student_ID, Study_Subject) VALUES (2, 3, 'History')
+INSERT INTO Stundent_Prof (Professor_ID, Student_ID, Study_Subject) VALUES (2, 4, 'History')
+INSERT INTO Stundent_Prof (Professor_ID, Student_ID, Study_Subject) VALUES (2, 5, 'History')
+```
+
+
+Have a look at the filled tables:
+
+```{r, eval=F, echo=T}
+SELECT * FROM Student
+SELECT * FROM Professor	
+SELECT * FROM Stundent_Prof
+```
+
+![](/post/2021-03-16-create-a-m-m-relationship_files/p6p6.png)
+
+
+
+# 6 Queries on the tables
+
+Now we can start querying the tables. 
+
+Here is a simple query as we already know from the two previous posts:
+
+```{r, eval=F, echo=T}
+SELECT * 
+    FROM Stundent_Prof 
+		JOIN Student 
+			ON Stundent_Prof.Student_ID = Student.Student_ID
+		JOIN Professor
+			ON Stundent_Prof.Professor_ID = Professor.Professor_ID;
+```
+
+![](/post/2021-03-16-create-a-m-m-relationship_files/p6p7.png)
+
+
+Here is a query in which we filter for the subject 'Law':
+
+```{r, eval=F, echo=T}
+SELECT * 
+    FROM Stundent_Prof 
+		JOIN Student 
+			ON Stundent_Prof.Student_ID = Student.Student_ID
+		JOIN Professor
+			ON Stundent_Prof.Professor_ID = Professor.Professor_ID
+	WHERE Study_Subject = 'Law';
+```
+
+![](/post/2021-03-16-create-a-m-m-relationship_files/p6p8.png)
+
+
+And here is another query where we want to know which data are all stored for the student with the Student_ID = 1. 
+
+```{r, eval=F, echo=T}
+SELECT * 
+    FROM Stundent_Prof 
+		JOIN Student 
+			ON Stundent_Prof.Student_ID = Student.Student_ID
+		JOIN Professor
+			ON Stundent_Prof.Professor_ID = Professor.Professor_ID
+	WHERE Student.Student_ID = 1;
+```
+
+![](/post/2021-03-16-create-a-m-m-relationship_files/p6p9.png)
+
+
+Again, I am aware that these joins are not particularly beautiful. I will describe how to execute beautiful joins in a later post. 
+
+
+# 7 Conclusion
+
+In this post I have shown how to set up an m:m relationship between two tables using an Associative Table and how to query on it.
+
+
+
+
+
+
