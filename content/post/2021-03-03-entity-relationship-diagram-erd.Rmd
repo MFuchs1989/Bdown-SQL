@@ -306,6 +306,3 @@ In this post, I introduced what ER diagrams are and what they consist of. Furthe
 
 
 
-
-
-
