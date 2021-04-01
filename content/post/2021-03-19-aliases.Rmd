@@ -1,0 +1,128 @@
+---
+title: Aliases
+author: Michael Fuchs
+date: '2021-03-19'
+slug: aliases
+categories: []
+tags: []
+output:
+  blogdown::html_page:
+    toc: true
+    toc_depth: 5
+---
+
+
+# 1 Introduction
+
+Today I would like to discuss a topic that is used in almost every SQL statement: **Aliases** 
+
+
+# 2 What is an Alias ?
+
+
+Aliases are "replacement names" for the columns and tables that can be used in an SQL statement. 
+
+The keyword to create an alias is AS. This (AS) keyword can be used to specify a new name for a column or table in your SQL statement.
+
+The AS keyword is only optional in some cases, but it is recommended to always use it when creating the SQL statement, as it makes it clearer what is happening there.
+
+
+
+# 3 Setting up the database and the required tables
+
+I use the same database and tables in this post as in my post about [1:m relationships](https://michael-fuchs-sql.netlify.app/2021/03/13/create-a-1-m-relationship/). 
+
+Here is the corresponding ERD:
+
+![](/post/2021-03-19-aliases_files/p7p1.png)
+
+
+Since I would like to have the output of [SSMS](https://docs.microsoft.com/en-us/sql/ssms/sql-server-management-studio-ssms?view=sql-server-ver15) always in English I use the following syntax.
+
+```{r, eval=F, echo=T}
+SET LANGUAGE ENGLISH
+```
+
+How I create the database and the tables can be read in my post [Create a Database](https://michael-fuchs-sql.netlify.app/2021/03/07/create-a-database/#create-a-new-database). 
+
+
+```{r, eval=F, echo=T}
+CREATE DATABASE School_Class;
+
+
+USE School_Class;
+
+CREATE TABLE Pupils
+    (Pupils_ID INT NOT NULL PRIMARY KEY,
+    First_Name VARCHAR(100) NOT NULL,
+    Last_Name VARCHAR(100) NOT NULL)
+    ;
+
+CREATE TABLE Teacher
+    (Teacher_ID INT NOT NULL PRIMARY KEY,
+    First_Name VARCHAR(100) NOT NULL,
+    Last_Name VARCHAR(100) NOT NULL,
+    Subject_ VARCHAR(100) NOT NULL)
+    ;
+```
+
+
+Now I add the relationship of the two tables to each other: 
+
+```{r, eval=F, echo=T}
+ALTER TABLE Pupils ADD Teacher_ID INT NOT NULL FOREIGN KEY REFERENCES Teacher(Teacher_ID);
+```
+
+The underlying ERD now looks like this:
+
+![](/post/2021-03-19-aliases_files/p7p2.png)
+
+In addition, I fill the tables with sample values:
+
+```{r, eval=F, echo=T}
+INSERT INTO Teacher (Teacher_ID, First_Name, Last_Name, Subject_) VALUES (317, 'Andrew', 'Evergreen', 'History')
+
+INSERT INTO Pupils (Pupils_ID, First_Name, Last_Name, Teacher_ID) VALUES (1, 'Max', 'Steel', 317)
+INSERT INTO Pupils (Pupils_ID, First_Name, Last_Name, Teacher_ID) VALUES (2, 'Jessy', 'Williams', 317)
+INSERT INTO Pupils (Pupils_ID, First_Name, Last_Name, Teacher_ID) VALUES (3, 'Marc', 'Pike', 317)
+INSERT INTO Pupils (Pupils_ID, First_Name, Last_Name, Teacher_ID) VALUES (4, 'Emily', 'Taylor', 317)
+INSERT INTO Pupils (Pupils_ID, First_Name, Last_Name, Teacher_ID) VALUES (5, 'Alex', 'Smith', 317)
+```
+
+You have to pay attention to the order in which you add the values to the tables, as described [here](https://michael-fuchs-sql.netlify.app/2021/03/13/create-a-1-m-relationship/#filling-the-tables).
+
+
+Here are the final tables:
+
+```{r, eval=F, echo=T}
+SELECT * FROM Pupils
+SELECT * FROM Teacher
+```
+
+![](/post/2021-03-19-aliases_files/p7p3.png)
+
+
+# 4 Aliases
+
+Now we can begin...
+
+
+## 4.1 Alias for Columns
+
+
+
+
+
+```{r, eval=F, echo=T}
+
+```
+
+![](/post/2021-03-19-aliases_files/p7p.png)
+
+
+
+
+
+
+
+

@@ -1,0 +1,90 @@
+---
+title: Aliases
+author: Michael Fuchs
+date: '2021-03-19'
+slug: aliases
+categories: []
+tags: []
+output:
+  blogdown::html_page:
+    toc: true
+    toc_depth: 5
+---
+
+<script src="/rmarkdown-libs/header-attrs/header-attrs.js"></script>
+<link href="/rmarkdown-libs/anchor-sections/anchor-sections.css" rel="stylesheet" />
+<script src="/rmarkdown-libs/anchor-sections/anchor-sections.js"></script>
+
+<div id="TOC">
+<ul>
+<li><a href="#introduction">1 Introduction</a></li>
+<li><a href="#what-is-an-alias">2 What is an Alias ?</a></li>
+<li><a href="#setting-up-the-database-and-the-required-tables">3 Setting up the database and the required tables</a></li>
+<li><a href="#aliases">4 Aliases</a>
+<ul>
+<li><a href="#alias-for-columns">4.1 Alias for Columns</a></li>
+</ul></li>
+</ul>
+</div>
+
+<div id="introduction" class="section level1">
+<h1>1 Introduction</h1>
+<p>Today I would like to discuss a topic that is used in almost every SQL statement: <strong>Aliases</strong></p>
+</div>
+<div id="what-is-an-alias" class="section level1">
+<h1>2 What is an Alias ?</h1>
+<p>Aliases are “replacement names” for the columns and tables that can be used in an SQL statement.</p>
+<p>The keyword to create an alias is AS. This (AS) keyword can be used to specify a new name for a column or table in your SQL statement.</p>
+<p>The AS keyword is only optional in some cases, but it is recommended to always use it when creating the SQL statement, as it makes it clearer what is happening there.</p>
+</div>
+<div id="setting-up-the-database-and-the-required-tables" class="section level1">
+<h1>3 Setting up the database and the required tables</h1>
+<p>I use the same database and tables in this post as in my post about <a href="https://michael-fuchs-sql.netlify.app/2021/03/13/create-a-1-m-relationship/">1:m relationships</a>.</p>
+<p>Here is the corresponding ERD:</p>
+<p><img src="/post/2021-03-19-aliases_files/p7p1.png" /></p>
+<p>Since I would like to have the output of <a href="https://docs.microsoft.com/en-us/sql/ssms/sql-server-management-studio-ssms?view=sql-server-ver15">SSMS</a> always in English I use the following syntax.</p>
+<pre class="r"><code>SET LANGUAGE ENGLISH</code></pre>
+<p>How I create the database and the tables can be read in my post <a href="https://michael-fuchs-sql.netlify.app/2021/03/07/create-a-database/#create-a-new-database">Create a Database</a>.</p>
+<pre class="r"><code>CREATE DATABASE School_Class;
+
+
+USE School_Class;
+
+CREATE TABLE Pupils
+    (Pupils_ID INT NOT NULL PRIMARY KEY,
+    First_Name VARCHAR(100) NOT NULL,
+    Last_Name VARCHAR(100) NOT NULL)
+    ;
+
+CREATE TABLE Teacher
+    (Teacher_ID INT NOT NULL PRIMARY KEY,
+    First_Name VARCHAR(100) NOT NULL,
+    Last_Name VARCHAR(100) NOT NULL,
+    Subject_ VARCHAR(100) NOT NULL)
+    ;</code></pre>
+<p>Now I add the relationship of the two tables to each other:</p>
+<pre class="r"><code>ALTER TABLE Pupils ADD Teacher_ID INT NOT NULL FOREIGN KEY REFERENCES Teacher(Teacher_ID);</code></pre>
+<p>The underlying ERD now looks like this:</p>
+<p><img src="/post/2021-03-19-aliases_files/p7p2.png" /></p>
+<p>In addition, I fill the tables with sample values:</p>
+<pre class="r"><code>INSERT INTO Teacher (Teacher_ID, First_Name, Last_Name, Subject_) VALUES (317, &#39;Andrew&#39;, &#39;Evergreen&#39;, &#39;History&#39;)
+
+INSERT INTO Pupils (Pupils_ID, First_Name, Last_Name, Teacher_ID) VALUES (1, &#39;Max&#39;, &#39;Steel&#39;, 317)
+INSERT INTO Pupils (Pupils_ID, First_Name, Last_Name, Teacher_ID) VALUES (2, &#39;Jessy&#39;, &#39;Williams&#39;, 317)
+INSERT INTO Pupils (Pupils_ID, First_Name, Last_Name, Teacher_ID) VALUES (3, &#39;Marc&#39;, &#39;Pike&#39;, 317)
+INSERT INTO Pupils (Pupils_ID, First_Name, Last_Name, Teacher_ID) VALUES (4, &#39;Emily&#39;, &#39;Taylor&#39;, 317)
+INSERT INTO Pupils (Pupils_ID, First_Name, Last_Name, Teacher_ID) VALUES (5, &#39;Alex&#39;, &#39;Smith&#39;, 317)</code></pre>
+<p>You have to pay attention to the order in which you add the values to the tables, as described <a href="https://michael-fuchs-sql.netlify.app/2021/03/13/create-a-1-m-relationship/#filling-the-tables">here</a>.</p>
+<p>Here are the final tables:</p>
+<pre class="r"><code>SELECT * FROM Pupils
+SELECT * FROM Teacher</code></pre>
+<p><img src="/post/2021-03-19-aliases_files/p7p3.png" /></p>
+</div>
+<div id="aliases" class="section level1">
+<h1>4 Aliases</h1>
+<p>Now we can begin…</p>
+<div id="alias-for-columns" class="section level2">
+<h2>4.1 Alias for Columns</h2>
+<p><img src="/post/2021-03-19-aliases_files/p7p.png" /></p>
+</div>
+</div>
