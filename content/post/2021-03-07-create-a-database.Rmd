@@ -48,6 +48,14 @@ We can request these as follows:
 
 ![](/post/2021-03-07-create-a-database_files/p3p2.png)
 
+Since I would like to have the output of [SSMS](https://docs.microsoft.com/en-us/sql/ssms/sql-server-management-studio-ssms?view=sql-server-ver15) always in English I use the following syntax.
+
+
+```{r, eval=F, echo=T}
+SET LANGUAGE ENGLISH
+```
+
+
 
 ## 3.1 Create a new Database
 
@@ -228,11 +236,7 @@ By executing the command shown above, we have deleted the entire table ('Table_2
 
 Like tables, entire databases can be deleted.
 
-Since I would like to have the output of [SSMS](https://docs.microsoft.com/en-us/sql/ssms/sql-server-management-studio-ssms?view=sql-server-ver15) always in English I use the following syntax and try to delete the database. 
-
-
 ```{r, eval=F, echo=T}
-SET LANGUAGE ENGLISH
 DROP DATABASE DB_to_Delete;
 ```
 

@@ -62,6 +62,8 @@ output:
 <p>First of all we need a New Query.
 We can request these as follows:</p>
 <p><img src="/post/2021-03-07-create-a-database_files/p3p2.png" /></p>
+<p>Since I would like to have the output of <a href="https://docs.microsoft.com/en-us/sql/ssms/sql-server-management-studio-ssms?view=sql-server-ver15">SSMS</a> always in English I use the following syntax.</p>
+<pre class="r"><code>SET LANGUAGE ENGLISH</code></pre>
 <div id="create-a-new-database" class="section level2">
 <h2>3.1 Create a new Database</h2>
 <p>To create a new database we need the following syntax:</p>
@@ -160,9 +162,7 @@ ALTER TABLE Table_2 DROP COLUMN First_Name, Last_Name;</code></pre>
 <div id="delete-the-whole-database" class="section level3">
 <h3>3.2.4 Delete the whole Database</h3>
 <p>Like tables, entire databases can be deleted.</p>
-<p>Since I would like to have the output of <a href="https://docs.microsoft.com/en-us/sql/ssms/sql-server-management-studio-ssms?view=sql-server-ver15">SSMS</a> always in English I use the following syntax and try to delete the database.</p>
-<pre class="r"><code>SET LANGUAGE ENGLISH
-DROP DATABASE DB_to_Delete;</code></pre>
+<pre class="r"><code>DROP DATABASE DB_to_Delete;</code></pre>
 <p><img src="/post/2021-03-07-create-a-database_files/p3p14.png" /></p>
 <p>We get the error message shown above.
 To be able to delete the database, it must not be in use. A simple workaround is to tell the system to use another database (here ‘MyDB’) and then execute the drop command.</p>

@@ -35,9 +35,15 @@ I use the [Modified Chen Notation (MC Notation)](https://michael-fuchs-sql.netli
 
 # 3 Setting up the database and the required tables
 
-How I do this can be read in my post [Create a Database](https://michael-fuchs-sql.netlify.app/2021/03/07/create-a-database/#create-a-new-database). 
+
+Since I would like to have the output of [SSMS](https://docs.microsoft.com/en-us/sql/ssms/sql-server-management-studio-ssms?view=sql-server-ver15) always in English I use the following syntax.
+
+```{r, eval=F, echo=T}
+SET LANGUAGE ENGLISH
+```
 
 
+How I create the database and the tables can be read in my post [Create a Database](https://michael-fuchs-sql.netlify.app/2021/03/07/create-a-database/#create-a-new-database). 
 
 ```{r, eval=F, echo=T}
 CREATE DATABASE Registry_Office;
