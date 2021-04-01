@@ -23,7 +23,10 @@ output:
 <li><a href="#aliases">4 Aliases</a>
 <ul>
 <li><a href="#alias-for-columns">4.1 Alias for Columns</a></li>
+<li><a href="#alias-for-tables">4.2 Alias for Tables</a></li>
+<li><a href="#alias-for-joins">4.3 Alias for Joins</a></li>
 </ul></li>
+<li><a href="#conclusion">5 Conclusion</a></li>
 </ul>
 </div>
 
@@ -93,15 +96,65 @@ SELECT * FROM Teacher</code></pre>
     ;</code></pre>
 <p><img src="/post/2021-03-19-aliases_files/p7p4.png" /></p>
 <p>If the alias name contains spaces then you have to put it in square brackets (see column ‘Teacher ID’).</p>
-<p>You can also rename the columns using existing column names.</p>
-<pre class="r"><code>SELECT Pupils_ID, First_Name + Last_Name AS Full_Name
-    FROM Pupils
+</div>
+<div id="alias-for-tables" class="section level2">
+<h2>4.2 Alias for Tables</h2>
+<p>The true added value of the alias function becomes apparent when it is applied to tabels. For one thing, you can save yourself a lot of typing if you give the original tables a shorter name:</p>
+<pre class="r"><code>SELECT p.First_Name, p.Last_Name
+    FROM Pupils AS p
     ;</code></pre>
 <p><img src="/post/2021-03-19-aliases_files/p7p5.png" /></p>
-<p><img src="/post/2021-03-19-aliases_files/p7p.png" /></p>
-<p><img src="/post/2021-03-19-aliases_files/p7p.png" /></p>
-<p><img src="/post/2021-03-19-aliases_files/p7p.png" /></p>
-<p><img src="/post/2021-03-19-aliases_files/p7p.png" /></p>
-<p><img src="/post/2021-03-19-aliases_files/p7p.png" /></p>
+<p>Now in combination with an alias additionally on the columns:</p>
+<pre class="r"><code>SELECT p.First_Name AS Forename,
+       p.Last_Name AS Surname
+    FROM Pupils AS p
+    ;</code></pre>
+<p><img src="/post/2021-03-19-aliases_files/p7p6.png" /></p>
+<p>Just as well you can use the assigned alias name in the WHERE part of the SQL statement.</p>
+<pre class="r"><code>SELECT p.First_Name AS Pupils_First_Name, 
+       t.First_Name AS Teachers_First_Name
+    FROM Pupils AS p,
+         Teacher AS t
+    WHERE p.First_Name=&#39;Max&#39; AND p.Teacher_ID = t.Teacher_ID
+    ;</code></pre>
+<p><img src="/post/2021-03-19-aliases_files/p7p7.png" /></p>
 </div>
+<div id="alias-for-joins" class="section level2">
+<h2>4.3 Alias for Joins</h2>
+<p>Now we come to a very common case where it is highly advisable to use aliases.</p>
+<p>First, let’s do a simple join where we output all the columns:</p>
+<pre class="r"><code>SELECT *
+    FROM Pupils
+        LEFT JOIN Teacher
+            ON Pupils.Teacher_ID = Teacher.Teacher_ID
+    ;</code></pre>
+<p><img src="/post/2021-03-19-aliases_files/p7p8.png" /></p>
+<p>However, if we only want to display certain columns (here ‘First_Name’), we get the following error message:</p>
+<pre class="r"><code>SELECT First_Name
+    FROM Pupils
+        LEFT JOIN Teacher
+            ON Pupils.Teacher_ID = Teacher.Teacher_ID
+    ;</code></pre>
+<p><img src="/post/2021-03-19-aliases_files/p7p9.png" /></p>
+<p>The reason for this is that the column name ‘First_Name’ occurs several times and is therefore not uniquely identifiable for the playback of the SELECT statement.</p>
+<p>The alias function can help here:</p>
+<pre class="r"><code>SELECT p.First_Name AS Pupils_First_Name, 
+       t.First_Name AS Teachers_First_Name
+    FROM Pupils AS p
+        LEFT JOIN Teacher AS t
+            ON p.Teacher_ID = t.Teacher_ID
+    ;</code></pre>
+<p><img src="/post/2021-03-19-aliases_files/p7p10.png" /></p>
+<p>With Alias, you save a lot of typing in the syntax and can keep your SQL statements clear. Of course, you can also write out all assignments, but the statement then looks very confusing (especially with large queries), see here:</p>
+<pre class="r"><code>SELECT Pupils.First_Name AS Pupils_First_Name, 
+       Teacher.First_Name AS Teachers_First_Name
+    FROM Pupils
+        LEFT JOIN Teacher
+            ON Pupils.Teacher_ID = Teacher.Teacher_ID
+    ;</code></pre>
+</div>
+</div>
+<div id="conclusion" class="section level1">
+<h1>5 Conclusion</h1>
+<p>In this post I showed how you can use Alias to make your programming life extremely easy.</p>
 </div>
