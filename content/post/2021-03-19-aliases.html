@@ -85,6 +85,23 @@ SELECT * FROM Teacher</code></pre>
 <p>Now we can begin…</p>
 <div id="alias-for-columns" class="section level2">
 <h2>4.1 Alias for Columns</h2>
+<p>With the Alias command you have the possibility to rename columns in the output.</p>
+<pre class="r"><code>SELECT First_Name AS Forename, 
+       Last_Name AS Surname,
+       Teacher_ID AS [Teacher ID]
+    FROM Pupils
+    ;</code></pre>
+<p><img src="/post/2021-03-19-aliases_files/p7p4.png" /></p>
+<p>If the alias name contains spaces then you have to put it in square brackets (see column ‘Teacher ID’).</p>
+<p>You can also rename the columns using existing column names.</p>
+<pre class="r"><code>SELECT Pupils_ID, First_Name + Last_Name AS Full_Name
+    FROM Pupils
+    ;</code></pre>
+<p><img src="/post/2021-03-19-aliases_files/p7p5.png" /></p>
+<p><img src="/post/2021-03-19-aliases_files/p7p.png" /></p>
+<p><img src="/post/2021-03-19-aliases_files/p7p.png" /></p>
+<p><img src="/post/2021-03-19-aliases_files/p7p.png" /></p>
+<p><img src="/post/2021-03-19-aliases_files/p7p.png" /></p>
 <p><img src="/post/2021-03-19-aliases_files/p7p.png" /></p>
 </div>
 </div>

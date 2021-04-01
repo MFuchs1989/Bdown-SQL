@@ -110,6 +110,30 @@ Now we can begin...
 ## 4.1 Alias for Columns
 
 
+With the Alias command you have the possibility to rename columns in the output. 
+
+```{r, eval=F, echo=T}
+SELECT First_Name AS Forename, 
+	   Last_Name AS Surname,
+	   Teacher_ID AS [Teacher ID]
+	FROM Pupils
+	;
+```
+
+![](/post/2021-03-19-aliases_files/p7p4.png)
+
+If the alias name contains spaces then you have to put it in square brackets (see column 'Teacher ID').
+
+You can also rename the columns using existing column names.
+
+```{r, eval=F, echo=T}
+SELECT Pupils_ID, First_Name + Last_Name AS Full_Name
+	FROM Pupils
+	;
+```
+
+![](/post/2021-03-19-aliases_files/p7p5.png)
+
 
 
 
@@ -124,5 +148,47 @@ Now we can begin...
 
 
 
+
+```{r, eval=F, echo=T}
+
+```
+
+![](/post/2021-03-19-aliases_files/p7p.png)
+
+
+
+
+
+
+
+
+```{r, eval=F, echo=T}
+
+```
+
+![](/post/2021-03-19-aliases_files/p7p.png)
+
+
+
+
+
+
+
+```{r, eval=F, echo=T}
+
+```
+
+![](/post/2021-03-19-aliases_files/p7p.png)
+
+
+
+
+
+
+```{r, eval=F, echo=T}
+
+```
+
+![](/post/2021-03-19-aliases_files/p7p.png)
 
 
