@@ -31,8 +31,9 @@ output:
 <ul>
 <li><a href="#delete-specific-columns">3.2.1 Delete specific Columns</a></li>
 <li><a href="#add-new-columns">3.2.2 Add new Columns</a></li>
-<li><a href="#delete-the-whole-table">3.2.3 Delete the whole Table</a></li>
-<li><a href="#delete-the-whole-database">3.2.4 Delete the whole Database</a></li>
+<li><a href="#delete-the-table-contents">3.2.3 Delete the table contents</a></li>
+<li><a href="#delete-the-whole-table">3.2.4 Delete the whole Table</a></li>
+<li><a href="#delete-the-whole-database">3.2.5 Delete the whole Database</a></li>
 </ul></li>
 </ul></li>
 <li><a href="#conclusion">4 Conclusion</a></li>
@@ -153,14 +154,27 @@ ALTER TABLE Table_2 DROP COLUMN First_Name, Last_Name;</code></pre>
 <pre class="r"><code>ALTER TABLE Table_1 ADD Further_Column VARCHAR(100) NOT NULL;</code></pre>
 <p><img src="/post/2021-03-07-create-a-database_files/p3p12.png" /></p>
 </div>
+<div id="delete-the-table-contents" class="section level3">
+<h3>3.2.3 Delete the table contents</h3>
+<p>Now the next step is to fill the modified table with a new row.</p>
+<pre class="r"><code>INSERT INTO Table_1 (First_Name, Last_Name, Further_Column) VALUES (&#39;Michael&#39;, &#39;Fuchs&#39;, &#39;some_text&#39;)
+
+SELECT * FROM Table_1</code></pre>
+<p><img src="/post/2021-03-07-create-a-database_files/p3p18.png" /></p>
+<p>With the command TRUNCATE we can delete the contents of a table, but keep the table in and of itself.</p>
+<pre class="r"><code>TRUNCATE TABLE Table_1;
+
+SELECT * FROM Table_1</code></pre>
+<p><img src="/post/2021-03-07-create-a-database_files/p3p19.png" /></p>
+</div>
 <div id="delete-the-whole-table" class="section level3">
-<h3>3.2.3 Delete the whole Table</h3>
+<h3>3.2.4 Delete the whole Table</h3>
 <pre class="r"><code>DROP TABLE Table_2;</code></pre>
 <p>By executing the command shown above, we have deleted the entire table (‘Table_2’).</p>
 <p><img src="/post/2021-03-07-create-a-database_files/p3p13.png" /></p>
 </div>
 <div id="delete-the-whole-database" class="section level3">
-<h3>3.2.4 Delete the whole Database</h3>
+<h3>3.2.5 Delete the whole Database</h3>
 <p>Like tables, entire databases can be deleted.</p>
 <pre class="r"><code>DROP DATABASE DB_to_Delete;</code></pre>
 <p><img src="/post/2021-03-07-create-a-database_files/p3p14.png" /></p>

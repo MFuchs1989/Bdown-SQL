@@ -218,8 +218,31 @@ ALTER TABLE Table_1 ADD Further_Column VARCHAR(100) NOT NULL;
 
 
 
+### 3.2.3 Delete the table contents
 
-### 3.2.3 Delete the whole Table
+Now the next step is to fill the modified table with a new row. 
+
+```{r, eval=F, echo=T}
+INSERT INTO Table_1 (First_Name, Last_Name, Further_Column) VALUES ('Michael', 'Fuchs', 'some_text')
+
+SELECT * FROM Table_1
+```
+
+![](/post/2021-03-07-create-a-database_files/p3p18.png)
+
+With the command TRUNCATE we can delete the contents of a table, but keep the table in and of itself. 
+
+```{r, eval=F, echo=T}
+TRUNCATE TABLE Table_1;
+
+SELECT * FROM Table_1
+```
+
+![](/post/2021-03-07-create-a-database_files/p3p19.png)
+
+
+
+### 3.2.4 Delete the whole Table
 
 
 ```{r, eval=F, echo=T}
@@ -232,7 +255,7 @@ By executing the command shown above, we have deleted the entire table ('Table_2
 ![](/post/2021-03-07-create-a-database_files/p3p13.png)
 
 
-### 3.2.4 Delete the whole Database
+### 3.2.5 Delete the whole Database
 
 Like tables, entire databases can be deleted.
 
