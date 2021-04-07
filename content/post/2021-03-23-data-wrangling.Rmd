@@ -167,7 +167,7 @@ SELECT Tai_lNum, Origin_Airport, Scheduled_Departure, Departure_Time, Dep_Delay
 	;
 ```
 
-![](/post/2021-03-23-data-wrangling_files/p9p11.png
+![](/post/2021-03-23-data-wrangling_files/p9p11.png)
 
 
 
