@@ -24,6 +24,7 @@ output:
 <li><a href="#via-ssms">2.2 via <span>SSMS</span></a></li>
 </ul></li>
 <li><a href="#write-to-csv">3 Write to csv</a></li>
+<li><a href="#conclusion">4 Conclusion</a></li>
 </ul>
 </div>
 
@@ -94,5 +95,26 @@ Let’s say we have enriched one of them with more data. Here, for example, the 
 SELECT * FROM Test_CSV_Table</code></pre>
 <p><img src="/post/2021-03-20-read-and-write-to-files_files/p8p10.png" /></p>
 <p>Now we want to extract the completed table and save it as a csv file (for example, to continue working with it in another programme). <a href="https://docs.microsoft.com/en-us/sql/ssms/sql-server-management-studio-ssms?view=sql-server-ver15">SSMS</a> also offers a convenient solution for this:</p>
-<p><img src="/post/2021-03-20-read-and-write-to-files_files/p8p.png" /></p>
+<p>To do this, <strong>right-click on the database</strong> (‘Read_And_Write’) - <strong>Tasks</strong> - <strong>Export Data…</strong></p>
+<p><img src="/post/2021-03-20-read-and-write-to-files_files/p8p11.png" /></p>
+<p>Use Data source: SQL Server Native Client 11.0</p>
+<p><img src="/post/2021-03-20-read-and-write-to-files_files/p8p12.png" /></p>
+<p>Now you have to choose a destination.
+Use Destination: Flat File Destination and navigate to a storage location of your choice.</p>
+<p><strong>Tip</strong>: When selecting the storage location, you must specify the name of the file at the end (here ‘Modified_testCSV’).</p>
+<p><img src="/post/2021-03-20-read-and-write-to-files_files/p8p13.png" /></p>
+<p>Now select Copy data from one or more tables or views.</p>
+<p><img src="/post/2021-03-20-read-and-write-to-files_files/p8p14.png" /></p>
+<p>Now we have to select the table to be extracted.</p>
+<p><img src="/post/2021-03-20-read-and-write-to-files_files/p8p15.png" /></p>
+<p>Select next:</p>
+<p><img src="/post/2021-03-20-read-and-write-to-files_files/p8p16.png" /></p>
+<p>and Finish:</p>
+<p><img src="/post/2021-03-20-read-and-write-to-files_files/p8p17.png" /></p>
+<p>Now have a look at your destination folder:</p>
+<p><img src="/post/2021-03-20-read-and-write-to-files_files/p8p18.png" /></p>
+</div>
+<div id="conclusion" class="section level1">
+<h1>4 Conclusion</h1>
+<p>In this post I showed how to load and export data with <a href="https://docs.microsoft.com/en-us/sql/ssms/sql-server-management-studio-ssms?view=sql-server-ver15">SSMS</a>.</p>
 </div>

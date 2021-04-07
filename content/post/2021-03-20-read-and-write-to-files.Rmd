@@ -137,37 +137,50 @@ Now we want to extract the completed table and save it as a csv file (for exampl
 
 
 
+To do this, **right-click on the database** ('Read_And_Write') - **Tasks** - **Export Data...**
+
+![](/post/2021-03-20-read-and-write-to-files_files/p8p11.png)
+
+
+Use Data source: SQL Server Native Client 11.0
+
+![](/post/2021-03-20-read-and-write-to-files_files/p8p12.png)
+
+
+Now you have to choose a destination.
+Use Destination: Flat File Destination and navigate to a storage location of your choice.  
+
+**Tip**: When selecting the storage location, you must specify the name of the file at the end (here 'Modified_testCSV'). 
+
+![](/post/2021-03-20-read-and-write-to-files_files/p8p13.png)
+
+Now select Copy data from one or more tables or views.
+
+![](/post/2021-03-20-read-and-write-to-files_files/p8p14.png)
+
+
+Now we have to select the table to be extracted. 
+
+![](/post/2021-03-20-read-and-write-to-files_files/p8p15.png)
+
+Select next:
+
+![](/post/2021-03-20-read-and-write-to-files_files/p8p16.png)
+
+
+and Finish:
+
+![](/post/2021-03-20-read-and-write-to-files_files/p8p17.png)
+
+Now have a look at your destination folder: 
+
+![](/post/2021-03-20-read-and-write-to-files_files/p8p18.png)
 
 
 
+# 4 Conclusion
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-```{r, eval=F, echo=T}
-
-```
-
-![](/post/2021-03-20-read-and-write-to-files_files/p8p.png)
-
+In this post I showed how to load and export data with [SSMS](https://docs.microsoft.com/en-us/sql/ssms/sql-server-management-studio-ssms?view=sql-server-ver15). 
 
 
 
