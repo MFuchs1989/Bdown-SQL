@@ -1,0 +1,203 @@
+---
+title: Read and write to files
+author: Michael Fuchs
+date: '2021-03-20'
+slug: read-and-write-to-files
+categories: []
+tags: []
+output:
+  blogdown::html_page:
+    toc: true
+    toc_depth: 5
+---
+
+
+# 1 Introduction
+
+Before we get into the interesting things like data wrangling, aggregation and manipulation, I would like to briefly explain the import and export of files in [SSMS](https://docs.microsoft.com/en-us/sql/ssms/sql-server-management-studio-ssms?view=sql-server-ver15). 
+
+
+For this post I created a TestCSV.csv and used the dataset *flight* from the statistics platform ["Kaggle"](https://www.kaggle.com). You can download it from my [GitHub Repository](https://github.com/MFuchs1989/Datasets-and-Miscellaneous/tree/main/datasets).
+
+
+
+# 2 Reading csv-files
+
+Since we are working with [Server Management Studio (SSMS)](https://docs.microsoft.com/en-us/sql/ssms/sql-server-management-studio-ssms?view=sql-server-ver15) from Microsoft, I will show how to load data in two ways with this setup. 
+
+
+## 2.1 via SQL Query
+
+To be able to load a table into SSMS via the bulk command, we must first create it on the database. The column names and their order must be identical. 
+
+So in the first step we create a database and a corresponding table.
+
+How I create the database and the tables can be read in my post [Create a Database](https://michael-fuchs-sql.netlify.app/2021/03/07/create-a-database/#create-a-new-database). 
+
+
+```{r, eval=F, echo=T}
+CREATE DATABASE Read_And_Write;
+
+USE Read_And_Write;
+
+
+
+CREATE TABLE Test_CSV_Table
+    (ID_testCSV INT NOT NULL,
+    First_Name VARCHAR(100) NOT NULL,
+    Last_Name VARCHAR(100) NOT NULL,
+	Gender VARCHAR(100) NOT NULL)
+    ;
+
+SELECT * FROM Test_CSV_Table
+```
+
+![](/post/2021-03-20-read-and-write-to-files_files/p8p1.png)
+
+Here we go!
+
+
+Now we use the bulk command to load the TestCSV.csv into our created table. 
+I have placed the TestCSV in a folder ('datasets') on my desktop for this purpose. 
+
+
+```{r, eval=F, echo=T}
+BULK INSERT Test_CSV_Table
+	FROM 'C:\Users\Michael Fuchs\Desktop\datasets\testCSV.csv'
+	WITH (FIRSTROW = 2, FIELDTERMINATOR = ';', ROWTERMINATOR = '\n');
+```
+
+```{r, eval=F, echo=T}
+SELECT * FROM Test_CSV_Table
+```
+
+![](/post/2021-03-20-read-and-write-to-files_files/p8p2.png)
+
+Has worked.
+
+Of course, in real life you usually have to deal with tables that have far more columns. In order to avoid having to create them individually in order to be able to load data, there is another more convenient way to load data in [SSMS](https://docs.microsoft.com/en-us/sql/ssms/sql-server-management-studio-ssms?view=sql-server-ver15). 
+
+
+
+## 2.2 via [SSMS](https://docs.microsoft.com/en-us/sql/ssms/sql-server-management-studio-ssms?view=sql-server-ver15)
+
+
+In the Object Explorer we see our created (and now also filled) table. 
+
+![](/post/2021-03-20-read-and-write-to-files_files/p8p3.png)
+
+
+Let's now try to load the data set *flight* from ["Kaggle"](https://www.kaggle.com). This dataset is also stored in the 'datasets' folder on my desktop.   
+
+
+To do this, **right-click on the database** ('Read_And_Write') - **Tasks** - **Importing Flat File...**
+
+![](/post/2021-03-20-read-and-write-to-files_files/p8p4.png)
+
+Navigate to the location where the file is stored.
+
+![](/post/2021-03-20-read-and-write-to-files_files/p8p5.png)
+
+
+Now you get a short overview of the dataset to be loaded. 
+
+![](/post/2021-03-20-read-and-write-to-files_files/p8p6.png)
+
+You can also make some modifications to the columns at this point:
+
+![](/post/2021-03-20-read-and-write-to-files_files/p8p7.png)
+
+
+One last summary check: 
+
+![](/post/2021-03-20-read-and-write-to-files_files/p8p8.png)
+
+Perfect, our new record is loaded: 
+
+![](/post/2021-03-20-read-and-write-to-files_files/p8p9.png)
+
+
+
+# 3 Write to csv
+
+
+Now we have loaded two tables into our database in two different ways. 
+Let's say we have enriched one of them with more data. Here, for example, the Test_CSV_Table: 
+
+
+```{r, eval=F, echo=T}
+INSERT INTO Test_CSV_Table (ID_testCSV, First_Name, Last_Name, Gender) VALUES (4, 'Michael', 'Fuchs', 'male')
+
+SELECT * FROM Test_CSV_Table
+```
+
+![](/post/2021-03-20-read-and-write-to-files_files/p8p10.png)
+
+Now we want to extract the completed table and save it as a csv file (for example, to continue working with it in another programme). [SSMS](https://docs.microsoft.com/en-us/sql/ssms/sql-server-management-studio-ssms?view=sql-server-ver15) also offers a convenient solution for this:
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+```{r, eval=F, echo=T}
+
+```
+
+![](/post/2021-03-20-read-and-write-to-files_files/p8p.png)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

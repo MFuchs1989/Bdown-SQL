@@ -1,0 +1,98 @@
+---
+title: Read and write to files
+author: Michael Fuchs
+date: '2021-03-20'
+slug: read-and-write-to-files
+categories: []
+tags: []
+output:
+  blogdown::html_page:
+    toc: true
+    toc_depth: 5
+---
+
+<script src="/rmarkdown-libs/header-attrs/header-attrs.js"></script>
+<link href="/rmarkdown-libs/anchor-sections/anchor-sections.css" rel="stylesheet" />
+<script src="/rmarkdown-libs/anchor-sections/anchor-sections.js"></script>
+
+<div id="TOC">
+<ul>
+<li><a href="#introduction">1 Introduction</a></li>
+<li><a href="#reading-csv-files">2 Reading csv-files</a>
+<ul>
+<li><a href="#via-sql-query">2.1 via SQL Query</a></li>
+<li><a href="#via-ssms">2.2 via <span>SSMS</span></a></li>
+</ul></li>
+<li><a href="#write-to-csv">3 Write to csv</a></li>
+</ul>
+</div>
+
+<div id="introduction" class="section level1">
+<h1>1 Introduction</h1>
+<p>Before we get into the interesting things like data wrangling, aggregation and manipulation, I would like to briefly explain the import and export of files in <a href="https://docs.microsoft.com/en-us/sql/ssms/sql-server-management-studio-ssms?view=sql-server-ver15">SSMS</a>.</p>
+<p>For this post I created a TestCSV.csv and used the dataset <em>flight</em> from the statistics platform <a href="https://www.kaggle.com">“Kaggle”</a>. You can download it from my <a href="https://github.com/MFuchs1989/Datasets-and-Miscellaneous/tree/main/datasets">GitHub Repository</a>.</p>
+</div>
+<div id="reading-csv-files" class="section level1">
+<h1>2 Reading csv-files</h1>
+<p>Since we are working with <a href="https://docs.microsoft.com/en-us/sql/ssms/sql-server-management-studio-ssms?view=sql-server-ver15">Server Management Studio (SSMS)</a> from Microsoft, I will show how to load data in two ways with this setup.</p>
+<div id="via-sql-query" class="section level2">
+<h2>2.1 via SQL Query</h2>
+<p>To be able to load a table into SSMS via the bulk command, we must first create it on the database. The column names and their order must be identical.</p>
+<p>So in the first step we create a database and a corresponding table.</p>
+<p>How I create the database and the tables can be read in my post <a href="https://michael-fuchs-sql.netlify.app/2021/03/07/create-a-database/#create-a-new-database">Create a Database</a>.</p>
+<pre class="r"><code>CREATE DATABASE Read_And_Write;
+
+USE Read_And_Write;
+
+
+
+CREATE TABLE Test_CSV_Table
+    (ID_testCSV INT NOT NULL,
+    First_Name VARCHAR(100) NOT NULL,
+    Last_Name VARCHAR(100) NOT NULL,
+    Gender VARCHAR(100) NOT NULL)
+    ;
+
+SELECT * FROM Test_CSV_Table</code></pre>
+<p><img src="/post/2021-03-20-read-and-write-to-files_files/p8p1.png" /></p>
+<p>Here we go!</p>
+<p>Now we use the bulk command to load the TestCSV.csv into our created table.
+I have placed the TestCSV in a folder (‘datasets’) on my desktop for this purpose.</p>
+<pre class="r"><code>BULK INSERT Test_CSV_Table
+    FROM &#39;C:\Users\Michael Fuchs\Desktop\datasets\testCSV.csv&#39;
+    WITH (FIRSTROW = 2, FIELDTERMINATOR = &#39;;&#39;, ROWTERMINATOR = &#39;\n&#39;);</code></pre>
+<pre class="r"><code>SELECT * FROM Test_CSV_Table</code></pre>
+<p><img src="/post/2021-03-20-read-and-write-to-files_files/p8p2.png" /></p>
+<p>Has worked.</p>
+<p>Of course, in real life you usually have to deal with tables that have far more columns. In order to avoid having to create them individually in order to be able to load data, there is another more convenient way to load data in <a href="https://docs.microsoft.com/en-us/sql/ssms/sql-server-management-studio-ssms?view=sql-server-ver15">SSMS</a>.</p>
+</div>
+<div id="via-ssms" class="section level2">
+<h2>2.2 via <a href="https://docs.microsoft.com/en-us/sql/ssms/sql-server-management-studio-ssms?view=sql-server-ver15">SSMS</a></h2>
+<p>In the Object Explorer we see our created (and now also filled) table.</p>
+<p><img src="/post/2021-03-20-read-and-write-to-files_files/p8p3.png" /></p>
+<p>Let’s now try to load the data set <em>flight</em> from <a href="https://www.kaggle.com">“Kaggle”</a>. This dataset is also stored in the ‘datasets’ folder on my desktop.</p>
+<p>To do this, <strong>right-click on the database</strong> (‘Read_And_Write’) - <strong>Tasks</strong> - <strong>Importing Flat File…</strong></p>
+<p><img src="/post/2021-03-20-read-and-write-to-files_files/p8p4.png" /></p>
+<p>Navigate to the location where the file is stored.</p>
+<p><img src="/post/2021-03-20-read-and-write-to-files_files/p8p5.png" /></p>
+<p>Now you get a short overview of the dataset to be loaded.</p>
+<p><img src="/post/2021-03-20-read-and-write-to-files_files/p8p6.png" /></p>
+<p>You can also make some modifications to the columns at this point:</p>
+<p><img src="/post/2021-03-20-read-and-write-to-files_files/p8p7.png" /></p>
+<p>One last summary check:</p>
+<p><img src="/post/2021-03-20-read-and-write-to-files_files/p8p8.png" /></p>
+<p>Perfect, our new record is loaded:</p>
+<p><img src="/post/2021-03-20-read-and-write-to-files_files/p8p9.png" /></p>
+</div>
+</div>
+<div id="write-to-csv" class="section level1">
+<h1>3 Write to csv</h1>
+<p>Now we have loaded two tables into our database in two different ways.
+Let’s say we have enriched one of them with more data. Here, for example, the Test_CSV_Table:</p>
+<pre class="r"><code>INSERT INTO Test_CSV_Table (ID_testCSV, First_Name, Last_Name, Gender) VALUES (4, &#39;Michael&#39;, &#39;Fuchs&#39;, &#39;male&#39;)
+
+SELECT * FROM Test_CSV_Table</code></pre>
+<p><img src="/post/2021-03-20-read-and-write-to-files_files/p8p10.png" /></p>
+<p>Now we want to extract the completed table and save it as a csv file (for example, to continue working with it in another programme). <a href="https://docs.microsoft.com/en-us/sql/ssms/sql-server-management-studio-ssms?view=sql-server-ver15">SSMS</a> also offers a convenient solution for this:</p>
+<p><img src="/post/2021-03-20-read-and-write-to-files_files/p8p.png" /></p>
+</div>
