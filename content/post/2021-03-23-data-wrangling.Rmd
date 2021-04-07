@@ -259,6 +259,8 @@ SELECT Tai_lNum, Origin_Airport, Scheduled_Departure, Departure_Time, Dep_Delay
 
 ### 4.3.6 With Text
 
+**Starts with L**
+
 ```{r, eval=F, echo=T}
 SELECT Tai_lNum, Origin_Airport
 	FROM flight
@@ -268,7 +270,7 @@ SELECT Tai_lNum, Origin_Airport
 
 ![](/post/2021-03-23-data-wrangling_files/p9p18.png)
 
-
+**Contains an F in the middle**
 
 ```{r, eval=F, echo=T}
 SELECT Tai_lNum, Origin_Airport
@@ -279,7 +281,7 @@ SELECT Tai_lNum, Origin_Airport
 
 ![](/post/2021-03-23-data-wrangling_files/p9p19.png)
 
-
+**Ends with H**
 
 ```{r, eval=F, echo=T}
 SELECT Tai_lNum, Origin_Airport
@@ -290,6 +292,7 @@ SELECT Tai_lNum, Origin_Airport
 
 ![](/post/2021-03-23-data-wrangling_files/p9p20.png)
 
+**Does not include an A in the middle**
 
 ```{r, eval=F, echo=T}
 SELECT Tai_lNum, Origin_Airport

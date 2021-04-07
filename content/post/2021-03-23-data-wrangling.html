@@ -185,21 +185,25 @@ USE Wrangling;</code></pre>
 </div>
 <div id="with-text" class="section level3">
 <h3>4.3.6 With Text</h3>
+<p><strong>Starts with L</strong></p>
 <pre class="r"><code>SELECT Tai_lNum, Origin_Airport
     FROM flight
     WHERE Origin_Airport LIKE &#39;L%&#39;
     ;</code></pre>
 <p><img src="/post/2021-03-23-data-wrangling_files/p9p18.png" /></p>
+<p><strong>Contains an F in the middle</strong></p>
 <pre class="r"><code>SELECT Tai_lNum, Origin_Airport
     FROM flight
     WHERE Origin_Airport LIKE &#39;%F%&#39;
     ;</code></pre>
 <p><img src="/post/2021-03-23-data-wrangling_files/p9p19.png" /></p>
+<p><strong>Ends with H</strong></p>
 <pre class="r"><code>SELECT Tai_lNum, Origin_Airport
     FROM flight
     WHERE Origin_Airport LIKE &#39;%H&#39;
     ;</code></pre>
 <p><img src="/post/2021-03-23-data-wrangling_files/p9p20.png" /></p>
+<p><strong>Does not include an A in the middle</strong></p>
 <pre class="r"><code>SELECT Tai_lNum, Origin_Airport
     FROM flight
     WHERE Origin_Airport NOT LIKE &#39;%A%&#39;
