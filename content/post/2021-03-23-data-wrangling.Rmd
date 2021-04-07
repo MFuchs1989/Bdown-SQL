@@ -21,122 +21,328 @@ For this post I used the dataset *flight* from the statistics platform ["Kaggle"
 
 
 
+# 2 Preparation
+
+For the following examples, I set up a new database. 
+
+```{r, eval=F, echo=T}
+SET LANGUAGE ENGLISH
+
+
+CREATE DATABASE Wrangling;
+
+USE Wrangling;
+```
+
+
+I now import the record *flight* into this database ('Wrangling'). I have described how to do this [here](https://michael-fuchs-sql.netlify.app/2021/03/20/read-and-write-to-files/#via-ssms).
+**Tip**: Pay attention to the data types assigned to the columns. For example, Dep_Delay is stored as nvchar by default. Change all data types accordingly. 
+
+
+# 3 Get an Overview of the Data
+
+First of all, I would like to know which tables are stored in my database.
+
+```{r, eval=F, echo=T}
+SELECT *
+	FROM SYSOBJECTS
+	WHERE xtype = 'U';
+```
+
+![](/post/2021-03-23-data-wrangling_files/p9p1.png)
+
+
+Now I would like to get an overview of the *flight* table. 
+
+```{r, eval=F, echo=T}
+EXEC sp_help 'flight' 
+```
+
+![](/post/2021-03-23-data-wrangling_files/p9p2.png)
+
+
+We get a little more detailed view this way:
+
+```{r, eval=F, echo=T}
+EXEC sp_columns 'flight'
+```
+
+![](/post/2021-03-23-data-wrangling_files/p9p3.png)
+
+We can also display the amount of memory used per table. 
+
+```{r, eval=F, echo=T}
+EXEC sp_spaceused 'flight'
+```
+
+![](/post/2021-03-23-data-wrangling_files/p9p4.png)
+
+
+# 4 Data Wrangling
+
+## 4.1 Select specific columns
+
+Certain columns can be selected with the Select Statement. 
+
+```{r, eval=F, echo=T}
+SELECT DayOfWeek, Origin_Airport, Departure_Time, Arrival_Time
+	FROM flight
+	;
+```
+
+![](/post/2021-03-23-data-wrangling_files/p9p5.png)
+
+
+Select first 5 rows of specific Columns
+
+```{r, eval=F, echo=T}
+SELECT TOP 5 DayOfWeek, Origin_Airport, Departure_Time, Arrival_Time
+	FROM flight
+	;
+```
+
+![](/post/2021-03-23-data-wrangling_files/p9p6.png)
 
 
 
+## 4.2 Output columns in a specific order
+
+
+### 4.2.1 Order ascending
+
+```{r, eval=F, echo=T}
+SELECT Tai_lNum, Origin_Airport, Scheduled_Departure, Departure_Time, Dep_Delay
+	FROM flight
+	ORDER BY Dep_Delay
+	;
+```
+
+![](/post/2021-03-23-data-wrangling_files/p9p7.png)
+
+
+Here are the three flights that took off soonest (ahead of schedule). 
+
+```{r, eval=F, echo=T}
+SELECT TOP 3 Tai_lNum, Origin_Airport, Scheduled_Departure, Departure_Time, Dep_Delay
+	FROM flight
+	ORDER BY Dep_Delay
+	;
+```
+
+![](/post/2021-03-23-data-wrangling_files/p9p8.png)
+
+
+### 4.2.2 Order descending
+
+
+```{r, eval=F, echo=T}
+SELECT Tai_lNum, Origin_Airport, Scheduled_Departure, Departure_Time, Dep_Delay
+	FROM flight
+	ORDER BY Dep_Delay DESC
+	;
+```
+
+![](/post/2021-03-23-data-wrangling_files/p9p9.png)
+
+
+Here are the three flights that took off the latest. 
+
+```{r, eval=F, echo=T}
+SELECT TOP 3 Tai_lNum, Origin_Airport, Scheduled_Departure, Departure_Time, Dep_Delay
+	FROM flight
+	ORDER BY Dep_Delay DESC
+	;
+```
+
+![](/post/2021-03-23-data-wrangling_files/p9p10.png)
+
+
+### 4.2.3 Multiple Orders
+
+
+```{r, eval=F, echo=T}
+SELECT Tai_lNum, Origin_Airport, Scheduled_Departure, Departure_Time, Dep_Delay
+	FROM flight
+	ORDER BY Origin_Airport, Dep_Delay DESC
+	;
+```
+
+![](/post/2021-03-23-data-wrangling_files/p9p11.png
+
+
+
+First, Origin_Airport is ordered (ascending [alphabetical] here), then Dep_Delay (descending).
+
+
+
+## 4.3 Conditional Statements (WHERE)
+
+With the help of the WHERE statement we can set certain conditions for the select. 
+
+
+### 4.3.1 With One Condition
+
+```{r, eval=F, echo=T}
+SELECT Tai_lNum, Origin_Airport, Scheduled_Departure, Departure_Time, Dep_Delay
+	FROM flight
+	WHERE Origin_Airport = 'JFK'
+	;
+```
+
+![](/post/2021-03-23-data-wrangling_files/p9p12.png)
+
+
+### 4.3.2 With Multiple Conditions (AND)
+
+```{r, eval=F, echo=T}
+SELECT Tai_lNum, Origin_Airport, Scheduled_Departure, Departure_Time, Dep_Delay
+	FROM flight
+	WHERE Origin_Airport = 'JFK' AND Dep_Delay < -8
+	;
+```
+
+![](/post/2021-03-23-data-wrangling_files/p9p13.png)
+
+### 4.3.3 With Multiple Conditions (OR)
+
+```{r, eval=F, echo=T}
+SELECT Tai_lNum, Origin_Airport, Scheduled_Departure, Departure_Time, Dep_Delay
+	FROM flight
+	WHERE Origin_Airport = 'JFK' OR Dep_Delay > 200
+	;
+```
+
+![](/post/2021-03-23-data-wrangling_files/p9p14.png)
+
+
+### 4.3.4 With a Range
+
+```{r, eval=F, echo=T}
+SELECT Tai_lNum, Origin_Airport, Scheduled_Departure, Departure_Time, Dep_Delay
+	FROM flight
+	WHERE Dep_Delay BETWEEN -7 AND 15
+	;
+```
+
+![](/post/2021-03-23-data-wrangling_files/p9p15.png)
+
+
+### 4.3.5 With Lists
+
+**Is in List**
+
+
+```{r, eval=F, echo=T}
+SELECT Tai_lNum, Origin_Airport, Scheduled_Departure, Departure_Time, Dep_Delay
+	FROM flight
+	WHERE Origin_Airport IN ('SFO', 'ORD', 'IAH')
+	;
+```
+
+![](/post/2021-03-23-data-wrangling_files/p9p16.png)
+
+
+**Is not in List**
+
+
+```{r, eval=F, echo=T}
+SELECT Tai_lNum, Origin_Airport, Scheduled_Departure, Departure_Time, Dep_Delay
+	FROM flight
+	WHERE Origin_Airport NOT IN ('SFO', 'ORD', 'IAH')
+	;
+```
+
+![](/post/2021-03-23-data-wrangling_files/p9p17.png)
+
+
+
+
+### 4.3.6 With Text
+
+```{r, eval=F, echo=T}
+SELECT Tai_lNum, Origin_Airport
+	FROM flight
+	WHERE Origin_Airport LIKE 'L%'
+	;
+```
+
+![](/post/2021-03-23-data-wrangling_files/p9p18.png)
 
 
 
 ```{r, eval=F, echo=T}
-
+SELECT Tai_lNum, Origin_Airport
+	FROM flight
+	WHERE Origin_Airport LIKE '%F%'
+	;
 ```
 
-![](/post/2021-03-23-data-wrangling_files/p9p.png)
-
-
-
+![](/post/2021-03-23-data-wrangling_files/p9p19.png)
 
 
 
 ```{r, eval=F, echo=T}
-
+SELECT Tai_lNum, Origin_Airport
+	FROM flight
+	WHERE Origin_Airport LIKE '%H'
+	;
 ```
 
-![](/post/2021-03-23-data-wrangling_files/p9p.png)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+![](/post/2021-03-23-data-wrangling_files/p9p20.png)
 
 
 ```{r, eval=F, echo=T}
-
+SELECT Tai_lNum, Origin_Airport
+	FROM flight
+	WHERE Origin_Airport NOT LIKE '%A%'
+	;
 ```
 
-![](/post/2021-03-23-data-wrangling_files/p9p.png)
+![](/post/2021-03-23-data-wrangling_files/p9p21.png)
 
 
 
 
+### 4.3.7 Filter for NULL Values
 
+Let's take the testCSV table for this example. I had already used this [here](https://michael-fuchs-sql.netlify.app/2021/03/20/read-and-write-to-files/) once.
 
-
-
-
-
-
-
-
-
-
-
-
+When importing this table, I have set that the Gender column may contain NULL values. Now let's add an example with NULL values to the existing table.
 
 ```{r, eval=F, echo=T}
+INSERT INTO testCSV (ID_testCSV, First_Name, Last_Name, Gender) VALUES (4, 'Michael', 'Fuchs', NULL)
 
+SELECT * 
+	FROM testCSV
+	;
 ```
 
-![](/post/2021-03-23-data-wrangling_files/p9p.png)
+![](/post/2021-03-23-data-wrangling_files/p9p22.png)
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+Now we filter for NULL values:
 
 ```{r, eval=F, echo=T}
-
+SELECT * 
+	FROM testCSV
+	WHERE Gender IS NULL
+	;
 ```
 
-![](/post/2021-03-23-data-wrangling_files/p9p.png)
+![](/post/2021-03-23-data-wrangling_files/p9p23.png)
 
 
+# 5 Conclusion
+
+In this post I have covered the following topics:
+
++ How to get an overview of the data
++ Selecting specific columns
++ Conditional Statements
+
+These are the basics of data wrangling which can be used in all possible combinations. 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-```{r, eval=F, echo=T}
-
-```
-
-![](/post/2021-03-23-data-wrangling_files/p9p.png)
 
 
 

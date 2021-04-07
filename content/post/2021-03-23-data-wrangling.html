@@ -18,6 +18,29 @@ output:
 <div id="TOC">
 <ul>
 <li><a href="#introduction">1 Introduction</a></li>
+<li><a href="#preparation">2 Preparation</a></li>
+<li><a href="#get-an-overview-of-the-data">3 Get an Overview of the Data</a></li>
+<li><a href="#data-wrangling">4 Data Wrangling</a>
+<ul>
+<li><a href="#select-specific-columns">4.1 Select specific columns</a></li>
+<li><a href="#output-columns-in-a-specific-order">4.2 Output columns in a specific order</a>
+<ul>
+<li><a href="#order-ascending">4.2.1 Order ascending</a></li>
+<li><a href="#order-descending">4.2.2 Order descending</a></li>
+<li><a href="#multiple-orders">4.2.3 Multiple Orders</a></li>
+</ul></li>
+<li><a href="#conditional-statements-where">4.3 Conditional Statements (WHERE)</a>
+<ul>
+<li><a href="#with-one-condition">4.3.1 With One Condition</a></li>
+<li><a href="#with-multiple-conditions-and">4.3.2 With Multiple Conditions (AND)</a></li>
+<li><a href="#with-multiple-conditions-or">4.3.3 With Multiple Conditions (OR)</a></li>
+<li><a href="#with-a-range">4.3.4 With a Range</a></li>
+<li><a href="#with-lists">4.3.5 With Lists</a></li>
+<li><a href="#with-text">4.3.6 With Text</a></li>
+<li><a href="#filter-for-null-values">4.3.7 Filter for NULL Values</a></li>
+</ul></li>
+</ul></li>
+<li><a href="#conclusion">5 Conclusion</a></li>
 </ul>
 </div>
 
@@ -25,10 +48,190 @@ output:
 <h1>1 Introduction</h1>
 <p>Now that we know how to <a href="https://michael-fuchs-sql.netlify.app/2021/03/20/read-and-write-to-files/">load data sets</a> into <a href="https://docs.microsoft.com/en-us/sql/ssms/sql-server-management-studio-ssms?view=sql-server-ver15">SSMS</a>, we start with the topic of Data Wrangling.</p>
 <p>For this post I used the dataset <em>flight</em> from the statistics platform <a href="https://www.kaggle.com">“Kaggle”</a>. You can download it from my <a href="https://github.com/MFuchs1989/Datasets-and-Miscellaneous/tree/main/datasets">GitHub Repository</a>.</p>
-<p><img src="/post/2021-03-23-data-wrangling_files/p9p.png" /></p>
-<p><img src="/post/2021-03-23-data-wrangling_files/p9p.png" /></p>
-<p><img src="/post/2021-03-23-data-wrangling_files/p9p.png" /></p>
-<p><img src="/post/2021-03-23-data-wrangling_files/p9p.png" /></p>
-<p><img src="/post/2021-03-23-data-wrangling_files/p9p.png" /></p>
-<p><img src="/post/2021-03-23-data-wrangling_files/p9p.png" /></p>
+</div>
+<div id="preparation" class="section level1">
+<h1>2 Preparation</h1>
+<p>For the following examples, I set up a new database.</p>
+<pre class="r"><code>SET LANGUAGE ENGLISH
+
+
+CREATE DATABASE Wrangling;
+
+USE Wrangling;</code></pre>
+<p>I now import the record <em>flight</em> into this database (‘Wrangling’). I have described how to do this <a href="https://michael-fuchs-sql.netlify.app/2021/03/20/read-and-write-to-files/#via-ssms">here</a>.
+<strong>Tip</strong>: Pay attention to the data types assigned to the columns. For example, Dep_Delay is stored as nvchar by default. Change all data types accordingly.</p>
+</div>
+<div id="get-an-overview-of-the-data" class="section level1">
+<h1>3 Get an Overview of the Data</h1>
+<p>First of all, I would like to know which tables are stored in my database.</p>
+<pre class="r"><code>SELECT *
+    FROM SYSOBJECTS
+    WHERE xtype = &#39;U&#39;;</code></pre>
+<p><img src="/post/2021-03-23-data-wrangling_files/p9p1.png" /></p>
+<p>Now I would like to get an overview of the <em>flight</em> table.</p>
+<pre class="r"><code>EXEC sp_help &#39;flight&#39; </code></pre>
+<p><img src="/post/2021-03-23-data-wrangling_files/p9p2.png" /></p>
+<p>We get a little more detailed view this way:</p>
+<pre class="r"><code>EXEC sp_columns &#39;flight&#39;</code></pre>
+<p><img src="/post/2021-03-23-data-wrangling_files/p9p3.png" /></p>
+<p>We can also display the amount of memory used per table.</p>
+<pre class="r"><code>EXEC sp_spaceused &#39;flight&#39;</code></pre>
+<p><img src="/post/2021-03-23-data-wrangling_files/p9p4.png" /></p>
+</div>
+<div id="data-wrangling" class="section level1">
+<h1>4 Data Wrangling</h1>
+<div id="select-specific-columns" class="section level2">
+<h2>4.1 Select specific columns</h2>
+<p>Certain columns can be selected with the Select Statement.</p>
+<pre class="r"><code>SELECT DayOfWeek, Origin_Airport, Departure_Time, Arrival_Time
+    FROM flight
+    ;</code></pre>
+<p><img src="/post/2021-03-23-data-wrangling_files/p9p5.png" /></p>
+<p>Select first 5 rows of specific Columns</p>
+<pre class="r"><code>SELECT TOP 5 DayOfWeek, Origin_Airport, Departure_Time, Arrival_Time
+    FROM flight
+    ;</code></pre>
+<p><img src="/post/2021-03-23-data-wrangling_files/p9p6.png" /></p>
+</div>
+<div id="output-columns-in-a-specific-order" class="section level2">
+<h2>4.2 Output columns in a specific order</h2>
+<div id="order-ascending" class="section level3">
+<h3>4.2.1 Order ascending</h3>
+<pre class="r"><code>SELECT Tai_lNum, Origin_Airport, Scheduled_Departure, Departure_Time, Dep_Delay
+    FROM flight
+    ORDER BY Dep_Delay
+    ;</code></pre>
+<p><img src="/post/2021-03-23-data-wrangling_files/p9p7.png" /></p>
+<p>Here are the three flights that took off soonest (ahead of schedule).</p>
+<pre class="r"><code>SELECT TOP 3 Tai_lNum, Origin_Airport, Scheduled_Departure, Departure_Time, Dep_Delay
+    FROM flight
+    ORDER BY Dep_Delay
+    ;</code></pre>
+<p><img src="/post/2021-03-23-data-wrangling_files/p9p8.png" /></p>
+</div>
+<div id="order-descending" class="section level3">
+<h3>4.2.2 Order descending</h3>
+<pre class="r"><code>SELECT Tai_lNum, Origin_Airport, Scheduled_Departure, Departure_Time, Dep_Delay
+    FROM flight
+    ORDER BY Dep_Delay DESC
+    ;</code></pre>
+<p><img src="/post/2021-03-23-data-wrangling_files/p9p9.png" /></p>
+<p>Here are the three flights that took off the latest.</p>
+<pre class="r"><code>SELECT TOP 3 Tai_lNum, Origin_Airport, Scheduled_Departure, Departure_Time, Dep_Delay
+    FROM flight
+    ORDER BY Dep_Delay DESC
+    ;</code></pre>
+<p><img src="/post/2021-03-23-data-wrangling_files/p9p10.png" /></p>
+</div>
+<div id="multiple-orders" class="section level3">
+<h3>4.2.3 Multiple Orders</h3>
+<pre class="r"><code>SELECT Tai_lNum, Origin_Airport, Scheduled_Departure, Departure_Time, Dep_Delay
+    FROM flight
+    ORDER BY Origin_Airport, Dep_Delay DESC
+    ;</code></pre>
+<p>[](/post/2021-03-23-data-wrangling_files/p9p11.png</p>
+<p>First, Origin_Airport is ordered (ascending [alphabetical] here), then Dep_Delay (descending).</p>
+</div>
+</div>
+<div id="conditional-statements-where" class="section level2">
+<h2>4.3 Conditional Statements (WHERE)</h2>
+<p>With the help of the WHERE statement we can set certain conditions for the select.</p>
+<div id="with-one-condition" class="section level3">
+<h3>4.3.1 With One Condition</h3>
+<pre class="r"><code>SELECT Tai_lNum, Origin_Airport, Scheduled_Departure, Departure_Time, Dep_Delay
+    FROM flight
+    WHERE Origin_Airport = &#39;JFK&#39;
+    ;</code></pre>
+<p><img src="/post/2021-03-23-data-wrangling_files/p9p12.png" /></p>
+</div>
+<div id="with-multiple-conditions-and" class="section level3">
+<h3>4.3.2 With Multiple Conditions (AND)</h3>
+<pre class="r"><code>SELECT Tai_lNum, Origin_Airport, Scheduled_Departure, Departure_Time, Dep_Delay
+    FROM flight
+    WHERE Origin_Airport = &#39;JFK&#39; AND Dep_Delay &lt; -8
+    ;</code></pre>
+<p><img src="/post/2021-03-23-data-wrangling_files/p9p13.png" /></p>
+</div>
+<div id="with-multiple-conditions-or" class="section level3">
+<h3>4.3.3 With Multiple Conditions (OR)</h3>
+<pre class="r"><code>SELECT Tai_lNum, Origin_Airport, Scheduled_Departure, Departure_Time, Dep_Delay
+    FROM flight
+    WHERE Origin_Airport = &#39;JFK&#39; OR Dep_Delay &gt; 200
+    ;</code></pre>
+<p><img src="/post/2021-03-23-data-wrangling_files/p9p14.png" /></p>
+</div>
+<div id="with-a-range" class="section level3">
+<h3>4.3.4 With a Range</h3>
+<pre class="r"><code>SELECT Tai_lNum, Origin_Airport, Scheduled_Departure, Departure_Time, Dep_Delay
+    FROM flight
+    WHERE Dep_Delay BETWEEN -7 AND 15
+    ;</code></pre>
+<p><img src="/post/2021-03-23-data-wrangling_files/p9p15.png" /></p>
+</div>
+<div id="with-lists" class="section level3">
+<h3>4.3.5 With Lists</h3>
+<p><strong>Is in List</strong></p>
+<pre class="r"><code>SELECT Tai_lNum, Origin_Airport, Scheduled_Departure, Departure_Time, Dep_Delay
+    FROM flight
+    WHERE Origin_Airport IN (&#39;SFO&#39;, &#39;ORD&#39;, &#39;IAH&#39;)
+    ;</code></pre>
+<p><img src="/post/2021-03-23-data-wrangling_files/p9p16.png" /></p>
+<p><strong>Is not in List</strong></p>
+<pre class="r"><code>SELECT Tai_lNum, Origin_Airport, Scheduled_Departure, Departure_Time, Dep_Delay
+    FROM flight
+    WHERE Origin_Airport NOT IN (&#39;SFO&#39;, &#39;ORD&#39;, &#39;IAH&#39;)
+    ;</code></pre>
+<p><img src="/post/2021-03-23-data-wrangling_files/p9p17.png" /></p>
+</div>
+<div id="with-text" class="section level3">
+<h3>4.3.6 With Text</h3>
+<pre class="r"><code>SELECT Tai_lNum, Origin_Airport
+    FROM flight
+    WHERE Origin_Airport LIKE &#39;L%&#39;
+    ;</code></pre>
+<p><img src="/post/2021-03-23-data-wrangling_files/p9p18.png" /></p>
+<pre class="r"><code>SELECT Tai_lNum, Origin_Airport
+    FROM flight
+    WHERE Origin_Airport LIKE &#39;%F%&#39;
+    ;</code></pre>
+<p><img src="/post/2021-03-23-data-wrangling_files/p9p19.png" /></p>
+<pre class="r"><code>SELECT Tai_lNum, Origin_Airport
+    FROM flight
+    WHERE Origin_Airport LIKE &#39;%H&#39;
+    ;</code></pre>
+<p><img src="/post/2021-03-23-data-wrangling_files/p9p20.png" /></p>
+<pre class="r"><code>SELECT Tai_lNum, Origin_Airport
+    FROM flight
+    WHERE Origin_Airport NOT LIKE &#39;%A%&#39;
+    ;</code></pre>
+<p><img src="/post/2021-03-23-data-wrangling_files/p9p21.png" /></p>
+</div>
+<div id="filter-for-null-values" class="section level3">
+<h3>4.3.7 Filter for NULL Values</h3>
+<p>Let’s take the testCSV table for this example. I had already used this <a href="https://michael-fuchs-sql.netlify.app/2021/03/20/read-and-write-to-files/">here</a> once.</p>
+<p>When importing this table, I have set that the Gender column may contain NULL values. Now let’s add an example with NULL values to the existing table.</p>
+<pre class="r"><code>INSERT INTO testCSV (ID_testCSV, First_Name, Last_Name, Gender) VALUES (4, &#39;Michael&#39;, &#39;Fuchs&#39;, NULL)
+
+SELECT * 
+    FROM testCSV
+    ;</code></pre>
+<p><img src="/post/2021-03-23-data-wrangling_files/p9p22.png" /></p>
+<p>Now we filter for NULL values:</p>
+<pre class="r"><code>SELECT * 
+    FROM testCSV
+    WHERE Gender IS NULL
+    ;</code></pre>
+<p><img src="/post/2021-03-23-data-wrangling_files/p9p23.png" /></p>
+</div>
+</div>
+</div>
+<div id="conclusion" class="section level1">
+<h1>5 Conclusion</h1>
+<p>In this post I have covered the following topics:</p>
+<ul>
+<li>How to get an overview of the data</li>
+<li>Selecting specific columns</li>
+<li>Conditional Statements</li>
+</ul>
+<p>These are the basics of data wrangling which can be used in all possible combinations.</p>
 </div>
