@@ -1,0 +1,145 @@
+---
+title: Data Wrangling
+author: Michael Fuchs
+date: '2021-03-23'
+slug: data-wrangling
+categories: []
+tags: []
+output:
+  blogdown::html_page:
+    toc: true
+    toc_depth: 5
+---
+
+
+# 1 Introduction
+
+
+Now that we know how to [load data sets](https://michael-fuchs-sql.netlify.app/2021/03/20/read-and-write-to-files/) into [SSMS](https://docs.microsoft.com/en-us/sql/ssms/sql-server-management-studio-ssms?view=sql-server-ver15), we start with the topic of Data Wrangling. 
+
+For this post I used the dataset *flight* from the statistics platform ["Kaggle"](https://www.kaggle.com). You can download it from my [GitHub Repository](https://github.com/MFuchs1989/Datasets-and-Miscellaneous/tree/main/datasets).
+
+
+
+
+
+
+
+
+
+```{r, eval=F, echo=T}
+
+```
+
+![](/post/2021-03-23-data-wrangling_files/p9p.png)
+
+
+
+
+
+
+```{r, eval=F, echo=T}
+
+```
+
+![](/post/2021-03-23-data-wrangling_files/p9p.png)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+```{r, eval=F, echo=T}
+
+```
+
+![](/post/2021-03-23-data-wrangling_files/p9p.png)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+```{r, eval=F, echo=T}
+
+```
+
+![](/post/2021-03-23-data-wrangling_files/p9p.png)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+```{r, eval=F, echo=T}
+
+```
+
+![](/post/2021-03-23-data-wrangling_files/p9p.png)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+```{r, eval=F, echo=T}
+
+```
+
+![](/post/2021-03-23-data-wrangling_files/p9p.png)
+
+
+
+
+
+
