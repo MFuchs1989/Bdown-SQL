@@ -19,7 +19,11 @@ output:
 <ul>
 <li><a href="#introduction">1 Introduction</a></li>
 <li><a href="#preparation">2 Preparation</a></li>
-<li><a href="#get-an-overview-of-the-data">3 Get an Overview of the Data</a></li>
+<li><a href="#get-an-overview-of-the-data">3 Get an Overview of the Data</a>
+<ul>
+<li><a href="#count-rows">3.1 Count Rows</a></li>
+<li><a href="#count-columns">3.2 Count Columns</a></li>
+</ul></li>
 <li><a href="#data-wrangling">4 Data Wrangling</a>
 <ul>
 <li><a href="#select-specific-columns">4.1 Select specific columns</a></li>
@@ -77,6 +81,24 @@ USE Wrangling;</code></pre>
 <p>We can also display the amount of memory used per table.</p>
 <pre class="r"><code>EXEC sp_spaceused &#39;flight&#39;</code></pre>
 <p><img src="/post/2021-03-23-data-wrangling_files/p9p4.png" /></p>
+<div id="count-rows" class="section level2">
+<h2>3.1 Count Rows</h2>
+<pre class="r"><code>SELECT COUNT(*)
+    FROM flight
+    ;</code></pre>
+<p><img src="/post/2021-03-23-data-wrangling_files/p9z1.png" /></p>
+</div>
+<div id="count-columns" class="section level2">
+<h2>3.2 Count Columns</h2>
+<pre class="r"><code>SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.Columns 
+    WHERE TABLE_NAME = &#39;flight&#39;
+    ;</code></pre>
+<p><img src="/post/2021-03-23-data-wrangling_files/p9z2.png" /></p>
+<pre class="r"><code>SELECT Count(*) FROM INFORMATION_SCHEMA.Columns 
+    WHERE TABLE_NAME = &#39;flight&#39;
+    ;</code></pre>
+<p><img src="/post/2021-03-23-data-wrangling_files/p9z3.png" /></p>
+</div>
 </div>
 <div id="data-wrangling" class="section level1">
 <h1>4 Data Wrangling</h1>

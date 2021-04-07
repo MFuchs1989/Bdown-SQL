@@ -78,6 +78,38 @@ EXEC sp_spaceused 'flight'
 ![](/post/2021-03-23-data-wrangling_files/p9p4.png)
 
 
+## 3.1 Count Rows
+
+```{r, eval=F, echo=T}
+SELECT COUNT(*)
+	FROM flight
+	;
+```
+
+![](/post/2021-03-23-data-wrangling_files/p9z1.png)
+
+
+## 3.2 Count Columns
+
+```{r, eval=F, echo=T}
+SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.Columns 
+	WHERE TABLE_NAME = 'flight'
+	;
+```
+
+![](/post/2021-03-23-data-wrangling_files/p9z2.png)
+
+
+```{r, eval=F, echo=T}
+SELECT Count(*) FROM INFORMATION_SCHEMA.Columns 
+	WHERE TABLE_NAME = 'flight'
+	;
+```
+
+![](/post/2021-03-23-data-wrangling_files/p9z3.png)
+
+
+
 # 4 Data Wrangling
 
 ## 4.1 Select specific columns
