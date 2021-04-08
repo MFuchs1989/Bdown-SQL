@@ -1,0 +1,274 @@
+---
+title: Data Aggregation
+author: Michael Fuchs
+date: '2021-03-26'
+slug: data-aggregation
+categories: []
+tags: []
+output:
+  blogdown::html_page:
+    toc: true
+    toc_depth: 5
+---
+
+<script src="/rmarkdown-libs/header-attrs/header-attrs.js"></script>
+<link href="/rmarkdown-libs/anchor-sections/anchor-sections.css" rel="stylesheet" />
+<script src="/rmarkdown-libs/anchor-sections/anchor-sections.js"></script>
+
+<div id="TOC">
+<ul>
+<li><a href="#introduction">1 Introduction</a></li>
+<li><a href="#preparation">2 Preparation</a></li>
+<li><a href="#data-aggregation">3 Data Aggregation</a>
+<ul>
+<li><a href="#count">3.1 Count</a></li>
+<li><a href="#sum">3.2 Sum</a></li>
+<li><a href="#min-max-and-average">3.3 Min, Max and Average</a></li>
+<li><a href="#distinct">3.4 Distinct</a>
+<ul>
+<li><a href="#digression-difference-between-unique-vs.-distinct">3.4.1 Digression: Difference between Unique vs. Distinct</a></li>
+<li><a href="#get-distinct-values">3.4.2 Get distinct values</a></li>
+</ul></li>
+<li><a href="#group-by">3.5 Group By</a>
+<ul>
+<li><a href="#simple-group-by-with-avg">3.5.1 Simple Group By with AVG</a></li>
+<li><a href="#group-and-order-by-with-avg">3.5.2 Group and Order By with AVG</a></li>
+<li><a href="#group-and-order-by-with-abs-stdev">3.5.3 Group and Order By with ABS &amp; STDEV</a></li>
+<li><a href="#group-and-order-by-with-max">3.5.4 Group and Order By with MAX</a></li>
+<li><a href="#multiple-group-and-order-by">3.5.5 Multiple Group and Order By</a></li>
+</ul></li>
+<li><a href="#having">3.6 Having</a></li>
+</ul></li>
+<li><a href="#conclusion">4 Conclusion</a></li>
+</ul>
+</div>
+
+<div id="introduction" class="section level1">
+<h1>1 Introduction</h1>
+<p>Now that we have got to know the best-known methods from the field of <a href="https://michael-fuchs-sql.netlify.app/2021/03/23/data-wrangling/">Data Wrangling</a>, we come to the possibilities of Data Aggregation.</p>
+<p>For this post I used the dataset <em>flight</em> from the statistics platform <a href="https://www.kaggle.com">“Kaggle”</a>. You can download it from my <a href="https://github.com/MFuchs1989/Datasets-and-Miscellaneous/tree/main/datasets">GitHub Repository</a>.</p>
+</div>
+<div id="preparation" class="section level1">
+<h1>2 Preparation</h1>
+<p>For the following examples, I set up a new database.</p>
+<pre class="r"><code>SET LANGUAGE ENGLISH
+
+
+CREATE DATABASE Aggregation;
+
+USE Aggregation;</code></pre>
+<p>I now import the record <em>flight</em> into this database (‘Aggregation’). I have described how to do this <a href="https://michael-fuchs-sql.netlify.app/2021/03/20/read-and-write-to-files/#via-ssms">here</a>.
+<strong>Tip</strong>: Pay attention to the data types assigned to the columns. For example, Dep_Delay is stored as nvchar by default. Change all data types accordingly.</p>
+<p>Furthermore, I create a table that contains NULL values among other things:</p>
+<pre class="r"><code>CREATE TABLE example_Table
+    (ID INT NOT NULL IDENTITY(1,1) PRIMARY KEY,
+    Cat1 VARCHAR(100),
+    Cat2 INT)
+    ;
+
+INSERT INTO example_Table (Cat1, Cat2) VALUES (&#39;A&#39;, 1)
+INSERT INTO example_Table (Cat1, Cat2) VALUES (&#39;A&#39;, 2)
+INSERT INTO example_Table (Cat1, Cat2) VALUES (&#39;A&#39;, NULL)
+
+INSERT INTO example_Table (Cat1, Cat2) VALUES (&#39;B&#39;, 1)
+INSERT INTO example_Table (Cat1, Cat2) VALUES (&#39;B&#39;, 2)
+INSERT INTO example_Table (Cat1, Cat2) VALUES (&#39;B&#39;, 3)
+INSERT INTO example_Table (Cat1, Cat2) VALUES (NULL, 4)
+INSERT INTO example_Table (Cat1, Cat2) VALUES (&#39;B&#39;, NULL)
+INSERT INTO example_Table (Cat1, Cat2) VALUES (&#39;B&#39;, NULL)</code></pre>
+</div>
+<div id="data-aggregation" class="section level1">
+<h1>3 Data Aggregation</h1>
+<p>In the following, I will present the best-known aggregation techniques.</p>
+<div id="count" class="section level2">
+<h2>3.1 Count</h2>
+<p>For the examples with Count, let’s first look at the example table that was created:</p>
+<pre class="r"><code>SELECT *
+    FROM example_Table
+    ;</code></pre>
+<p><img src="/post/2021-03-26-data-aggregation_files/p10p1.png" /></p>
+<p>As we know from the post <a href="https://michael-fuchs-sql.netlify.app/2021/03/23/data-wrangling/">Data Wrangling</a> from chapter <a href="https://michael-fuchs-sql.netlify.app/2021/03/23/data-wrangling/#count-rows">Count Rows</a>, with the following SELECT COUNT command we have the possibility to determine how many rows the data set contains in total. It does not matter whether some columns contain NULL values or not.</p>
+<pre class="r"><code>SELECT COUNT(*) AS num_observations
+    FROM example_Table
+    ;</code></pre>
+<p><img src="/post/2021-03-26-data-aggregation_files/p10p2.png" /></p>
+<p>The method of counting the primary key is just as safe, since it must not contain any NULL values.</p>
+<pre class="r"><code>SELECT COUNT(ID) AS num_observations
+    FROM example_Table
+    ;</code></pre>
+<p><img src="/post/2021-03-26-data-aggregation_files/p10p3.png" /></p>
+<p>Now let’s count the observations in column Cat1:</p>
+<pre class="r"><code>SELECT COUNT(Cat1) AS num_observations_Cat1
+    FROM example_Table
+    ;</code></pre>
+<p><img src="/post/2021-03-26-data-aggregation_files/p10p4.png" /></p>
+<p>And now the one from Cat2:</p>
+<pre class="r"><code>SELECT COUNT(Cat2) AS num_observations_Cat2
+    FROM example_Table
+    ;</code></pre>
+<p><img src="/post/2021-03-26-data-aggregation_files/p10p5.png" /></p>
+<p>The results fit because we have one NULL value in Cat1 and two in Cat2.</p>
+<p>I have described <a href="https://michael-fuchs-sql.netlify.app/2021/03/23/data-wrangling/#filter-for-null-values">here</a> how to specifically filter NULL values. This way you don’t have to do the workaround and compare the number of counted rows of a column with the counted rows of the primary key to determine if and how many NULL values are contained.</p>
+</div>
+<div id="sum" class="section level2">
+<h2>3.2 Sum</h2>
+<p>Next we will deal with the SUM function. As the name suggests, we can get the sum of a numeric column.</p>
+<p>In the following I will continue to work with the loaded data set <em>flight</em>.
+Here, for example, I would like to have the sum of the flight distances travelled output:</p>
+<pre class="r"><code>SELECT SUM(Distance) AS sum_distance
+    FROM flight
+    ;</code></pre>
+<p><img src="/post/2021-03-26-data-aggregation_files/p10p6.png" /></p>
+<p>Ok the output doesn’t look very pretty yet. So I’ll have it output in thousands next:</p>
+<pre class="r"><code>SELECT SUM(Distance)/1000 AS sum_distance_in_thousand
+    FROM flight
+    ;</code></pre>
+<p><img src="/post/2021-03-26-data-aggregation_files/p10p7.png" /></p>
+<p>Perfect. If I also want to have the number of the underlying observations displayed, I can also use the COUNT command shown above.</p>
+<pre class="r"><code>SELECT COUNT(*) AS num_departures, 
+       SUM(Distance)/1000 AS sum_distance_in_thousand
+    FROM flight
+    ;</code></pre>
+<p><img src="/post/2021-03-26-data-aggregation_files/p10p8.png" /></p>
+<p>If I do not yet have metrics, such as the planned travel time in my data set, available as a separate column, I can also perform this calculation operation within the SELECT statement without having to modify the original table.</p>
+<pre class="r"><code>SELECT SUM(Scheduled_Arrival - Scheduled_Departure) AS scheduled_travel_time
+    FROM flight
+    ;</code></pre>
+<p><img src="/post/2021-03-26-data-aggregation_files/p10p9.png" /></p>
+</div>
+<div id="min-max-and-average" class="section level2">
+<h2>3.3 Min, Max and Average</h2>
+<p>Just like the sum of a column, we can also output the minimum, maximum or average of a numerical column.</p>
+<p>For now, let’s focus only on the Dep_Delay column, which shows the difference between the planned and the actual departure time.</p>
+<p>With MIN we get the highest time an aircraft has taken off before the scheduled departure time.</p>
+<pre class="r"><code>SELECT MIN(Dep_Delay) AS min_dep_delay
+    FROM flight
+    ;</code></pre>
+<p><img src="/post/2021-03-26-data-aggregation_files/p10p10.png" /></p>
+<p>MAX is the latest time an aircraft has taken off after the scheduled take-off time.</p>
+<pre class="r"><code>SELECT MAX(Dep_Delay) AS max_dep_delay
+    FROM flight
+    ;</code></pre>
+<p><img src="/post/2021-03-26-data-aggregation_files/p10p11.png" /></p>
+<p>With AVG as already suspected, we get the average delay of all departures.</p>
+<pre class="r"><code>SELECT AVG(Dep_Delay) AS avg_dep_delay
+    FROM flight
+    ;</code></pre>
+<p><img src="/post/2021-03-26-data-aggregation_files/p10p12.png" /></p>
+</div>
+<div id="distinct" class="section level2">
+<h2>3.4 Distinct</h2>
+<div id="digression-difference-between-unique-vs.-distinct" class="section level3">
+<h3>3.4.1 Digression: Difference between Unique vs. Distinct</h3>
+<p>People often ask me what the difference is between Unique and Distinct. In short, they are two completely different use cases:</p>
+<ul>
+<li>UNIQUE: always take part in <strong>data insertion</strong></li>
+<li>DISTINCT: always concern on <strong>data retrieval</strong></li>
+</ul>
+<p>A unique constraint is used when the column itself (or set of columns) must be unique according to the schema details (the data). In other words: If the data in that column (or set of columns) must be unique, a unique constraint is used. This is the case, for example, with membership numbers (IDs that usually serve as primary keys). The database must protect itself from questionable data, this is not something that should be left to the applications themselves, as the first incorrect application that comes along would break the database.</p>
+<p>If the data does not need to be unique (e.g. specifying a person’s city), then it can be decided to make it “unique” in a select statement, as needed.</p>
+</div>
+<div id="get-distinct-values" class="section level3">
+<h3>3.4.2 Get distinct values</h3>
+<p>Now let’s have a look at the DISTINCT command in practice and let us output the departure airports in the Origin_Airport column.</p>
+<pre class="r"><code>SELECT DISTINCT Origin_Airport  
+    FROM flight
+    ;</code></pre>
+<p><img src="/post/2021-03-26-data-aggregation_files/p10p13.png" /></p>
+<p>As we can see from the output, a total of 18 different airports are stored in this data set (in the Origin_Airport column).</p>
+</div>
+</div>
+<div id="group-by" class="section level2">
+<h2>3.5 Group By</h2>
+<p>Now we come to the probably most used aggregation function: Group By.
+All of the functions that we have learned about before can be used here and only really develop their added value with Group By.</p>
+<p>With the Group By command, we can have values, such as the mean value, output in groups.</p>
+<div id="simple-group-by-with-avg" class="section level3">
+<h3>3.5.1 Simple Group By with AVG</h3>
+<p>Let’s take a look at the average delay of departures grouped by originating airports.</p>
+<pre class="r"><code>SELECT Origin_Airport, 
+       AVG(Dep_Delay) AS avg_dep_delay
+    FROM flight
+    GROUP BY Origin_Airport
+    ;</code></pre>
+<p><img src="/post/2021-03-26-data-aggregation_files/p10p14.png" /></p>
+<p>In order for this select statement to work, when using the Group By function, you must ensure that the column after which the grouping takes place is also output as a column (after the SELECT command).</p>
+</div>
+<div id="group-and-order-by-with-avg" class="section level3">
+<h3>3.5.2 Group and Order By with AVG</h3>
+<p>After the previously shown output is still a bit confused, I use the ORDER BY command in the following statement to have the departure airports output in alphabetical order.</p>
+<pre class="r"><code>SELECT Origin_Airport, 
+       AVG(Dep_Delay) AS avg_dep_delay
+    FROM flight
+    GROUP BY Origin_Airport
+    ORDER BY Origin_Airport
+    ;</code></pre>
+<p><img src="/post/2021-03-26-data-aggregation_files/p10p15.png" /></p>
+</div>
+<div id="group-and-order-by-with-abs-stdev" class="section level3">
+<h3>3.5.3 Group and Order By with ABS &amp; STDEV</h3>
+<p>What is also always good to have a measure of position as it is the average value of a measure of dispersion output.
+Therefore, for the same grouping, I also look at the absolute values behind the groupings and their standard deviation.</p>
+<pre class="r"><code>SELECT Origin_Airport, 
+       COUNT(*) AS num_departures,
+       STDEV(Dep_Delay) AS st_dev_dep_delay
+    FROM flight
+    GROUP BY Origin_Airport
+    ORDER BY Origin_Airport
+    ;</code></pre>
+<p><img src="/post/2021-03-26-data-aggregation_files/p10p16.png" /></p>
+<p>Now I no longer order by Origin_Airport but by the number of absolute values.</p>
+<pre class="r"><code>SELECT Origin_Airport, 
+       COUNT(*) AS num_departures,
+       STDEV(Dep_Delay) AS st_dev_dep_delay
+    FROM flight
+    GROUP BY Origin_Airport
+    ORDER BY num_departures DESC
+    ;</code></pre>
+<p><img src="/post/2021-03-26-data-aggregation_files/p10p17.png" /></p>
+</div>
+<div id="group-and-order-by-with-max" class="section level3">
+<h3>3.5.4 Group and Order By with MAX</h3>
+<p>Let’s take a look at the highest value recorded for each group (Origin_Airport).</p>
+<pre class="r"><code>SELECT Origin_Airport, 
+       max(Dep_Delay) AS max_dep_delay
+    FROM flight
+    GROUP BY Origin_Airport
+    ORDER BY max_dep_delay DESC
+    ;</code></pre>
+<p><img src="/post/2021-03-26-data-aggregation_files/p10p18.png" /></p>
+</div>
+<div id="multiple-group-and-order-by" class="section level3">
+<h3>3.5.5 Multiple Group and Order By</h3>
+<p>Of course, we also have the possibility to use multiple Group By and Order By.
+Let’s have a look at the absolute numbers of departures grouped by Origin_Airport and DayOfWeek.</p>
+<pre class="r"><code>SELECT Origin_Airport, DayOfWeek,
+       COUNT(*) AS num_departures
+    FROM flight
+    GROUP BY Origin_Airport, DayOfWeek
+    ORDER BY Origin_Airport, DayOfWeek
+    ;</code></pre>
+<p><img src="/post/2021-03-26-data-aggregation_files/p10p19.png" /></p>
+</div>
+</div>
+<div id="having" class="section level2">
+<h2>3.6 Having</h2>
+<p>As we can see from the last output by the multiple grouping, quite a few lines are generated quite quickly. Often not all rows are relevant but only those that exceed a certain threshold.
+We can set this threshold using the HAVING command.</p>
+<p>In the following I want to have only the absolute values of the departures grouped by Origin_Airport and DayOfWeek that exceed the number 100.
+Means in our example if a weekday of a departure airport has less than 100 departures it should not be displayed at all.</p>
+<pre class="r"><code>SELECT Origin_Airport, DayOfWeek,
+       COUNT(*) AS num_departures
+    FROM flight
+    GROUP BY Origin_Airport, DayOfWeek
+    HAVING COUNT(*) &gt; 100
+    ORDER BY Origin_Airport, DayOfWeek
+    ;</code></pre>
+<p><img src="/post/2021-03-26-data-aggregation_files/p10p20.png" /></p>
+<p>And already we have a clear output of only 21 observations.</p>
+</div>
+</div>
+<div id="conclusion" class="section level1">
+<h1>4 Conclusion</h1>
+<p>In this post I showed how to use data aggregation techniques to generate profitable comparisons of values.</p>
+</div>
