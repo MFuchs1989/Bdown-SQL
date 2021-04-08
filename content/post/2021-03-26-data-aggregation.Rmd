@@ -122,7 +122,7 @@ SELECT COUNT(Cat2) AS num_observations_Cat2
 
 The results fit because we have one NULL value in Cat1 and two in Cat2.
 
-I have described [here](https://michael-fuchs-sql.netlify.app/2021/03/23/data-wrangling/#filter-for-null-values) how to specifically filter NULL values. This way you don't have to do the workaround and compare the number of counted rows of a column with the counted rows of the primary key to determine if and how many NULL values are contained. 
+I have described [here how to specifically filter NULL values](https://michael-fuchs-sql.netlify.app/2021/03/23/data-wrangling/#filter-for-null-values). This way you don't have to do the workaround and compare the number of counted rows of a column with the counted rows of the primary key to determine if and how many NULL values are contained. 
 
 
 
