@@ -14,7 +14,7 @@ output:
 
 # 1 Introduction
 
-Before we get into the interesting things like [Data Wrangling](https://michael-fuchs-sql.netlify.app/2021/03/23/data-wrangling/), Aggregation and Manipulation, I would like to briefly explain the import and export of files in [SSMS](https://docs.microsoft.com/en-us/sql/ssms/sql-server-management-studio-ssms?view=sql-server-ver15). 
+Before we get into the interesting things like [Data Wrangling](https://michael-fuchs-sql.netlify.app/2021/03/23/data-wrangling/), [Aggregation](https://michael-fuchs-sql.netlify.app/2021/03/26/data-aggregation/) and Manipulation, I would like to briefly explain the import and export of files in [SSMS](https://docs.microsoft.com/en-us/sql/ssms/sql-server-management-studio-ssms?view=sql-server-ver15). 
 
 
 For this post I created a TestCSV.csv and used the dataset *flight* from the statistics platform ["Kaggle"](https://www.kaggle.com). You can download them from my [GitHub Repository](https://github.com/MFuchs1989/Datasets-and-Miscellaneous/tree/main/datasets).
