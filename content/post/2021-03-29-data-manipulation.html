@@ -1,0 +1,84 @@
+---
+title: Data Manipulation
+author: Michael Fuchs
+date: '2021-03-29'
+slug: data-manipulation
+categories: []
+tags: []
+output:
+  blogdown::html_page:
+    toc: true
+    toc_depth: 5
+---
+
+<script src="/rmarkdown-libs/header-attrs/header-attrs.js"></script>
+<link href="/rmarkdown-libs/anchor-sections/anchor-sections.css" rel="stylesheet" />
+<script src="/rmarkdown-libs/anchor-sections/anchor-sections.js"></script>
+
+<div id="TOC">
+<ul>
+<li><a href="#introduction">1 Introduction</a></li>
+<li><a href="#preparation">2 Preparation</a></li>
+</ul>
+</div>
+
+<div id="introduction" class="section level1">
+<h1>1 Introduction</h1>
+<p>Next post this time about the topic of data manipulation.</p>
+<p>Almost no data set in real life does not need to be modified in some way. Therefore, you should familiarize yourself with the most common methods of manipulating data.</p>
+</div>
+<div id="preparation" class="section level1">
+<h1>2 Preparation</h1>
+<p>For the following examples I create a new database and a new table.</p>
+<pre class="r"><code>SET LANGUAGE ENGLISH
+
+
+CREATE DATABASE Manipulation;
+
+USE Manipulation;</code></pre>
+<pre class="r"><code>CREATE TABLE example_Table
+    (Cat1 VARCHAR(100),
+    Cat2 INT,
+    Title VARCHAR(100),
+    First_Name VARCHAR(100),
+    Middle_Name VARCHAR(15),
+    Last_Name VARCHAR(100),
+    Age INT,
+    LastOrderDate DATE,
+    LastWebSearchDate DATE,
+    LastInquiryDate DATE,
+    LastPaymentDate DATE)
+    ;</code></pre>
+<pre class="r"><code>INSERT INTO example_Table (Cat1, Cat2, Title, First_Name, Middle_Name, Last_Name, Age, LastOrderDate, LastWebSearchDate, 
+    LastInquiryDate, LastPaymentDate) VALUES (&#39;A&#39;, 1, &#39;Mr&#39;, &#39;Alex&#39;, NULL, &#39;Smith&#39;, 18, &#39;2021-03-02&#39;, NULL, NULL, NULL)
+INSERT INTO example_Table (Cat1, Cat2, Title, First_Name, Middle_Name, Last_Name, Age, LastOrderDate, LastWebSearchDate, 
+    LastInquiryDate, LastPaymentDate) VALUES (&#39;A&#39;, 2, &#39;Miss&#39;, &#39;Cindy&#39;, &#39;J.&#39;, &#39;Steel&#39;, 34, NULL, &#39;2021-03-22&#39;, NULL, NULL)
+INSERT INTO example_Table (Cat1, Cat2, Title, First_Name, Middle_Name, Last_Name, Age, LastOrderDate, LastWebSearchDate, 
+    LastInquiryDate, LastPaymentDate) VALUES (&#39;A&#39;, NULL, &#39;Mrs&#39;, &#39;Jessy&#39;, &#39;Kathrin&#39;, &#39;Williams&#39;, NULL, NULL, NULL, &#39;2021-02-27&#39;, NULL)
+INSERT INTO example_Table (Cat1, Cat2, Title, First_Name, Middle_Name, Last_Name, Age, LastOrderDate, LastWebSearchDate, 
+    LastInquiryDate, LastPaymentDate) VALUES (&#39;B&#39;, 1, &#39;Miss&#39;, &#39;Sarah&#39;, NULL, &#39;Pike&#39;, 37, NULL, NULL, NULL, &#39;2021-02-15&#39;)
+INSERT INTO example_Table (Cat1, Cat2, Title, First_Name, Middle_Name, Last_Name, Age, LastOrderDate, LastWebSearchDate, 
+    LastInquiryDate, LastPaymentDate) VALUES (&#39;B&#39;, 2, &#39;Ms&#39;, &#39;Emily&#39;, &#39;C.&#39;, &#39;Taylor&#39;, 40, &#39;2021-03-27&#39;, NULL, NULL, NULL)
+INSERT INTO example_Table (Cat1, Cat2, Title, First_Name, Middle_Name, Last_Name, Age, LastOrderDate, LastWebSearchDate, 
+    LastInquiryDate, LastPaymentDate) VALUES (&#39;B&#39;, 3, &#39;Mrs&#39;, &#39;Clara&#39;, NULL, &#39;Wood&#39;, 50, NULL, &#39;2021-01-29&#39;, NULL, NULL)
+INSERT INTO example_Table (Cat1, Cat2, Title, First_Name, Middle_Name, Last_Name, Age, LastOrderDate, LastWebSearchDate, 
+    LastInquiryDate, LastPaymentDate) VALUES (NULL, 4, &#39;Mr&#39;, &#39;Andrew&#39;, &#39;John&#39;, &#39;Evergreen&#39;, NULL, NULL, NULL, &#39;2021-03-05&#39;, NULL)
+INSERT INTO example_Table (Cat1, Cat2, Title, First_Name, Middle_Name, Last_Name, Age, LastOrderDate, LastWebSearchDate, 
+    LastInquiryDate, LastPaymentDate) VALUES (&#39;B&#39;, NULL, &#39;Ms&#39;, &#39;Emilia&#39;, &#39;Alina&#39;, &#39;Fox&#39;, 24, NULL, NULL, NULL, &#39;2021-01-18&#39;)
+INSERT INTO example_Table (Cat1, Cat2, Title, First_Name, Middle_Name, Last_Name, Age, LastOrderDate, LastWebSearchDate, 
+    LastInquiryDate, LastPaymentDate) VALUES (&#39;B&#39;, NULL, &#39;Miss&#39;, &#39;Elisabeth&#39;, NULL, &#39;Field&#39;, 37, &#39;2021-04-01&#39;, NULL, NULL, NULL)</code></pre>
+<p>This is what our data set looks like so far:</p>
+<pre class="r"><code>SELECT *
+    FROM example_Table
+    ;</code></pre>
+<p><img src="/2021-03-29-data-manipulation_files/p11p1.png" /></p>
+<p><img src="/2021-03-29-data-manipulation_files/p11p.png" /></p>
+<p><img src="/2021-03-29-data-manipulation_files/p11p.png" /></p>
+<p><img src="/2021-03-29-data-manipulation_files/p11p.png" /></p>
+<p><img src="/2021-03-29-data-manipulation_files/p11p.png" /></p>
+<p><img src="/2021-03-29-data-manipulation_files/p11p.png" /></p>
+<p><img src="/post/2021-03-26-data-aggregation_files/p11p.png" /></p>
+<p><img src="/post/2021-03-26-data-aggregation_files/p11p.png" /></p>
+<p><img src="/post/2021-03-26-data-aggregation_files/p11p.png" /></p>
+<p><img src="/post/2021-03-26-data-aggregation_files/p11p.png" /></p>
+</div>
