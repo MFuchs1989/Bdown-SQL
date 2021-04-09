@@ -83,13 +83,12 @@ SELECT *
 ![](/post/2021-03-29-data-manipulation_files/p11p1.png)
 
 
-# 3 Modifying Columns
 
-## 3.1 Set Index
+# 3 Set Index
 
 As you may have noticed earlier, our dataset does not yet have an index. Therefore I would like to present two methods that can be used here:
 
-### 3.1.1 Creat an Index via Primary Key
+## 3.1 Creat an Index via Primary Key
 
 On the one hand, we can use a primary key, which every table should have anyway.
 
@@ -112,7 +111,7 @@ ALTER TABLE example_Table DROP COLUMN ID;
 ![](/post/2021-03-29-data-manipulation_files/p11p3.png)
 
 
-### 3.1.2 Creat an Index via a new Column (recommended)
+## 3.2 Creat an Index via a new Column (recommended)
 
 A better method would be to first generate a new column in the data set and then fill it with a consecutive number.
 
@@ -155,11 +154,11 @@ SELECT *
 ![](/post/2021-03-29-data-manipulation_files/p11p6.png)
 
 
-## 3.2 Replacing Values
+# 4 Replacing Values
 
 What happens very often is that you want / need to replace certain values with others. 
 
-### 3.2.1 Replace NULL Values (ISNULL)
+## 4.1 Replace NULL Values (ISNULL)
 
 Let's take a look at this part of the data set:
 
@@ -229,7 +228,7 @@ Let's take a look at Cat1, B (non NULL): 26/5 = 5.2 = 5
 Works fine!
 
 
-### 3.2.2 Replace Values with NULL (NULLIF)
+## 4.2 Replace Values with NULL (NULLIF)
 
 The same game goes around in the other direction. Let's take a look at this part:
 
@@ -262,7 +261,7 @@ Limitation: only one value can be set as NULL in this way.
 If we want to set several values to NULL or replace several values with new ones we have to resort to another function: CASE.
 
 
-### 3.2.3 IF Else Statemtents in SQL (CASE)
+## 4.3 IF Else Statemtents in SQL (CASE)
 
 Let's give this a try:
 
@@ -312,7 +311,7 @@ If the situation allows it, you can also use a simple If statement.
 
 
 
-### 3.2.4 IF Statemtents in SQL (IIF)
+## 4.4 IF Statemtents in SQL (IIF)
 
 The syntax is very simple but of course somewhat limited: *IIF(boolean_expression,true_value,false_value)*
 It must be a valid boolean value, or the function will raise an error.
@@ -364,12 +363,12 @@ SELECT IIF(
 ![](/post/2021-03-29-data-manipulation_files/p11p19.png)
 
 
-### 3.2.5 COALESCE
+## 4.5 COALESCE
 
 [COALESCE](https://docs.microsoft.com/en-us/sql/t-sql/language-elements/coalesce-transact-sql?view=sql-server-ver15) is a more difficult function but super helpful in some situations that I will show you in a moment: 
 
 
-#### 3.2.5.1 Replace NULL Values with the columns'average
+### 4.5.1 Replace NULL Values with the columns'average
 
 As a Data Scientist, I don't like to throw away NULL values, as this would result in the loss of unnecessary information (for example, during model training). A smarter solution is to use other metrics, such as the mean value of the column.
 
@@ -395,7 +394,7 @@ SELECT First_Name, Age,
 
 ![](/post/2021-03-29-data-manipulation_files/p11p21.png)
 
-#### 3.2.5.2 Coalesce for String Concatenation
+### 4.5.2 Coalesce for String Concatenation
 
 Let's have a look at this part:
 
@@ -432,7 +431,7 @@ SELECT First_Name, Middle_Name, Last_Name,
 ![](/post/2021-03-29-data-manipulation_files/p11p24.png)
 
 
-#### 3.2.5.3 Compare SQL Server COALESCE to CASE
+### 4.5.3 Compare SQL Server COALESCE to CASE
 
 Once you understand [COALESCE](https://docs.microsoft.com/en-us/sql/t-sql/language-elements/coalesce-transact-sql?view=sql-server-ver15), you can save yourself a lot of typing again. See the example below:
 
@@ -475,7 +474,7 @@ SELECT First_Name,
 However, it is simply much faster with COALESCE.
 
 
-#### 3.2.5.4 Compare SQL Server COALESCE to ISNULL
+### 4.5.4 Compare SQL Server COALESCE to ISNULL
 
 I often hear that COALESCE works just like ISNULL. But this is only partly true and you should be aware of the differences, otherwise you may be in for a nasty surprise. 
 
@@ -529,40 +528,126 @@ SELECT Char_Variable,
 
 ![](/post/2021-03-29-data-manipulation_files/p11p31.png)
 
+Here we get the complete string returned, regardless of the type of Char_Variable.
+
+That is, while ISNULL guarantees us type safety, COALESCE can only do so to a limited extent. That means, if your application depends on a type safety in the return, then you are always on the safe side with ISNULL.
+
+Another example to make it even clearer (this time with a numeric variable):
 
 
 ```{r, eval=F, echo=T}
+ALTER TABLE COAlESCE_Table ADD Num_Variable INT 
 
+SELECT * FROM COALESCE_Table
 ```
 
-![](/post/2021-03-29-data-manipulation_files/p11p.png)
+![](/post/2021-03-29-data-manipulation_files/p11p32.png)
+
+Here I use both ISNULL and COALESCE in one example so the difference is immediately apparent.
+
+```{r, eval=F, echo=T}
+SELECT Num_Variable,
+	   5 / ISNULL(Num_Variable, 2.00) AS _ISNULL, 
+	   5 / COALESCE(Num_Variable, 2.00) AS _COALESCE
+	FROM COALESCE_Table
+	;
+```
+
+![](/post/2021-03-29-data-manipulation_files/p11p33.png)
+
+What happens now is that due to the type safety of ISNULL, the 2.00 is returned as the INT value 2, which has the consequence that the 5 is divided by the INT 2. Here the SQL server then returns the INT value, so we get the 2 as return value.
+
+In the case of COALESCE, SQL Server decides to convert to the 2.00 data type, i.e. to perform an implicit conversion. This way we divide 5 by a floating point number, which results in a floating point number, so we get the correct value of 2.5 here (with some decimal places).
 
 
+# 5 Rename Columns
+
+Of course, you can assign [Aliases](https://michael-fuchs-sql.netlify.app/2021/03/19/aliases/) with each select statement and then you have renamed the column.
+But you can also rename them permanently!
+
+Caution here the columns of the table are renamed! Other statements that access the old names would no longer work.
+
+For this example we use the table from the previous example:
+
+```{r, eval=F, echo=T}
+SELECT * 
+	FROM COALESCE_Table
+	;
+```
+
+![](/post/2021-03-29-data-manipulation_files/p11p34.png)
+
+```{r, eval=F, echo=T}
+EXEC sp_rename 'COALESCE_Table.Char_Variable', 'C_Var', 'COLUMN';
+EXEC sp_rename 'COALESCE_Table.Num_Variable', 'N_Var', 'COLUMN';
+```
+
+```{r, eval=F, echo=T}
+SELECT * 
+	FROM COALESCE_Table
+	;
+```
+
+![](/post/2021-03-29-data-manipulation_files/p11p35.png)
 
 
+# 6 Delete Duplicates
 
+Again, the note that lines are completely lost!
 
+I have shown how to select Duplicate in a Select Statement in this post: [Data Wrangling - Drop Duplicates](https://michael-fuchs-sql.netlify.app/2021/03/23/data-wrangling/#drop-duplicates)
 
+Now we don't want to drop the rows but delete them completely.
+With the following statement SELECT MIN(ID) only the first value will be kept in the table, the others will be deleted (except for the observation with the NULL Value, which we will exclude in this example). 
 
+```{r, eval=F, echo=T}
+SELECT ID, Cat1 
+	FROM example_Table
+	WHERE Cat1 IS NOT NULL
+	;
+```
 
-
-
-
+![](/post/2021-03-29-data-manipulation_files/p11p36.png)
 
 
 
 ```{r, eval=F, echo=T}
-
+DELETE FROM example_Table 
+	WHERE ID NOT IN (SELECT MIN(ID)
+					FROM example_Table 
+					GROUP BY Cat1)
+	AND Cat1 IS NOT NULL;
 ```
 
-![](/post/2021-03-29-data-manipulation_files/p11p.png)
+Let's take a look at what's left:
+
+```{r, eval=F, echo=T}
+SELECT ID, Cat1 
+	FROM example_Table
+	WHERE Cat1 IS NOT NULL
+	;
+```
+
+![](/post/2021-03-29-data-manipulation_files/p11p37.png)
+
+And now again the data set without restrictions:
+
+
+```{r, eval=F, echo=T}
+SELECT ID, Cat1 
+	FROM example_Table
+	;
+```
+
+![](/post/2021-03-29-data-manipulation_files/p11p38.png)
 
 
 
 
+# 7 Conclusion
 
-
-
+That's it for now. 
+I didn't get all the available functions for data manipulation in this post but I will write another one about SQL Server functions and link to all relevant places. 
 
 
 

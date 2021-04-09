@@ -19,28 +19,28 @@ output:
 <ul>
 <li><a href="#introduction">1 Introduction</a></li>
 <li><a href="#preparation">2 Preparation</a></li>
-<li><a href="#modifying-columns">3 Modifying Columns</a>
+<li><a href="#set-index">3 Set Index</a>
 <ul>
-<li><a href="#set-index">3.1 Set Index</a>
-<ul>
-<li><a href="#creat-an-index-via-primary-key">3.1.1 Creat an Index via Primary Key</a></li>
-<li><a href="#creat-an-index-via-a-new-column-recommended">3.1.2 Creat an Index via a new Column (recommended)</a></li>
+<li><a href="#creat-an-index-via-primary-key">3.1 Creat an Index via Primary Key</a></li>
+<li><a href="#creat-an-index-via-a-new-column-recommended">3.2 Creat an Index via a new Column (recommended)</a></li>
 </ul></li>
-<li><a href="#replacing-values">3.2 Replacing Values</a>
+<li><a href="#replacing-values">4 Replacing Values</a>
 <ul>
-<li><a href="#replace-null-values-isnull">3.2.1 Replace NULL Values (ISNULL)</a></li>
-<li><a href="#replace-values-with-null-nullif">3.2.2 Replace Values with NULL (NULLIF)</a></li>
-<li><a href="#if-else-statemtents-in-sql-case">3.2.3 IF Else Statemtents in SQL (CASE)</a></li>
-<li><a href="#if-statemtents-in-sql-iif">3.2.4 IF Statemtents in SQL (IIF)</a></li>
-<li><a href="#coalesce">3.2.5 COALESCE</a>
+<li><a href="#replace-null-values-isnull">4.1 Replace NULL Values (ISNULL)</a></li>
+<li><a href="#replace-values-with-null-nullif">4.2 Replace Values with NULL (NULLIF)</a></li>
+<li><a href="#if-else-statemtents-in-sql-case">4.3 IF Else Statemtents in SQL (CASE)</a></li>
+<li><a href="#if-statemtents-in-sql-iif">4.4 IF Statemtents in SQL (IIF)</a></li>
+<li><a href="#coalesce">4.5 COALESCE</a>
 <ul>
-<li><a href="#replace-null-values-with-the-columnsaverage">3.2.5.1 Replace NULL Values with the columns’average</a></li>
-<li><a href="#coalesce-for-string-concatenation">3.2.5.2 Coalesce for String Concatenation</a></li>
-<li><a href="#compare-sql-server-coalesce-to-case">3.2.5.3 Compare SQL Server COALESCE to CASE</a></li>
-<li><a href="#compare-sql-server-coalesce-to-isnull">3.2.5.4 Compare SQL Server COALESCE to ISNULL</a></li>
+<li><a href="#replace-null-values-with-the-columnsaverage">4.5.1 Replace NULL Values with the columns’average</a></li>
+<li><a href="#coalesce-for-string-concatenation">4.5.2 Coalesce for String Concatenation</a></li>
+<li><a href="#compare-sql-server-coalesce-to-case">4.5.3 Compare SQL Server COALESCE to CASE</a></li>
+<li><a href="#compare-sql-server-coalesce-to-isnull">4.5.4 Compare SQL Server COALESCE to ISNULL</a></li>
 </ul></li>
 </ul></li>
-</ul></li>
+<li><a href="#rename-columns">5 Rename Columns</a></li>
+<li><a href="#delete-duplicates">6 Delete Duplicates</a></li>
+<li><a href="#conclusion">7 Conclusion</a></li>
 </ul>
 </div>
 
@@ -95,13 +95,11 @@ INSERT INTO example_Table (Cat1, Cat2, Title, First_Name, Middle_Name, Last_Name
     ;</code></pre>
 <p><img src="/post/2021-03-29-data-manipulation_files/p11p1.png" /></p>
 </div>
-<div id="modifying-columns" class="section level1">
-<h1>3 Modifying Columns</h1>
-<div id="set-index" class="section level2">
-<h2>3.1 Set Index</h2>
+<div id="set-index" class="section level1">
+<h1>3 Set Index</h1>
 <p>As you may have noticed earlier, our dataset does not yet have an index. Therefore I would like to present two methods that can be used here:</p>
-<div id="creat-an-index-via-primary-key" class="section level3">
-<h3>3.1.1 Creat an Index via Primary Key</h3>
+<div id="creat-an-index-via-primary-key" class="section level2">
+<h2>3.1 Creat an Index via Primary Key</h2>
 <p>On the one hand, we can use a primary key, which every table should have anyway.</p>
 <pre class="r"><code>ALTER TABLE example_Table ADD ID INT IDENTITY(1,1) PRIMARY KEY;
 
@@ -113,8 +111,8 @@ SELECT ID
 <pre class="r"><code>ALTER TABLE example_Table DROP COLUMN ID;</code></pre>
 <p><img src="/post/2021-03-29-data-manipulation_files/p11p3.png" /></p>
 </div>
-<div id="creat-an-index-via-a-new-column-recommended" class="section level3">
-<h3>3.1.2 Creat an Index via a new Column (recommended)</h3>
+<div id="creat-an-index-via-a-new-column-recommended" class="section level2">
+<h2>3.2 Creat an Index via a new Column (recommended)</h2>
 <p>A better method would be to first generate a new column in the data set and then fill it with a consecutive number.</p>
 <pre class="r"><code>ALTER TABLE example_Table ADD Idx INT;
 
@@ -141,11 +139,11 @@ SELECT *
 <p><img src="/post/2021-03-29-data-manipulation_files/p11p6.png" /></p>
 </div>
 </div>
-<div id="replacing-values" class="section level2">
-<h2>3.2 Replacing Values</h2>
+<div id="replacing-values" class="section level1">
+<h1>4 Replacing Values</h1>
 <p>What happens very often is that you want / need to replace certain values with others.</p>
-<div id="replace-null-values-isnull" class="section level3">
-<h3>3.2.1 Replace NULL Values (ISNULL)</h3>
+<div id="replace-null-values-isnull" class="section level2">
+<h2>4.1 Replace NULL Values (ISNULL)</h2>
 <p>Let’s take a look at this part of the data set:</p>
 <pre class="r"><code>SELECT Cat1, Cat2
     FROM example_Table
@@ -189,8 +187,8 @@ SELECT *
 <p>Let’s take a look at Cat1, B (non NULL): 26/5 = 5.2 = 5
 Works fine!</p>
 </div>
-<div id="replace-values-with-null-nullif" class="section level3">
-<h3>3.2.2 Replace Values with NULL (NULLIF)</h3>
+<div id="replace-values-with-null-nullif" class="section level2">
+<h2>4.2 Replace Values with NULL (NULLIF)</h2>
 <p>The same game goes around in the other direction. Let’s take a look at this part:</p>
 <pre class="r"><code>SELECT ID
     FROM example_Table
@@ -206,8 +204,8 @@ Works fine!</p>
 <p>Limitation: only one value can be set as NULL in this way.</p>
 <p>If we want to set several values to NULL or replace several values with new ones we have to resort to another function: CASE.</p>
 </div>
-<div id="if-else-statemtents-in-sql-case" class="section level3">
-<h3>3.2.3 IF Else Statemtents in SQL (CASE)</h3>
+<div id="if-else-statemtents-in-sql-case" class="section level2">
+<h2>4.3 IF Else Statemtents in SQL (CASE)</h2>
 <p>Let’s give this a try:</p>
 <pre class="r"><code>SELECT ID,
         CASE 
@@ -239,8 +237,8 @@ Works fine!</p>
 <p>CASE is a very useful function but it also requires a lot of typing.
 If the situation allows it, you can also use a simple If statement.</p>
 </div>
-<div id="if-statemtents-in-sql-iif" class="section level3">
-<h3>3.2.4 IF Statemtents in SQL (IIF)</h3>
+<div id="if-statemtents-in-sql-iif" class="section level2">
+<h2>4.4 IF Statemtents in SQL (IIF)</h2>
 <p>The syntax is very simple but of course somewhat limited: <em>IIF(boolean_expression,true_value,false_value)</em>
 It must be a valid boolean value, or the function will raise an error.</p>
 <p>Here is a simple example:</p>
@@ -267,11 +265,11 @@ SELECT IIF(
     );</code></pre>
 <p><img src="/post/2021-03-29-data-manipulation_files/p11p19.png" /></p>
 </div>
-<div id="coalesce" class="section level3">
-<h3>3.2.5 COALESCE</h3>
+<div id="coalesce" class="section level2">
+<h2>4.5 COALESCE</h2>
 <p><a href="https://docs.microsoft.com/en-us/sql/t-sql/language-elements/coalesce-transact-sql?view=sql-server-ver15">COALESCE</a> is a more difficult function but super helpful in some situations that I will show you in a moment:</p>
-<div id="replace-null-values-with-the-columnsaverage" class="section level4">
-<h4>3.2.5.1 Replace NULL Values with the columns’average</h4>
+<div id="replace-null-values-with-the-columnsaverage" class="section level3">
+<h3>4.5.1 Replace NULL Values with the columns’average</h3>
 <p>As a Data Scientist, I don’t like to throw away NULL values, as this would result in the loss of unnecessary information (for example, during model training). A smarter solution is to use other metrics, such as the mean value of the column.</p>
 <p>Let’s have a look here:</p>
 <pre class="r"><code>SELECT First_Name, Age
@@ -285,8 +283,8 @@ SELECT IIF(
     ;</code></pre>
 <p><img src="/post/2021-03-29-data-manipulation_files/p11p21.png" /></p>
 </div>
-<div id="coalesce-for-string-concatenation" class="section level4">
-<h4>3.2.5.2 Coalesce for String Concatenation</h4>
+<div id="coalesce-for-string-concatenation" class="section level3">
+<h3>4.5.2 Coalesce for String Concatenation</h3>
 <p>Let’s have a look at this part:</p>
 <pre class="r"><code>SELECT First_Name, Middle_Name, Last_Name
     FROM example_Table
@@ -306,8 +304,8 @@ SELECT IIF(
     ;</code></pre>
 <p><img src="/post/2021-03-29-data-manipulation_files/p11p24.png" /></p>
 </div>
-<div id="compare-sql-server-coalesce-to-case" class="section level4">
-<h4>3.2.5.3 Compare SQL Server COALESCE to CASE</h4>
+<div id="compare-sql-server-coalesce-to-case" class="section level3">
+<h3>4.5.3 Compare SQL Server COALESCE to CASE</h3>
 <p>Once you understand <a href="https://docs.microsoft.com/en-us/sql/t-sql/language-elements/coalesce-transact-sql?view=sql-server-ver15">COALESCE</a>, you can save yourself a lot of typing again. See the example below:</p>
 <pre class="r"><code>SELECT First_Name, LastOrderDate, LastWebSearchDate, LastInquiryDate, LastPaymentDate 
     FROM example_Table
@@ -332,8 +330,8 @@ I can do this with COALESCE as well as with CASE.</p>
 <p><img src="/post/2021-03-29-data-manipulation_files/p11p27.png" /></p>
 <p>However, it is simply much faster with COALESCE.</p>
 </div>
-<div id="compare-sql-server-coalesce-to-isnull" class="section level4">
-<h4>3.2.5.4 Compare SQL Server COALESCE to ISNULL</h4>
+<div id="compare-sql-server-coalesce-to-isnull" class="section level3">
+<h3>4.5.4 Compare SQL Server COALESCE to ISNULL</h3>
 <p>I often hear that COALESCE works just like ISNULL. But this is only partly true and you should be aware of the differences, otherwise you may be in for a nasty surprise.</p>
 <p>For this reason I have taken the time to explain the difference here with an own example.</p>
 <p>I create a small table for this purpose:</p>
@@ -362,9 +360,72 @@ SELECT * FROM COALESCE_Table</code></pre>
     FROM COALESCE_Table
     ;</code></pre>
 <p><img src="/post/2021-03-29-data-manipulation_files/p11p31.png" /></p>
-<p><img src="/post/2021-03-29-data-manipulation_files/p11p.png" /></p>
-<p><img src="/post/2021-03-29-data-manipulation_files/p11p.png" /></p>
+<p>Here we get the complete string returned, regardless of the type of Char_Variable.</p>
+<p>That is, while ISNULL guarantees us type safety, COALESCE can only do so to a limited extent. That means, if your application depends on a type safety in the return, then you are always on the safe side with ISNULL.</p>
+<p>Another example to make it even clearer (this time with a numeric variable):</p>
+<pre class="r"><code>ALTER TABLE COAlESCE_Table ADD Num_Variable INT 
+
+SELECT * FROM COALESCE_Table</code></pre>
+<p><img src="/post/2021-03-29-data-manipulation_files/p11p32.png" /></p>
+<p>Here I use both ISNULL and COALESCE in one example so the difference is immediately apparent.</p>
+<pre class="r"><code>SELECT Num_Variable,
+       5 / ISNULL(Num_Variable, 2.00) AS _ISNULL, 
+       5 / COALESCE(Num_Variable, 2.00) AS _COALESCE
+    FROM COALESCE_Table
+    ;</code></pre>
+<p><img src="/post/2021-03-29-data-manipulation_files/p11p33.png" /></p>
+<p>What happens now is that due to the type safety of ISNULL, the 2.00 is returned as the INT value 2, which has the consequence that the 5 is divided by the INT 2. Here the SQL server then returns the INT value, so we get the 2 as return value.</p>
+<p>In the case of COALESCE, SQL Server decides to convert to the 2.00 data type, i.e. to perform an implicit conversion. This way we divide 5 by a floating point number, which results in a floating point number, so we get the correct value of 2.5 here (with some decimal places).</p>
 </div>
 </div>
 </div>
+<div id="rename-columns" class="section level1">
+<h1>5 Rename Columns</h1>
+<p>Of course, you can assign <a href="https://michael-fuchs-sql.netlify.app/2021/03/19/aliases/">Aliases</a> with each select statement and then you have renamed the column.
+But you can also rename them permanently!</p>
+<p>Caution here the columns of the table are renamed! Other statements that access the old names would no longer work.</p>
+<p>For this example we use the table from the previous example:</p>
+<pre class="r"><code>SELECT * 
+    FROM COALESCE_Table
+    ;</code></pre>
+<p><img src="/post/2021-03-29-data-manipulation_files/p11p34.png" /></p>
+<pre class="r"><code>EXEC sp_rename &#39;COALESCE_Table.Char_Variable&#39;, &#39;C_Var&#39;, &#39;COLUMN&#39;;
+EXEC sp_rename &#39;COALESCE_Table.Num_Variable&#39;, &#39;N_Var&#39;, &#39;COLUMN&#39;;</code></pre>
+<pre class="r"><code>SELECT * 
+    FROM COALESCE_Table
+    ;</code></pre>
+<p><img src="/post/2021-03-29-data-manipulation_files/p11p35.png" /></p>
+</div>
+<div id="delete-duplicates" class="section level1">
+<h1>6 Delete Duplicates</h1>
+<p>Again, the note that lines are completely lost!</p>
+<p>I have shown how to select Duplicate in a Select Statement in this post: <a href="https://michael-fuchs-sql.netlify.app/2021/03/23/data-wrangling/#drop-duplicates">Data Wrangling - Drop Duplicates</a></p>
+<p>Now we don’t want to drop the rows but delete them completely.
+With the following statement SELECT MIN(ID) only the first value will be kept in the table, the others will be deleted (except for the observation with the NULL Value, which we will exclude in this example).</p>
+<pre class="r"><code>SELECT ID, Cat1 
+    FROM example_Table
+    WHERE Cat1 IS NOT NULL
+    ;</code></pre>
+<p><img src="/post/2021-03-29-data-manipulation_files/p11p36.png" /></p>
+<pre class="r"><code>DELETE FROM example_Table 
+    WHERE ID NOT IN (SELECT MIN(ID)
+                    FROM example_Table 
+                    GROUP BY Cat1)
+    AND Cat1 IS NOT NULL;</code></pre>
+<p>Let’s take a look at what’s left:</p>
+<pre class="r"><code>SELECT ID, Cat1 
+    FROM example_Table
+    WHERE Cat1 IS NOT NULL
+    ;</code></pre>
+<p><img src="/post/2021-03-29-data-manipulation_files/p11p37.png" /></p>
+<p>And now again the data set without restrictions:</p>
+<pre class="r"><code>SELECT ID, Cat1 
+    FROM example_Table
+    ;</code></pre>
+<p><img src="/post/2021-03-29-data-manipulation_files/p11p38.png" /></p>
+</div>
+<div id="conclusion" class="section level1">
+<h1>7 Conclusion</h1>
+<p>That’s it for now.
+I didn’t get all the available functions for data manipulation in this post but I will write another one about SQL Server functions and link to all relevant places.</p>
 </div>
