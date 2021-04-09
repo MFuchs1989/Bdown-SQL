@@ -48,6 +48,11 @@ output:
 <li><a href="#just-keep-the-first-element-and-drop-the-following-duplicates">4.4.1 Just keep the first element and drop the following duplicates</a></li>
 <li><a href="#just-keep-the-last-element-and-drop-the-firsts-duplicates">4.4.2 Just keep the last element and drop the first/s duplicate/s</a></li>
 </ul></li>
+<li><a href="#create-new-columns">4.5 Create new Columns</a>
+<ul>
+<li><a href="#with-arithmetic-operations">4.5.1 with arithmetic operations</a></li>
+<li><a href="#with-text-1">4.5.2 with text</a></li>
+</ul></li>
 </ul></li>
 <li><a href="#conclusion">5 Conclusion</a></li>
 </ul>
@@ -289,6 +294,50 @@ SELECT TOP 10 Idx, Origin_Airport
                         FROM flight
                         GROUP BY Origin_Airport);</code></pre>
 <p><img src="/post/2021-03-23-data-wrangling_files/p9p27.png" /></p>
+</div>
+</div>
+<div id="create-new-columns" class="section level2">
+<h2>4.5 Create new Columns</h2>
+<div id="with-arithmetic-operations" class="section level3">
+<h3>4.5.1 with arithmetic operations</h3>
+<p>Because it is so convenient and the departure times are very often the same (duplicate values if you want to call them like that) we will use the syntax shown before again for the following example of how to create new columns based on existing columns.</p>
+<pre class="r"><code>SELECT TOP 5 Idx, Scheduled_Departure, Scheduled_Arrival
+    FROM flight
+    WHERE Idx IN (SELECT MIN(Idx)
+                        FROM flight
+                        GROUP BY Scheduled_Departure);</code></pre>
+<p><img src="/post/2021-03-23-data-wrangling_files/p9p28.png" /></p>
+<p>On the one hand, we see the planned departure time and the planned arrival time. So now we calculate the planned travel time.</p>
+<pre class="r"><code>SELECT TOP 5 Idx, Scheduled_Departure, Scheduled_Arrival,
+       Scheduled_Arrival - Scheduled_Departure AS Scheduled_Travel_Time
+    FROM flight
+    WHERE Idx IN (SELECT MIN(Idx)
+                        FROM flight
+                        GROUP BY Scheduled_Departure);</code></pre>
+<p><img src="/post/2021-03-23-data-wrangling_files/p9p29.png" /></p>
+</div>
+<div id="with-text-1" class="section level3">
+<h3>4.5.2 with text</h3>
+<p>Let’s take a look at this section:</p>
+<pre class="r"><code>SELECT TOP 5 Tai_lNum, Origin_Airport 
+    FROM flight
+    ;</code></pre>
+<p><img src="/post/2021-03-23-data-wrangling_files/p9p30.png" /></p>
+<p>Text columns can also be connected with each other.</p>
+<p>Method 1:</p>
+<pre class="r"><code>SELECT TOP 5 Tai_lNum + Origin_Airport AS Full_Name
+    FROM flight
+    ;</code></pre>
+<p><img src="/post/2021-03-23-data-wrangling_files/p9p31.png" /></p>
+<p>Method 2:</p>
+<pre class="r"><code>SELECT TOP 5 Tai_lNum + &#39;, &#39; + Origin_Airport AS Full_Name
+    FROM flight
+    ;</code></pre>
+<p><img src="/post/2021-03-23-data-wrangling_files/p9p32.png" /></p>
+<p>Tip: In MySQL you would write it like this, but it also works in SQL Server</p>
+<pre class="r"><code>SELECT TOP 5 CONCAT(Tai_lNum,&#39;, &#39;,Origin_Airport) AS Full_Name
+    FROM flight
+    ;</code></pre>
 </div>
 </div>
 </div>

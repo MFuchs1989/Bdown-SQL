@@ -426,6 +426,79 @@ SELECT Idx, Origin_Airport
 ![](/post/2021-03-23-data-wrangling_files/p9p27.png)
 
 
+## 4.5 Create new Columns
+
+### 4.5.1 with arithmetic operations
+
+Because it is so convenient and the departure times are very often the same (duplicate values if you want to call them like that) we will use the syntax shown before again for the following example of how to create new columns based on existing columns. 
+
+
+```{r, eval=F, echo=T}
+SELECT TOP 5 Idx, Scheduled_Departure, Scheduled_Arrival
+	FROM flight
+	WHERE Idx IN (SELECT MIN(Idx)
+						FROM flight
+						GROUP BY Scheduled_Departure);
+```
+
+![](/post/2021-03-23-data-wrangling_files/p9p28.png)
+
+On the one hand, we see the planned departure time and the planned arrival time. So now we calculate the planned travel time. 
+
+```{r, eval=F, echo=T}
+SELECT TOP 5 Idx, Scheduled_Departure, Scheduled_Arrival,
+	   Scheduled_Arrival - Scheduled_Departure AS Scheduled_Travel_Time
+	FROM flight
+	WHERE Idx IN (SELECT MIN(Idx)
+						FROM flight
+						GROUP BY Scheduled_Departure);
+```
+
+![](/post/2021-03-23-data-wrangling_files/p9p29.png)
+
+### 4.5.2 with text
+
+Let's take a look at this section:
+
+```{r, eval=F, echo=T}
+SELECT TOP 5 Tai_lNum, Origin_Airport 
+	FROM flight
+	;
+```
+
+![](/post/2021-03-23-data-wrangling_files/p9p30.png)
+
+Text columns can also be connected with each other.
+
+Method 1:
+
+```{r, eval=F, echo=T}
+SELECT TOP 5 Tai_lNum + Origin_Airport AS Full_Name
+	FROM flight
+	;
+```
+
+![](/post/2021-03-23-data-wrangling_files/p9p31.png)
+
+Method 2:
+
+```{r, eval=F, echo=T}
+SELECT TOP 5 Tai_lNum + ', ' + Origin_Airport AS Full_Name
+	FROM flight
+	;
+```
+
+![](/post/2021-03-23-data-wrangling_files/p9p32.png)
+
+Tip: In MySQL you would write it like this, but it also works in SQL Server 
+
+```{r, eval=F, echo=T}
+SELECT TOP 5 CONCAT(Tai_lNum,', ',Origin_Airport) AS Full_Name
+	FROM flight
+	;
+```
+
+
 # 5 Conclusion
 
 In this post I have covered the following topics:
