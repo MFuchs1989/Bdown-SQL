@@ -24,6 +24,21 @@ output:
 <li><a href="#set-index">3.1 Set Index</a>
 <ul>
 <li><a href="#creat-an-index-via-primary-key">3.1.1 Creat an Index via Primary Key</a></li>
+<li><a href="#creat-an-index-via-a-new-column-recommended">3.1.2 Creat an Index via a new Column (recommended)</a></li>
+</ul></li>
+<li><a href="#replacing-values">3.2 Replacing Values</a>
+<ul>
+<li><a href="#replace-null-values-isnull">3.2.1 Replace NULL Values (ISNULL)</a></li>
+<li><a href="#replace-values-with-null-nullif">3.2.2 Replace Values with NULL (NULLIF)</a></li>
+<li><a href="#if-else-statemtents-in-sql-case">3.2.3 IF Else Statemtents in SQL (CASE)</a></li>
+<li><a href="#if-statemtents-in-sql-iif">3.2.4 IF Statemtents in SQL (IIF)</a></li>
+<li><a href="#coalesce">3.2.5 COALESCE</a>
+<ul>
+<li><a href="#replace-null-values-with-the-columnsaverage">3.2.5.1 Replace NULL Values with the columns’average</a></li>
+<li><a href="#coalesce-for-string-concatenation">3.2.5.2 Coalesce for String Concatenation</a></li>
+<li><a href="#compare-sql-server-coalesce-to-case">3.2.5.3 Compare SQL Server COALESCE to CASE</a></li>
+<li><a href="#compare-sql-server-coalesce-to-isnull">3.2.5.4 Compare SQL Server COALESCE to ISNULL</a></li>
+</ul></li>
 </ul></li>
 </ul></li>
 </ul>
@@ -97,14 +112,259 @@ SELECT ID
 <p>The disadvantage here is if you want to use this only for a temporary index, that you can no longer delete it, which of course also makes sense.</p>
 <pre class="r"><code>ALTER TABLE example_Table DROP COLUMN ID;</code></pre>
 <p><img src="/post/2021-03-29-data-manipulation_files/p11p3.png" /></p>
+</div>
+<div id="creat-an-index-via-a-new-column-recommended" class="section level3">
+<h3>3.1.2 Creat an Index via a new Column (recommended)</h3>
+<p>A better method would be to first generate a new column in the data set and then fill it with a consecutive number.</p>
+<pre class="r"><code>ALTER TABLE example_Table ADD Idx INT;
+
+SELECT ID, Idx
+    FROM example_Table
+    ;</code></pre>
+<p><img src="/post/2021-03-29-data-manipulation_files/p11p4.png" /></p>
+<p>Now we fill the new column:</p>
+<pre class="r"><code>DECLARE @Idx INT 
+SET @Idx = 0 
+UPDATE example_Table 
+SET @Idx = Idx = @Idx + 1 
+
+SELECT ID, Idx
+    FROM example_Table
+    ;</code></pre>
+<p><img src="/post/2021-03-29-data-manipulation_files/p11p5.png" /></p>
+<p>We can delete these again at will.</p>
+<pre class="r"><code>ALTER TABLE example_Table DROP COLUMN Idx;
+
+SELECT *
+    FROM example_Table
+    ;</code></pre>
+<p><img src="/post/2021-03-29-data-manipulation_files/p11p6.png" /></p>
+</div>
+</div>
+<div id="replacing-values" class="section level2">
+<h2>3.2 Replacing Values</h2>
+<p>What happens very often is that you want / need to replace certain values with others.</p>
+<div id="replace-null-values-isnull" class="section level3">
+<h3>3.2.1 Replace NULL Values (ISNULL)</h3>
+<p>Let’s take a look at this part of the data set:</p>
+<pre class="r"><code>SELECT Cat1, Cat2
+    FROM example_Table
+    ;</code></pre>
+<p><img src="/post/2021-03-29-data-manipulation_files/p11p7.png" /></p>
+<p>With ISNULL we have the possibility to replace NULL values from columns with other values.</p>
+<pre class="r"><code>SELECT Cat1, Cat2,
+       ISNULL(Cat1, &#39;Unknown&#39;) AS non_null_Cat1,
+       ISNULL(Cat2, 999) AS non_null_Cat2
+    FROM example_Table
+    ;</code></pre>
+<p><img src="/post/2021-03-29-data-manipulation_files/p11p8.png" /></p>
+<p><strong>Hint</strong>. in other SQL languages the syntax is different:</p>
+<ul>
+<li>MySQL = IFNULL()</li>
+<li>MS Access = IsNull()</li>
+<li>Oracle = NVL()</li>
+</ul>
+<p>ISNULL can also be used nested:</p>
+<pre class="r"><code>SELECT Cat1, 
+       AVG(ISNULL(Cat2, 10)) AS avg_non_null_Cat2, 
+       AVG(Cat2) AS avg_with_null_Cat2
+    FROM example_Table
+    GROUP BY Cat1
+    HAVING Cat1 = &#39;A&#39; OR Cat1 = &#39;B&#39;
+    ;</code></pre>
+<p><img src="/post/2021-03-29-data-manipulation_files/p11p9.png" /></p>
+<p>To track the calculation even better see the modified syntax here:</p>
+<pre class="r"><code>SELECT Cat1, 
+       AVG(ISNULL(Cat2, 10)) AS avg_non_null_Cat2, 
+       AVG(Cat2) AS avg_with_null_Cat2,
+       Count(ISNULL(Cat2, 10)) AS num_abs_non_null_Cat2,
+       Count(Cat2) AS num_abs_with_null_Cat2,
+       SUM(ISNULL(Cat2, 10)) AS sum_non_null_Cat2,
+       SUM(Cat2) AS sum_with_null_Cat2
+    FROM example_Table
+    GROUP BY Cat1
+    HAVING Cat1 = &#39;A&#39; OR Cat1 = &#39;B&#39;
+    ;</code></pre>
+<p><img src="/post/2021-03-29-data-manipulation_files/p11p10.png" /></p>
+<p>Let’s take a look at Cat1, B (non NULL): 26/5 = 5.2 = 5
+Works fine!</p>
+</div>
+<div id="replace-values-with-null-nullif" class="section level3">
+<h3>3.2.2 Replace Values with NULL (NULLIF)</h3>
+<p>The same game goes around in the other direction. Let’s take a look at this part:</p>
+<pre class="r"><code>SELECT ID
+    FROM example_Table
+    ;</code></pre>
+<p><img src="/post/2021-03-29-data-manipulation_files/p11p11.png" /></p>
+<p>Now I want to specifically set some values to NULL</p>
+<pre class="r"><code>SELECT ID,
+       NULLIF(ID, 8) AS null_if_ID
+    FROM example_Table
+    ;</code></pre>
+<p><img src="/post/2021-03-29-data-manipulation_files/p11p12.png" /></p>
+<p>This is of course only possible because I have preset that the column ID may also contain NULL values (which is normally not the case, especially not if it is the primary key):</p>
+<p>Limitation: only one value can be set as NULL in this way.</p>
+<p>If we want to set several values to NULL or replace several values with new ones we have to resort to another function: CASE.</p>
+</div>
+<div id="if-else-statemtents-in-sql-case" class="section level3">
+<h3>3.2.3 IF Else Statemtents in SQL (CASE)</h3>
+<p>Let’s give this a try:</p>
+<pre class="r"><code>SELECT ID,
+        CASE 
+            WHEN ID = 7 THEN NULL
+            WHEN ID = 8 THEN NULL
+            WHEN ID = 9 THEN NULL
+            ELSE ID
+        END AS ID_with_null
+    FROM example_Table
+    ;</code></pre>
+<p><img src="/post/2021-03-29-data-manipulation_files/p11p13.png" /></p>
+<p>ELSE is optional here, if nothing is defined a NULL value would be returned</p>
+<p>As already mentioned, you can not only set values to ZERO with NULL, but also pass other values. See the following example:</p>
+<pre class="r"><code>SELECT ID, Title
+    FROM example_Table
+    ;</code></pre>
+<p><img src="/post/2021-03-29-data-manipulation_files/p11p14.png" /></p>
+<pre class="r"><code>SELECT ID, Title,
+        CASE 
+            WHEN Title = &#39;Mr&#39; THEN &#39;Male&#39;
+            WHEN Title = &#39;Mrs&#39; THEN &#39;Female&#39;
+            WHEN Title = &#39;Miss&#39; THEN &#39;Female&#39;
+            WHEN Title = &#39;Ms&#39; THEN &#39;Female&#39;
+            ELSE &#39;Unknown&#39;
+        END AS Gender
+    FROM example_Table
+    ;</code></pre>
+<p><img src="/post/2021-03-29-data-manipulation_files/p11p15.png" /></p>
+<p>CASE is a very useful function but it also requires a lot of typing.
+If the situation allows it, you can also use a simple If statement.</p>
+</div>
+<div id="if-statemtents-in-sql-iif" class="section level3">
+<h3>3.2.4 IF Statemtents in SQL (IIF)</h3>
+<p>The syntax is very simple but of course somewhat limited: <em>IIF(boolean_expression,true_value,false_value)</em>
+It must be a valid boolean value, or the function will raise an error.</p>
+<p>Here is a simple example:</p>
+<pre class="r"><code>SELECT IIF(500&lt;1000, &#39;true&#39;, &#39;false&#39;) AS _500_is_less_than_1000;</code></pre>
+<p><img src="/post/2021-03-29-data-manipulation_files/p11p16.png" /></p>
+<p>Since we have only one title notation for the man in the example shown above, we can also apply the IIF in this case.</p>
+<pre class="r"><code>SELECT ID, Title,
+       IIF(Title = &#39;Mr&#39;, &#39;M&#39;, &#39;F&#39;) AS Gender
+    FROM example_Table
+    ;</code></pre>
+<p><img src="/post/2021-03-29-data-manipulation_files/p11p17.png" /></p>
+<p>IIF also works wonderfully with local variables:</p>
+<pre class="r"><code>DECLARE @BankBalance INT = 150;
+
+SELECT IIF(@BankBalance &gt; 100, &#39;Rich!&#39;, &#39;Poor&#39;);</code></pre>
+<p><img src="/post/2021-03-29-data-manipulation_files/p11p18.png" /></p>
+<p>Even nested is no problem:</p>
+<pre class="r"><code>DECLARE @bankBalance INT = 120;
+
+SELECT IIF(
+    @BankBalance &gt; 100, 
+        IIF(@BankBalance &gt; 150, &#39;Rich!&#39;, &#39;Wealthy&#39;), 
+    &#39;Poor&#39;
+    );</code></pre>
+<p><img src="/post/2021-03-29-data-manipulation_files/p11p19.png" /></p>
+</div>
+<div id="coalesce" class="section level3">
+<h3>3.2.5 COALESCE</h3>
+<p><a href="https://docs.microsoft.com/en-us/sql/t-sql/language-elements/coalesce-transact-sql?view=sql-server-ver15">COALESCE</a> is a more difficult function but super helpful in some situations that I will show you in a moment:</p>
+<div id="replace-null-values-with-the-columnsaverage" class="section level4">
+<h4>3.2.5.1 Replace NULL Values with the columns’average</h4>
+<p>As a Data Scientist, I don’t like to throw away NULL values, as this would result in the loss of unnecessary information (for example, during model training). A smarter solution is to use other metrics, such as the mean value of the column.</p>
+<p>Let’s have a look here:</p>
+<pre class="r"><code>SELECT First_Name, Age
+    FROM example_Table
+    ;</code></pre>
+<p><img src="/post/2021-03-29-data-manipulation_files/p11p20.png" /></p>
+<p>If you have enough data, you can use the mean value for the missing lines.</p>
+<pre class="r"><code>SELECT First_Name, Age,
+       COALESCE(Age, AVG(Age) over ()) as new_Age
+    FROM example_Table
+    ;</code></pre>
+<p><img src="/post/2021-03-29-data-manipulation_files/p11p21.png" /></p>
+</div>
+<div id="coalesce-for-string-concatenation" class="section level4">
+<h4>3.2.5.2 Coalesce for String Concatenation</h4>
+<p>Let’s have a look at this part:</p>
+<pre class="r"><code>SELECT First_Name, Middle_Name, Last_Name
+    FROM example_Table
+    ;</code></pre>
+<p><img src="/post/2021-03-29-data-manipulation_files/p11p22.png" /></p>
+<p>As I have already written <a href="https://michael-fuchs-sql.netlify.app/2021/03/23/data-wrangling/#with-text-1">here</a>, it is very easy to link text variables in SQL.</p>
+<p>Let’s see if this works in our case as well…</p>
+<pre class="r"><code>SELECT First_Name, Middle_Name, Last_Name,
+       First_Name + &#39; &#39; + Middle_Name + &#39; &#39; + Last_Name AS Full_Name
+    FROM example_Table
+    ;</code></pre>
+<p><img src="/post/2021-03-29-data-manipulation_files/p11p23.png" /></p>
+<p>No, unfortunately not. But COALESCE can help here:</p>
+<pre class="r"><code>SELECT First_Name, Middle_Name, Last_Name,
+       First_Name + &#39; &#39; + COALESCE(Middle_Name, &#39;&#39;) + &#39; &#39; + Last_Name AS Full_Name
+    FROM example_Table
+    ;</code></pre>
+<p><img src="/post/2021-03-29-data-manipulation_files/p11p24.png" /></p>
+</div>
+<div id="compare-sql-server-coalesce-to-case" class="section level4">
+<h4>3.2.5.3 Compare SQL Server COALESCE to CASE</h4>
+<p>Once you understand <a href="https://docs.microsoft.com/en-us/sql/t-sql/language-elements/coalesce-transact-sql?view=sql-server-ver15">COALESCE</a>, you can save yourself a lot of typing again. See the example below:</p>
+<pre class="r"><code>SELECT First_Name, LastOrderDate, LastWebSearchDate, LastInquiryDate, LastPaymentDate 
+    FROM example_Table
+    ;</code></pre>
+<p><img src="/post/2021-03-29-data-manipulation_files/p11p25.png" /></p>
+<p>Here I want to generate a column that shows the Last Activity Date.
+I can do this with COALESCE as well as with CASE.</p>
+<pre class="r"><code>SELECT First_Name, 
+       COALESCE(LastOrderDate, LastWebSearchDate, LastInquiryDate, LastPaymentDate) AS LastActivityDate
+    FROM example_Table
+    ;</code></pre>
+<p><img src="/post/2021-03-29-data-manipulation_files/p11p26.png" /></p>
+<pre class="r"><code>SELECT First_Name,
+        CASE 
+            WHEN LastOrderDate IS NOT NULL THEN LastOrderDate
+            WHEN LastWebSearchDate IS NOT NULL THEN LastWebSearchDate
+            WHEN LastInquiryDate IS NOT NULL THEN LastInquiryDate
+            WHEN LastPaymentDate IS NOT NULL THEN LastPaymentDate
+        END AS LastActivityDate
+    FROM example_Table
+    ;</code></pre>
+<p><img src="/post/2021-03-29-data-manipulation_files/p11p27.png" /></p>
+<p>However, it is simply much faster with COALESCE.</p>
+</div>
+<div id="compare-sql-server-coalesce-to-isnull" class="section level4">
+<h4>3.2.5.4 Compare SQL Server COALESCE to ISNULL</h4>
+<p>I often hear that COALESCE works just like ISNULL. But this is only partly true and you should be aware of the differences, otherwise you may be in for a nasty surprise.</p>
+<p>For this reason I have taken the time to explain the difference here with an own example.</p>
+<p>I create a small table for this purpose:</p>
+<pre class="r"><code>CREATE TABLE COALESCE_Table (Char_Variable VARCHAR(10))
+
+INSERT INTO COALESCE_Table VALUES(NULL)
+
+SELECT * FROM COALESCE_Table</code></pre>
+<p><img src="/post/2021-03-29-data-manipulation_files/p11p28.png" /></p>
+<p>Now I use ISNULL to replace the NULL value with a short text.</p>
+<pre class="r"><code>SELECT Char_Variable, 
+       ISNULL(Char_Variable, &#39;some_Text&#39;) AS filled_Char_Var
+    FROM COALESCE_Table
+    ;</code></pre>
+<p><img src="/post/2021-03-29-data-manipulation_files/p11p29.png" /></p>
+<p>Works as expected. But what about when I want to insert a longer text?</p>
+<pre class="r"><code>SELECT Char_Variable, 
+       ISNULL(Char_Variable, &#39;some_very_long_Text&#39;) AS filled_Char_Var
+    FROM COALESCE_Table
+    ;</code></pre>
+<p><img src="/post/2021-03-29-data-manipulation_files/p11p30.png" /></p>
+<p>The text will be truncated. This is also intentional, because I have set a limit of 10 characters for this column when I created the table.</p>
+<p>Now let’s see what COALESCE does here:</p>
+<pre class="r"><code>SELECT Char_Variable,
+       COALESCE(Char_Variable, &#39;some_very_long_Text&#39;) AS filled_Char_Var
+    FROM COALESCE_Table
+    ;</code></pre>
+<p><img src="/post/2021-03-29-data-manipulation_files/p11p31.png" /></p>
 <p><img src="/post/2021-03-29-data-manipulation_files/p11p.png" /></p>
 <p><img src="/post/2021-03-29-data-manipulation_files/p11p.png" /></p>
-<p><img src="/post/2021-03-29-data-manipulation_files/p11p.png" /></p>
-<p><img src="/post/2021-03-29-data-manipulation_files/p11p.png" /></p>
-<p><img src="/post/2021-03-29-data-manipulation_files/p11p.png" /></p>
-<p><img src="/post/2021-03-29-data-manipulation_files/p11p.png" /></p>
-<p><img src="/post/2021-03-29-data-manipulation_files/p11p.png" /></p>
-<p><img src="/post/2021-03-29-data-manipulation_files/p11p.png" /></p>
+</div>
 </div>
 </div>
 </div>

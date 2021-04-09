@@ -112,11 +112,422 @@ ALTER TABLE example_Table DROP COLUMN ID;
 ![](/post/2021-03-29-data-manipulation_files/p11p3.png)
 
 
+### 3.1.2 Creat an Index via a new Column (recommended)
+
+A better method would be to first generate a new column in the data set and then fill it with a consecutive number.
+
+```{r, eval=F, echo=T}
+ALTER TABLE example_Table ADD Idx INT;
+
+SELECT ID, Idx
+	FROM example_Table
+	;
+```
+
+![](/post/2021-03-29-data-manipulation_files/p11p4.png)
+
+Now we fill the new column:
+
+```{r, eval=F, echo=T}
+DECLARE @Idx INT 
+SET @Idx = 0 
+UPDATE example_Table 
+SET @Idx = Idx = @Idx + 1 
+
+SELECT ID, Idx
+	FROM example_Table
+	;
+```
+
+![](/post/2021-03-29-data-manipulation_files/p11p5.png)
+
+We can delete these again at will. 
+
+
+```{r, eval=F, echo=T}
+ALTER TABLE example_Table DROP COLUMN Idx;
+
+SELECT *
+	FROM example_Table
+	;
+```
+
+![](/post/2021-03-29-data-manipulation_files/p11p6.png)
+
+
+## 3.2 Replacing Values
+
+What happens very often is that you want / need to replace certain values with others. 
+
+### 3.2.1 Replace NULL Values (ISNULL)
+
+Let's take a look at this part of the data set:
+
+```{r, eval=F, echo=T}
+SELECT Cat1, Cat2
+	FROM example_Table
+	;
+```
+
+![](/post/2021-03-29-data-manipulation_files/p11p7.png)
+
+With ISNULL we have the possibility to replace NULL values from columns with other values.
+
+
+```{r, eval=F, echo=T}
+SELECT Cat1, Cat2,
+	   ISNULL(Cat1, 'Unknown') AS non_null_Cat1,
+	   ISNULL(Cat2, 999) AS non_null_Cat2
+	FROM example_Table
+	;
+```
+
+![](/post/2021-03-29-data-manipulation_files/p11p8.png)
+
+
+**Hint**. in other SQL languages the syntax is different:
+
++ MySQL = IFNULL()
++ MS Access = IsNull()
++ Oracle = NVL()
+
+
+ISNULL can also be used nested:
+
+
+```{r, eval=F, echo=T}
+SELECT Cat1, 
+	   AVG(ISNULL(Cat2, 10)) AS avg_non_null_Cat2, 
+	   AVG(Cat2) AS avg_with_null_Cat2
+	FROM example_Table
+	GROUP BY Cat1
+	HAVING Cat1 = 'A' OR Cat1 = 'B'
+	;
+```
+
+![](/post/2021-03-29-data-manipulation_files/p11p9.png)
+
+To track the calculation even better see the modified syntax here: 
+
+```{r, eval=F, echo=T}
+SELECT Cat1, 
+	   AVG(ISNULL(Cat2, 10)) AS avg_non_null_Cat2, 
+	   AVG(Cat2) AS avg_with_null_Cat2,
+	   Count(ISNULL(Cat2, 10)) AS num_abs_non_null_Cat2,
+	   Count(Cat2) AS num_abs_with_null_Cat2,
+	   SUM(ISNULL(Cat2, 10)) AS sum_non_null_Cat2,
+	   SUM(Cat2) AS sum_with_null_Cat2
+	FROM example_Table
+	GROUP BY Cat1
+	HAVING Cat1 = 'A' OR Cat1 = 'B'
+	;
+```
+
+![](/post/2021-03-29-data-manipulation_files/p11p10.png)
+
+Let's take a look at Cat1, B (non NULL): 26/5 = 5.2 = 5
+Works fine!
+
+
+### 3.2.2 Replace Values with NULL (NULLIF)
+
+The same game goes around in the other direction. Let's take a look at this part:
+
+
+```{r, eval=F, echo=T}
+SELECT ID
+	FROM example_Table
+	;
+```
+
+![](/post/2021-03-29-data-manipulation_files/p11p11.png)
+
+
+Now I want to specifically set some values to NULL 
+
+```{r, eval=F, echo=T}
+SELECT ID,
+	   NULLIF(ID, 8) AS null_if_ID
+	FROM example_Table
+	;
+```
+
+![](/post/2021-03-29-data-manipulation_files/p11p12.png)
+
+
+This is of course only possible because I have preset that the column ID may also contain NULL values (which is normally not the case, especially not if it is the primary key):
+
+Limitation: only one value can be set as NULL in this way.
+
+If we want to set several values to NULL or replace several values with new ones we have to resort to another function: CASE.
+
+
+### 3.2.3 IF Else Statemtents in SQL (CASE)
+
+Let's give this a try:
+
+```{r, eval=F, echo=T}
+SELECT ID,
+		CASE 
+			WHEN ID = 7 THEN NULL
+			WHEN ID = 8 THEN NULL
+			WHEN ID = 9 THEN NULL
+			ELSE ID
+		END AS ID_with_null
+	FROM example_Table
+	;
+```
+
+![](/post/2021-03-29-data-manipulation_files/p11p13.png)
+
+ELSE is optional here, if nothing is defined a NULL value would be returned 
+
+As already mentioned, you can not only set values to ZERO with NULL, but also pass other values. See the following example:
+
+```{r, eval=F, echo=T}
+SELECT ID, Title
+	FROM example_Table
+	;
+```
+
+![](/post/2021-03-29-data-manipulation_files/p11p14.png)
+
+```{r, eval=F, echo=T}
+SELECT ID, Title,
+		CASE 
+			WHEN Title = 'Mr' THEN 'Male'
+			WHEN Title = 'Mrs' THEN 'Female'
+			WHEN Title = 'Miss' THEN 'Female'
+			WHEN Title = 'Ms' THEN 'Female'
+			ELSE 'Unknown'
+		END AS Gender
+	FROM example_Table
+	;
+```
+
+![](/post/2021-03-29-data-manipulation_files/p11p15.png)
+
+CASE is a very useful function but it also requires a lot of typing.
+If the situation allows it, you can also use a simple If statement.
 
 
 
+### 3.2.4 IF Statemtents in SQL (IIF)
+
+The syntax is very simple but of course somewhat limited: *IIF(boolean_expression,true_value,false_value)*
+It must be a valid boolean value, or the function will raise an error.
+
+Here is a simple example:
+
+```{r, eval=F, echo=T}
+SELECT IIF(500<1000, 'true', 'false') AS _500_is_less_than_1000;
+```
+
+![](/post/2021-03-29-data-manipulation_files/p11p16.png)
+
+Since we have only one title notation for the man in the example shown above, we can also apply the IIF in this case. 
 
 
+```{r, eval=F, echo=T}
+SELECT ID, Title,
+	   IIF(Title = 'Mr', 'M', 'F') AS Gender
+	FROM example_Table
+	;
+```
+
+![](/post/2021-03-29-data-manipulation_files/p11p17.png)
+
+
+IIF also works wonderfully with local variables:
+
+```{r, eval=F, echo=T}
+DECLARE @BankBalance INT = 150;
+
+SELECT IIF(@BankBalance > 100, 'Rich!', 'Poor');
+```
+
+![](/post/2021-03-29-data-manipulation_files/p11p18.png)
+
+
+Even nested is no problem:
+
+```{r, eval=F, echo=T}
+DECLARE @bankBalance INT = 120;
+
+SELECT IIF(
+    @BankBalance > 100, 
+		IIF(@BankBalance > 150, 'Rich!', 'Wealthy'), 
+    'Poor'
+    );
+```
+
+![](/post/2021-03-29-data-manipulation_files/p11p19.png)
+
+
+### 3.2.5 COALESCE
+
+[COALESCE](https://docs.microsoft.com/en-us/sql/t-sql/language-elements/coalesce-transact-sql?view=sql-server-ver15) is a more difficult function but super helpful in some situations that I will show you in a moment: 
+
+
+#### 3.2.5.1 Replace NULL Values with the columns'average
+
+As a Data Scientist, I don't like to throw away NULL values, as this would result in the loss of unnecessary information (for example, during model training). A smarter solution is to use other metrics, such as the mean value of the column.
+
+Let's have a look here: 
+
+```{r, eval=F, echo=T}
+SELECT First_Name, Age
+	FROM example_Table
+	;
+```
+
+![](/post/2021-03-29-data-manipulation_files/p11p20.png)
+
+If you have enough data, you can use the mean value for the missing lines.
+
+
+```{r, eval=F, echo=T}
+SELECT First_Name, Age,
+	   COALESCE(Age, AVG(Age) over ()) as new_Age
+	FROM example_Table
+	;
+```
+
+![](/post/2021-03-29-data-manipulation_files/p11p21.png)
+
+#### 3.2.5.2 Coalesce for String Concatenation
+
+Let's have a look at this part:
+
+```{r, eval=F, echo=T}
+SELECT First_Name, Middle_Name, Last_Name
+	FROM example_Table
+	;
+```
+
+![](/post/2021-03-29-data-manipulation_files/p11p22.png)
+
+As I have already written [here](https://michael-fuchs-sql.netlify.app/2021/03/23/data-wrangling/#with-text-1), it is very easy to link text variables in SQL.
+
+Let's see if this works in our case as well...
+
+```{r, eval=F, echo=T}
+SELECT First_Name, Middle_Name, Last_Name,
+	   First_Name + ' ' + Middle_Name + ' ' + Last_Name AS Full_Name
+	FROM example_Table
+	;
+```
+
+![](/post/2021-03-29-data-manipulation_files/p11p23.png)
+
+No, unfortunately not. But COALESCE can help here:
+
+```{r, eval=F, echo=T}
+SELECT First_Name, Middle_Name, Last_Name,
+	   First_Name + ' ' + COALESCE(Middle_Name, '') + ' ' + Last_Name AS Full_Name
+	FROM example_Table
+	;
+```
+
+![](/post/2021-03-29-data-manipulation_files/p11p24.png)
+
+
+#### 3.2.5.3 Compare SQL Server COALESCE to CASE
+
+Once you understand [COALESCE](https://docs.microsoft.com/en-us/sql/t-sql/language-elements/coalesce-transact-sql?view=sql-server-ver15), you can save yourself a lot of typing again. See the example below:
+
+
+```{r, eval=F, echo=T}
+SELECT First_Name, LastOrderDate, LastWebSearchDate, LastInquiryDate, LastPaymentDate 
+	FROM example_Table
+	;
+```
+
+![](/post/2021-03-29-data-manipulation_files/p11p25.png)
+
+Here I want to generate a column that shows the Last Activity Date.
+I can do this with COALESCE as well as with CASE.
+
+
+```{r, eval=F, echo=T}
+SELECT First_Name, 
+	   COALESCE(LastOrderDate, LastWebSearchDate, LastInquiryDate, LastPaymentDate) AS LastActivityDate
+	FROM example_Table
+	;
+```
+
+![](/post/2021-03-29-data-manipulation_files/p11p26.png)
+
+```{r, eval=F, echo=T}
+SELECT First_Name,
+		CASE 
+			WHEN LastOrderDate IS NOT NULL THEN LastOrderDate
+			WHEN LastWebSearchDate IS NOT NULL THEN LastWebSearchDate
+			WHEN LastInquiryDate IS NOT NULL THEN LastInquiryDate
+			WHEN LastPaymentDate IS NOT NULL THEN LastPaymentDate
+		END AS LastActivityDate
+	FROM example_Table
+	;
+```
+
+![](/post/2021-03-29-data-manipulation_files/p11p27.png)
+
+However, it is simply much faster with COALESCE.
+
+
+#### 3.2.5.4 Compare SQL Server COALESCE to ISNULL
+
+I often hear that COALESCE works just like ISNULL. But this is only partly true and you should be aware of the differences, otherwise you may be in for a nasty surprise. 
+
+For this reason I have taken the time to explain the difference here with an own example. 
+
+I create a small table for this purpose:
+
+```{r, eval=F, echo=T}
+CREATE TABLE COALESCE_Table (Char_Variable VARCHAR(10))
+
+INSERT INTO COALESCE_Table VALUES(NULL)
+
+SELECT * FROM COALESCE_Table
+```
+
+![](/post/2021-03-29-data-manipulation_files/p11p28.png)
+
+Now I use ISNULL to replace the NULL value with a short text.
+
+```{r, eval=F, echo=T}
+SELECT Char_Variable, 
+	   ISNULL(Char_Variable, 'some_Text') AS filled_Char_Var
+	FROM COALESCE_Table
+	;
+```
+
+![](/post/2021-03-29-data-manipulation_files/p11p29.png)
+
+Works as expected. But what about when I want to insert a longer text?
+
+
+```{r, eval=F, echo=T}
+SELECT Char_Variable, 
+	   ISNULL(Char_Variable, 'some_very_long_Text') AS filled_Char_Var
+	FROM COALESCE_Table
+	;
+```
+
+![](/post/2021-03-29-data-manipulation_files/p11p30.png)
+
+The text will be truncated. This is also intentional, because I have set a limit of 10 characters for this column when I created the table.
+
+Now let's see what COALESCE does here:
+
+```{r, eval=F, echo=T}
+SELECT Char_Variable,
+	   COALESCE(Char_Variable, 'some_very_long_Text') AS filled_Char_Var
+	FROM COALESCE_Table
+	;
+```
+
+![](/post/2021-03-29-data-manipulation_files/p11p31.png)
 
 
 
@@ -140,8 +551,6 @@ ALTER TABLE example_Table DROP COLUMN ID;
 
 
 
-
-
 ```{r, eval=F, echo=T}
 
 ```
@@ -150,129 +559,6 @@ ALTER TABLE example_Table DROP COLUMN ID;
 
 
 
-
-
-
-
-
-
-
-
-
-
-```{r, eval=F, echo=T}
-
-```
-
-![](/post/2021-03-29-data-manipulation_files/p11p.png)
-
-
-
-
-
-
-
-
-
-
-
-```{r, eval=F, echo=T}
-
-```
-
-![](/post/2021-03-29-data-manipulation_files/p11p.png)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-```{r, eval=F, echo=T}
-
-```
-
-![](/post/2021-03-29-data-manipulation_files/p11p.png)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-```{r, eval=F, echo=T}
-
-```
-
-![](/post/2021-03-29-data-manipulation_files/p11p.png)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-```{r, eval=F, echo=T}
-
-```
-
-![](/post/2021-03-29-data-manipulation_files/p11p.png)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-```{r, eval=F, echo=T}
-
-```
-
-![](/post/2021-03-29-data-manipulation_files/p11p.png)
 
 
 
