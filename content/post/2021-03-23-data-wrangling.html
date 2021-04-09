@@ -43,6 +43,11 @@ output:
 <li><a href="#with-text">4.3.6 With Text</a></li>
 <li><a href="#filter-for-null-values">4.3.7 Filter for NULL Values</a></li>
 </ul></li>
+<li><a href="#drop-duplicates">4.4 Drop Duplicates</a>
+<ul>
+<li><a href="#just-keep-the-first-element-and-drop-the-following-duplicates">4.4.1 Just keep the first element and drop the following duplicates</a></li>
+<li><a href="#just-keep-the-last-element-and-drop-the-firsts-duplicates">4.4.2 Just keep the last element and drop the first/s duplicate/s</a></li>
+</ul></li>
 </ul></li>
 <li><a href="#conclusion">5 Conclusion</a></li>
 </ul>
@@ -250,6 +255,42 @@ SELECT *
 <p><img src="/post/2021-03-23-data-wrangling_files/p9p23.png" /></p>
 </div>
 </div>
+<div id="drop-duplicates" class="section level2">
+<h2>4.4 Drop Duplicates</h2>
+<p>For this example, we create an artificial index in the flight dataset:</p>
+<pre class="r"><code>ALTER TABLE flight ADD Idx INT IDENTITY(1,1) PRIMARY KEY;
+
+SELECT TOP 10 Idx, Origin_Airport
+    FROM flight
+    ;</code></pre>
+<p><img src="/post/2021-03-23-data-wrangling_files/p9p24.png" /></p>
+<p>Let’s see how many duplicates there are for the Origin_Airport column:</p>
+<pre class="r"><code>SELECT Origin_Airport,
+       COUNT(*) AS DuplicatesCount
+    FROM flight
+    GROUP BY Origin_Airport
+    ;</code></pre>
+<p><img src="/post/2021-03-23-data-wrangling_files/p9p25.png" /></p>
+<p>I have explained the use of the Group By command in more detail <a href="https://michael-fuchs-sql.netlify.app/2021/03/26/data-aggregation/#group-by">here</a>.</p>
+<div id="just-keep-the-first-element-and-drop-the-following-duplicates" class="section level3">
+<h3>4.4.1 Just keep the first element and drop the following duplicates</h3>
+<pre class="r"><code>SELECT Idx, Origin_Airport
+    FROM flight
+    WHERE Idx IN (SELECT MIN(Idx)
+                        FROM flight
+                        GROUP BY Origin_Airport);</code></pre>
+<p><img src="/post/2021-03-23-data-wrangling_files/p9p26.png" /></p>
+</div>
+<div id="just-keep-the-last-element-and-drop-the-firsts-duplicates" class="section level3">
+<h3>4.4.2 Just keep the last element and drop the first/s duplicate/s</h3>
+<pre class="r"><code>SELECT Idx, Origin_Airport
+    FROM flight
+    WHERE Idx IN (SELECT MAX(Idx)
+                        FROM flight
+                        GROUP BY Origin_Airport);</code></pre>
+<p><img src="/post/2021-03-23-data-wrangling_files/p9p27.png" /></p>
+</div>
+</div>
 </div>
 <div id="conclusion" class="section level1">
 <h1>5 Conclusion</h1>
@@ -258,6 +299,7 @@ SELECT *
 <li>How to get an overview of the data</li>
 <li>Selecting specific columns</li>
 <li>Conditional Statements</li>
+<li>Handling Duplicate Values</li>
 </ul>
 <p>These are the basics of data wrangling which can be used in all possible combinations.</p>
 </div>

@@ -367,6 +367,65 @@ SELECT *
 ![](/post/2021-03-23-data-wrangling_files/p9p23.png)
 
 
+
+## 4.4 Drop Duplicates
+
+For this example, we create an artificial index in the flight dataset:
+
+```{r, eval=F, echo=T}
+ALTER TABLE flight ADD Idx INT IDENTITY(1,1) PRIMARY KEY;
+
+SELECT TOP 10 Idx, Origin_Airport
+	FROM flight
+	;
+```
+
+![](/post/2021-03-23-data-wrangling_files/p9p24.png)
+
+
+Let's see how many duplicates there are for the Origin_Airport column:
+
+```{r, eval=F, echo=T}
+SELECT Origin_Airport,
+	   COUNT(*) AS DuplicatesCount
+	FROM flight
+	GROUP BY Origin_Airport
+	;
+```
+
+![](/post/2021-03-23-data-wrangling_files/p9p25.png)
+
+I have explained the use of the Group By command in more detail [here](https://michael-fuchs-sql.netlify.app/2021/03/26/data-aggregation/#group-by). 
+
+
+### 4.4.1 Just keep the first element and drop the following duplicates
+
+
+```{r, eval=F, echo=T}
+SELECT Idx, Origin_Airport
+	FROM flight
+	WHERE Idx IN (SELECT MIN(Idx)
+						FROM flight
+						GROUP BY Origin_Airport);
+```
+
+![](/post/2021-03-23-data-wrangling_files/p9p26.png)
+
+
+### 4.4.2 Just keep the last element and drop the first/s duplicate/s
+
+
+```{r, eval=F, echo=T}
+SELECT Idx, Origin_Airport
+	FROM flight
+	WHERE Idx IN (SELECT MAX(Idx)
+						FROM flight
+						GROUP BY Origin_Airport);
+```
+
+![](/post/2021-03-23-data-wrangling_files/p9p27.png)
+
+
 # 5 Conclusion
 
 In this post I have covered the following topics:
@@ -374,6 +433,7 @@ In this post I have covered the following topics:
 + How to get an overview of the data
 + Selecting specific columns
 + Conditional Statements
++ Handling Duplicate Values
 
 These are the basics of data wrangling which can be used in all possible combinations. 
 
