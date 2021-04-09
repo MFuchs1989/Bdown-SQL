@@ -19,6 +19,13 @@ output:
 <ul>
 <li><a href="#introduction">1 Introduction</a></li>
 <li><a href="#preparation">2 Preparation</a></li>
+<li><a href="#modifying-columns">3 Modifying Columns</a>
+<ul>
+<li><a href="#set-index">3.1 Set Index</a>
+<ul>
+<li><a href="#creat-an-index-via-primary-key">3.1.1 Creat an Index via Primary Key</a></li>
+</ul></li>
+</ul></li>
 </ul>
 </div>
 
@@ -71,14 +78,33 @@ INSERT INTO example_Table (Cat1, Cat2, Title, First_Name, Middle_Name, Last_Name
 <pre class="r"><code>SELECT *
     FROM example_Table
     ;</code></pre>
-<p><img src="/2021-03-29-data-manipulation_files/p11p1.png" /></p>
-<p><img src="/2021-03-29-data-manipulation_files/p11p.png" /></p>
-<p><img src="/2021-03-29-data-manipulation_files/p11p.png" /></p>
-<p><img src="/2021-03-29-data-manipulation_files/p11p.png" /></p>
-<p><img src="/2021-03-29-data-manipulation_files/p11p.png" /></p>
-<p><img src="/2021-03-29-data-manipulation_files/p11p.png" /></p>
-<p><img src="/post/2021-03-26-data-aggregation_files/p11p.png" /></p>
-<p><img src="/post/2021-03-26-data-aggregation_files/p11p.png" /></p>
-<p><img src="/post/2021-03-26-data-aggregation_files/p11p.png" /></p>
-<p><img src="/post/2021-03-26-data-aggregation_files/p11p.png" /></p>
+<p><img src="/post/2021-03-29-data-manipulation_files/p11p1.png" /></p>
+</div>
+<div id="modifying-columns" class="section level1">
+<h1>3 Modifying Columns</h1>
+<div id="set-index" class="section level2">
+<h2>3.1 Set Index</h2>
+<p>As you may have noticed earlier, our dataset does not yet have an index. Therefore I would like to present two methods that can be used here:</p>
+<div id="creat-an-index-via-primary-key" class="section level3">
+<h3>3.1.1 Creat an Index via Primary Key</h3>
+<p>On the one hand, we can use a primary key, which every table should have anyway.</p>
+<pre class="r"><code>ALTER TABLE example_Table ADD ID INT IDENTITY(1,1) PRIMARY KEY;
+
+SELECT ID
+    FROM example_Table
+    ;</code></pre>
+<p><img src="/post/2021-03-29-data-manipulation_files/p11p2.png" /></p>
+<p>The disadvantage here is if you want to use this only for a temporary index, that you can no longer delete it, which of course also makes sense.</p>
+<pre class="r"><code>ALTER TABLE example_Table DROP COLUMN ID;</code></pre>
+<p><img src="/post/2021-03-29-data-manipulation_files/p11p3.png" /></p>
+<p><img src="/post/2021-03-29-data-manipulation_files/p11p.png" /></p>
+<p><img src="/post/2021-03-29-data-manipulation_files/p11p.png" /></p>
+<p><img src="/post/2021-03-29-data-manipulation_files/p11p.png" /></p>
+<p><img src="/post/2021-03-29-data-manipulation_files/p11p.png" /></p>
+<p><img src="/post/2021-03-29-data-manipulation_files/p11p.png" /></p>
+<p><img src="/post/2021-03-29-data-manipulation_files/p11p.png" /></p>
+<p><img src="/post/2021-03-29-data-manipulation_files/p11p.png" /></p>
+<p><img src="/post/2021-03-29-data-manipulation_files/p11p.png" /></p>
+</div>
+</div>
 </div>

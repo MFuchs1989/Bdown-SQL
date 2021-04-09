@@ -80,9 +80,36 @@ SELECT *
 	;
 ```
 
-![](/2021-03-29-data-manipulation_files/p11p1.png)
+![](/post/2021-03-29-data-manipulation_files/p11p1.png)
 
 
+# 3 Modifying Columns
+
+## 3.1 Set Index
+
+As you may have noticed earlier, our dataset does not yet have an index. Therefore I would like to present two methods that can be used here:
+
+### 3.1.1 Creat an Index via Primary Key
+
+On the one hand, we can use a primary key, which every table should have anyway.
+
+```{r, eval=F, echo=T}
+ALTER TABLE example_Table ADD ID INT IDENTITY(1,1) PRIMARY KEY;
+
+SELECT ID
+	FROM example_Table
+	;
+```
+
+![](/post/2021-03-29-data-manipulation_files/p11p2.png)
+
+The disadvantage here is if you want to use this only for a temporary index, that you can no longer delete it, which of course also makes sense. 
+
+```{r, eval=F, echo=T}
+ALTER TABLE example_Table DROP COLUMN ID;
+```
+
+![](/post/2021-03-29-data-manipulation_files/p11p3.png)
 
 
 
@@ -97,80 +124,7 @@ SELECT *
 
 ```
 
-![](/2021-03-29-data-manipulation_files/p11p.png)
-
-
-
-
-
-
-
-
-
-
-```{r, eval=F, echo=T}
-
-```
-
-![](/2021-03-29-data-manipulation_files/p11p.png)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-```{r, eval=F, echo=T}
-
-```
-
-![](/2021-03-29-data-manipulation_files/p11p.png)
-
-
-
-
-
-
-
-
-
-
-
-
-
-```{r, eval=F, echo=T}
-
-```
-
-![](/2021-03-29-data-manipulation_files/p11p.png)
-
-
-
-
-
-
-
-
-
-
-
-```{r, eval=F, echo=T}
-
-```
-
-![](/2021-03-29-data-manipulation_files/p11p.png)
-
-
+![](/post/2021-03-29-data-manipulation_files/p11p.png)
 
 
 
@@ -192,12 +146,7 @@ SELECT *
 
 ```
 
-![](/post/2021-03-26-data-aggregation_files/p11p.png)
-
-
-
-
-
+![](/post/2021-03-29-data-manipulation_files/p11p.png)
 
 
 
@@ -215,7 +164,23 @@ SELECT *
 
 ```
 
-![](/post/2021-03-26-data-aggregation_files/p11p.png)
+![](/post/2021-03-29-data-manipulation_files/p11p.png)
+
+
+
+
+
+
+
+
+
+
+
+```{r, eval=F, echo=T}
+
+```
+
+![](/post/2021-03-29-data-manipulation_files/p11p.png)
 
 
 
@@ -239,7 +204,9 @@ SELECT *
 
 ```
 
-![](/post/2021-03-26-data-aggregation_files/p11p.png)
+![](/post/2021-03-29-data-manipulation_files/p11p.png)
+
+
 
 
 
@@ -260,5 +227,60 @@ SELECT *
 
 ```
 
-![](/post/2021-03-26-data-aggregation_files/p11p.png)
+![](/post/2021-03-29-data-manipulation_files/p11p.png)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+```{r, eval=F, echo=T}
+
+```
+
+![](/post/2021-03-29-data-manipulation_files/p11p.png)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+```{r, eval=F, echo=T}
+
+```
+
+![](/post/2021-03-29-data-manipulation_files/p11p.png)
+
+
+
+
+
+
+
+
+
+
 
