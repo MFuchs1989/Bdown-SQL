@@ -456,6 +456,8 @@ SELECT TOP 5 Idx, Scheduled_Departure, Scheduled_Arrival,
 
 ![](/post/2021-03-23-data-wrangling_files/p9p29.png)
 
+This is only one example of what is possible with arithmetic operations. Of course you can do many more and divide the values or multiply them and so on.  
+
 ### 4.5.2 with text
 
 Let's take a look at this section:
