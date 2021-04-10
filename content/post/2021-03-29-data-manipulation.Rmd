@@ -88,7 +88,7 @@ SELECT *
 
 As you may have noticed earlier, our dataset does not yet have an index. Therefore I would like to present two methods that can be used here:
 
-## 3.1 Creat an Index via Primary Key
+## 3.1 Create an Index via Primary Key
 
 On the one hand, we can use a primary key, which every table should have anyway.
 
@@ -111,7 +111,7 @@ ALTER TABLE example_Table DROP COLUMN ID;
 ![](/post/2021-03-29-data-manipulation_files/p11p3.png)
 
 
-## 3.2 Creat an Index via a new Column (recommended)
+## 3.2 Create an Index via a new Column (recommended)
 
 A better method would be to first generate a new column in the data set and then fill it with a consecutive number.
 

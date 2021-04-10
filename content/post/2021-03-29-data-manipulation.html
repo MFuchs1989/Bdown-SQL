@@ -21,8 +21,8 @@ output:
 <li><a href="#preparation">2 Preparation</a></li>
 <li><a href="#set-index">3 Set Index</a>
 <ul>
-<li><a href="#creat-an-index-via-primary-key">3.1 Creat an Index via Primary Key</a></li>
-<li><a href="#creat-an-index-via-a-new-column-recommended">3.2 Creat an Index via a new Column (recommended)</a></li>
+<li><a href="#create-an-index-via-primary-key">3.1 Create an Index via Primary Key</a></li>
+<li><a href="#create-an-index-via-a-new-column-recommended">3.2 Create an Index via a new Column (recommended)</a></li>
 </ul></li>
 <li><a href="#replacing-values">4 Replacing Values</a>
 <ul>
@@ -98,8 +98,8 @@ INSERT INTO example_Table (Cat1, Cat2, Title, First_Name, Middle_Name, Last_Name
 <div id="set-index" class="section level1">
 <h1>3 Set Index</h1>
 <p>As you may have noticed earlier, our dataset does not yet have an index. Therefore I would like to present two methods that can be used here:</p>
-<div id="creat-an-index-via-primary-key" class="section level2">
-<h2>3.1 Creat an Index via Primary Key</h2>
+<div id="create-an-index-via-primary-key" class="section level2">
+<h2>3.1 Create an Index via Primary Key</h2>
 <p>On the one hand, we can use a primary key, which every table should have anyway.</p>
 <pre class="r"><code>ALTER TABLE example_Table ADD ID INT IDENTITY(1,1) PRIMARY KEY;
 
@@ -111,8 +111,8 @@ SELECT ID
 <pre class="r"><code>ALTER TABLE example_Table DROP COLUMN ID;</code></pre>
 <p><img src="/post/2021-03-29-data-manipulation_files/p11p3.png" /></p>
 </div>
-<div id="creat-an-index-via-a-new-column-recommended" class="section level2">
-<h2>3.2 Creat an Index via a new Column (recommended)</h2>
+<div id="create-an-index-via-a-new-column-recommended" class="section level2">
+<h2>3.2 Create an Index via a new Column (recommended)</h2>
 <p>A better method would be to first generate a new column in the data set and then fill it with a consecutive number.</p>
 <pre class="r"><code>ALTER TABLE example_Table ADD Idx INT;
 
