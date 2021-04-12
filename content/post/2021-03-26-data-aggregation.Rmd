@@ -215,37 +215,8 @@ SELECT AVG(Dep_Delay) AS avg_dep_delay
 ![](/post/2021-03-26-data-aggregation_files/p10p12.png)
 
 
-## 3.4 Distinct
 
-### 3.4.1 Digression: Difference between Unique vs. Distinct 
-
-People often ask me what the difference is between Unique and Distinct. In short, they are two completely different use cases:
-
-+ UNIQUE: always take part in **data insertion**
-+ DISTINCT: always concern on **data retrieval**
-
-A unique constraint is used when the column itself (or set of columns) must be unique according to the schema details (the data). In other words: If the data in that column (or set of columns) must be unique, a unique constraint is used. This is the case, for example, with membership numbers (IDs that usually serve as primary keys). The database must protect itself from questionable data, this is not something that should be left to the applications themselves, as the first incorrect application that comes along would break the database.
-
-If the data does not need to be unique (e.g. specifying a person's city), then it can be decided to make it "unique" in a select statement, as needed.
-
-
-### 3.4.2 Get distinct values
-
-Now let's have a look at the DISTINCT command in practice and let us output the departure airports in the Origin_Airport column. 
-
-```{r, eval=F, echo=T}
-SELECT DISTINCT Origin_Airport	
-	FROM flight
-	;
-```
-
-![](/post/2021-03-26-data-aggregation_files/p10p13.png)
-
-As we can see from the output, a total of 18 different airports are stored in this data set (in the Origin_Airport column). 
-
-
-
-## 3.5 Group By
+## 3.4 Group By
 
 Now we come to the probably most used aggregation function: Group By. 
 All of the functions that we have learned about before can be used here and only really develop their added value with Group By. 
@@ -253,7 +224,7 @@ All of the functions that we have learned about before can be used here and only
 With the Group By command, we can have values, such as the mean value, output in groups. 
 
 
-### 3.5.1 Simple Group By with AVG
+### 3.4.1 Simple Group By with AVG
 
 Let's take a look at the average delay of departures grouped by originating airports. 
 
@@ -271,7 +242,7 @@ SELECT Origin_Airport,
 In order for this select statement to work, when using the Group By function, you must ensure that the column after which the grouping takes place is also output as a column (after the SELECT command). 
 
 
-### 3.5.2 Group and Order By with AVG
+### 3.4.2 Group and Order By with AVG
 
 After the previously shown output is still a bit confused, I use the ORDER BY command in the following statement to have the departure airports output in alphabetical order. 
 
@@ -288,7 +259,7 @@ SELECT Origin_Airport,
 ![](/post/2021-03-26-data-aggregation_files/p10p15.png)
 
 
-### 3.5.3 Group and Order By with ABS & STDEV
+### 3.4.3 Group and Order By with ABS & STDEV
 
 What is also always good to have a measure of position as it is the average value of a measure of dispersion output. 
 Therefore, for the same grouping, I also look at the absolute values behind the groupings and their standard deviation. 
@@ -320,7 +291,7 @@ SELECT Origin_Airport,
 
 ![](/post/2021-03-26-data-aggregation_files/p10p17.png)
 
-### 3.5.4 Group and Order By with MAX
+### 3.4.4 Group and Order By with MAX
 
 Let's take a look at the highest value recorded for each group (Origin_Airport). 
 
@@ -336,7 +307,7 @@ SELECT Origin_Airport,
 ![](/post/2021-03-26-data-aggregation_files/p10p18.png)
 
 
-### 3.5.5 Multiple Group and Order By
+### 3.4.5 Multiple Group and Order By
 
 Of course, we also have the possibility to use multiple Group By and Order By. 
 Let's have a look at the absolute numbers of departures grouped by Origin_Airport and DayOfWeek. 
@@ -354,7 +325,7 @@ SELECT Origin_Airport, DayOfWeek,
 ![](/post/2021-03-26-data-aggregation_files/p10p19.png)
 
 
-## 3.6 Having
+## 3.5 Having
 
 As we can see from the last output by the multiple grouping, quite a few lines are generated quite quickly. Often not all rows are relevant but only those that exceed a certain threshold. 
 We can set this threshold using the HAVING command. 
