@@ -133,7 +133,7 @@ SELECT DISTINCT Origin_Airport
 	;
 ```
 
-![](/post/2021-03-26-data-aggregation_files/p9z4.png)
+![](/post/2021-03-23-data-wrangling_files/p9z4.png)
 
 As we can see from the output, a total of 18 different airports are stored in this data set (in the Origin_Airport column). 
 
