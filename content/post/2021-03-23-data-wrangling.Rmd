@@ -109,6 +109,39 @@ SELECT Count(*) FROM INFORMATION_SCHEMA.Columns
 ![](/post/2021-03-23-data-wrangling_files/p9z3.png)
 
 
+## 3.3 Get Distinct Values
+
+### 3.3.1 Digression: Difference between Unique vs. Distinct 
+
+People often ask me what the difference is between Unique and Distinct. In short, they are two completely different use cases:
+
++ UNIQUE: always take part in **data insertion**
++ DISTINCT: always concern on **data retrieval**
+
+A unique constraint is used when the column itself (or set of columns) must be unique according to the schema details (the data). In other words: If the data in that column (or set of columns) must be unique, a unique constraint is used. This is the case, for example, with membership numbers (IDs that usually serve as primary keys). The database must protect itself from questionable data, this is not something that should be left to the applications themselves, as the first incorrect application that comes along would break the database.
+
+If the data does not need to be unique (e.g. specifying a person's city), then it can be decided to make it "unique" in a select statement, as needed.
+
+
+### 3.3.2 Get distinct values
+
+Now let's have a look at the DISTINCT command in practice and let us output the departure airports in the Origin_Airport column. 
+
+```{r, eval=F, echo=T}
+SELECT DISTINCT Origin_Airport	
+	FROM flight
+	;
+```
+
+![](/post/2021-03-26-data-aggregation_files/p9z4.png)
+
+As we can see from the output, a total of 18 different airports are stored in this data set (in the Origin_Airport column). 
+
+
+
+
+
+
 
 # 4 Data Wrangling
 

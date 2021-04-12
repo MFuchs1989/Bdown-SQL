@@ -23,6 +23,11 @@ output:
 <ul>
 <li><a href="#count-rows">3.1 Count Rows</a></li>
 <li><a href="#count-columns">3.2 Count Columns</a></li>
+<li><a href="#get-distinct-values">3.3 Get Distinct Values</a>
+<ul>
+<li><a href="#digression-difference-between-unique-vs.-distinct">3.3.1 Digression: Difference between Unique vs. Distinct</a></li>
+<li><a href="#get-distinct-values-1">3.3.2 Get distinct values</a></li>
+</ul></li>
 </ul></li>
 <li><a href="#data-wrangling">4 Data Wrangling</a>
 <ul>
@@ -108,6 +113,28 @@ USE Wrangling;</code></pre>
     WHERE TABLE_NAME = &#39;flight&#39;
     ;</code></pre>
 <p><img src="/post/2021-03-23-data-wrangling_files/p9z3.png" /></p>
+</div>
+<div id="get-distinct-values" class="section level2">
+<h2>3.3 Get Distinct Values</h2>
+<div id="digression-difference-between-unique-vs.-distinct" class="section level3">
+<h3>3.3.1 Digression: Difference between Unique vs. Distinct</h3>
+<p>People often ask me what the difference is between Unique and Distinct. In short, they are two completely different use cases:</p>
+<ul>
+<li>UNIQUE: always take part in <strong>data insertion</strong></li>
+<li>DISTINCT: always concern on <strong>data retrieval</strong></li>
+</ul>
+<p>A unique constraint is used when the column itself (or set of columns) must be unique according to the schema details (the data). In other words: If the data in that column (or set of columns) must be unique, a unique constraint is used. This is the case, for example, with membership numbers (IDs that usually serve as primary keys). The database must protect itself from questionable data, this is not something that should be left to the applications themselves, as the first incorrect application that comes along would break the database.</p>
+<p>If the data does not need to be unique (e.g. specifying a person’s city), then it can be decided to make it “unique” in a select statement, as needed.</p>
+</div>
+<div id="get-distinct-values-1" class="section level3">
+<h3>3.3.2 Get distinct values</h3>
+<p>Now let’s have a look at the DISTINCT command in practice and let us output the departure airports in the Origin_Airport column.</p>
+<pre class="r"><code>SELECT DISTINCT Origin_Airport  
+    FROM flight
+    ;</code></pre>
+<p><img src="/post/2021-03-26-data-aggregation_files/p9z4.png" /></p>
+<p>As we can see from the output, a total of 18 different airports are stored in this data set (in the Origin_Airport column).</p>
+</div>
 </div>
 </div>
 <div id="data-wrangling" class="section level1">
