@@ -419,5 +419,23 @@ SELECT *
 Only persons whose age is greater than 27 are output here.
 
 
+Here again IN, ANY and ALL in a nutshell:
+
++ IN: Equals to Anything in the List
++ ANY: Compares Value to Each Value Returned by the Sub Query
++ ALL: Compares Value To Every Value Returned by the Sub Query
+
+
+
+# 6 Conclusion
+
+In this post I have shown how to create subqueries and use them with 
+
++ EXISTS
++ IN
++ ANY and 
++ ALL 
+
+
 
 
