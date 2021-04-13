@@ -5,4 +5,220 @@ date: '2021-04-01'
 slug: subqueries
 categories: []
 tags: []
+output:
+  blogdown::html_page:
+    toc: true
+    toc_depth: 5
 ---
+
+
+
+# 1 Introduction
+
+You can usually get pretty far with SQL using simple queries like we've seen so far. You can get even further if you know how to use subqueries. 
+
+For this post I used the dataset *flight* from the statistics platform ["Kaggle"](https://www.kaggle.com). You can download it from my [GitHub Repository](https://github.com/MFuchs1989/Datasets-and-Miscellaneous/tree/main/datasets).
+
+
+# 2 Preparation
+
+
+```{r, eval=F, echo=T}
+SET LANGUAGE ENGLISH
+
+
+CREATE DATABASE Subqueries;
+
+USE Subqueries;
+```
+
+
+## 2.1 Loading the data set *flight*
+
+How to load a dataset via SSMS into your database I described in this post: [Read and write to files](https://michael-fuchs-sql.netlify.app/2021/03/20/read-and-write-to-files/#via-ssms)
+
+```{r, eval=F, echo=T}
+SELECT *
+	FROM flight
+	;
+```
+
+![](/post/2021-04-01-subqueries_files/p12p1.png)
+
+
+## 2.2 Creation of the *flight_add_info* dataset
+
+
+Below we will still need the following dataset, which I will call *flight_add_info*.
+
+
+```{r, eval=F, echo=T}
+CREATE TABLE flight_add_info
+    (Tai_lNum VARCHAR(100),
+    Manufacturer VARCHAR(100),
+    Typ VARCHAR(100),
+	Maximum_Speed INT,
+	Range INT)
+    ;
+```
+
+```{r, eval=F, echo=T}
+INSERT INTO flight_add_info (Tai_lNum, Manufacturer, Typ, Maximum_Speed, Range) VALUES ('N790AA', 'Airbus', 'A380', 1185, 15200)
+INSERT INTO flight_add_info (Tai_lNum, Manufacturer, Typ, Maximum_Speed, Range) VALUES ('N787AA', 'Airbus', 'A340', 870, 10300)
+INSERT INTO flight_add_info (Tai_lNum, Manufacturer, Typ, Maximum_Speed, Range) VALUES ('Z793AA', 'Airbus', 'A310', 900, 8000)
+```
+
+
+
+```{r, eval=F, echo=T}
+SELECT * 
+	FROM flight_add_info
+	;
+```
+
+![](/post/2021-04-01-subqueries_files/p12p2.png)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+```{r, eval=F, echo=T}
+
+```
+
+![](/post/2021-04-01-subqueries_files/p12p.png)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+```{r, eval=F, echo=T}
+
+```
+
+![](/post/2021-04-01-subqueries_files/p12p.png)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+```{r, eval=F, echo=T}
+
+```
+
+![](/post/2021-04-01-subqueries_files/p12p.png)
+
+
+
+
+
+
+
+
+
+
+```{r, eval=F, echo=T}
+
+```
+
+![](/post/2021-04-01-subqueries_files/p12p.png)
+
+
+
+
+
+```{r, eval=F, echo=T}
+
+```
+
+![](/post/2021-04-01-subqueries_files/p12p.png)
+
+
+
+
+
+
+
+```{r, eval=F, echo=T}
+
+```
+
+![](/post/2021-04-01-subqueries_files/p12p.png)
+
+
+
+
+
+
+
+
+
+
+
+

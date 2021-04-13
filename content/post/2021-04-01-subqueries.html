@@ -5,10 +5,70 @@ date: '2021-04-01'
 slug: subqueries
 categories: []
 tags: []
+output:
+  blogdown::html_page:
+    toc: true
+    toc_depth: 5
 ---
 
 <script src="/rmarkdown-libs/header-attrs/header-attrs.js"></script>
 <link href="/rmarkdown-libs/anchor-sections/anchor-sections.css" rel="stylesheet" />
 <script src="/rmarkdown-libs/anchor-sections/anchor-sections.js"></script>
 
+<div id="TOC">
+<ul>
+<li><a href="#introduction">1 Introduction</a></li>
+<li><a href="#preparation">2 Preparation</a>
+<ul>
+<li><a href="#loading-the-data-set-flight">2.1 Loading the data set <em>flight</em></a></li>
+<li><a href="#creation-of-the-flight_add_info-dataset">2.2 Creation of the <em>flight_add_info</em> dataset</a></li>
+</ul></li>
+</ul>
+</div>
 
+<div id="introduction" class="section level1">
+<h1>1 Introduction</h1>
+<p>You can usually get pretty far with SQL using simple queries like we’ve seen so far. You can get even further if you know how to use subqueries.</p>
+<p>For this post I used the dataset <em>flight</em> from the statistics platform <a href="https://www.kaggle.com">“Kaggle”</a>. You can download it from my <a href="https://github.com/MFuchs1989/Datasets-and-Miscellaneous/tree/main/datasets">GitHub Repository</a>.</p>
+</div>
+<div id="preparation" class="section level1">
+<h1>2 Preparation</h1>
+<pre class="r"><code>SET LANGUAGE ENGLISH
+
+
+CREATE DATABASE Subqueries;
+
+USE Subqueries;</code></pre>
+<div id="loading-the-data-set-flight" class="section level2">
+<h2>2.1 Loading the data set <em>flight</em></h2>
+<p>How to load a dataset via SSMS into your database I described in this post: <a href="https://michael-fuchs-sql.netlify.app/2021/03/20/read-and-write-to-files/#via-ssms">Read and write to files</a></p>
+<pre class="r"><code>SELECT *
+    FROM flight
+    ;</code></pre>
+<p><img src="/post/2021-04-01-subqueries_files/p12p1.png" /></p>
+</div>
+<div id="creation-of-the-flight_add_info-dataset" class="section level2">
+<h2>2.2 Creation of the <em>flight_add_info</em> dataset</h2>
+<p>Below we will still need the following dataset, which I will call <em>flight_add_info</em>.</p>
+<pre class="r"><code>CREATE TABLE flight_add_info
+    (Tai_lNum VARCHAR(100),
+    Manufacturer VARCHAR(100),
+    Typ VARCHAR(100),
+    Maximum_Speed INT,
+    Range INT)
+    ;</code></pre>
+<pre class="r"><code>INSERT INTO flight_add_info (Tai_lNum, Manufacturer, Typ, Maximum_Speed, Range) VALUES (&#39;N790AA&#39;, &#39;Airbus&#39;, &#39;A380&#39;, 1185, 15200)
+INSERT INTO flight_add_info (Tai_lNum, Manufacturer, Typ, Maximum_Speed, Range) VALUES (&#39;N787AA&#39;, &#39;Airbus&#39;, &#39;A340&#39;, 870, 10300)
+INSERT INTO flight_add_info (Tai_lNum, Manufacturer, Typ, Maximum_Speed, Range) VALUES (&#39;Z793AA&#39;, &#39;Airbus&#39;, &#39;A310&#39;, 900, 8000)</code></pre>
+<pre class="r"><code>SELECT * 
+    FROM flight_add_info
+    ;</code></pre>
+<p><img src="/post/2021-04-01-subqueries_files/p12p2.png" /></p>
+<p><img src="/post/2021-04-01-subqueries_files/p12p.png" /></p>
+<p><img src="/post/2021-04-01-subqueries_files/p12p.png" /></p>
+<p><img src="/post/2021-04-01-subqueries_files/p12p.png" /></p>
+<p><img src="/post/2021-04-01-subqueries_files/p12p.png" /></p>
+<p><img src="/post/2021-04-01-subqueries_files/p12p.png" /></p>
+<p><img src="/post/2021-04-01-subqueries_files/p12p.png" /></p>
+</div>
+</div>
