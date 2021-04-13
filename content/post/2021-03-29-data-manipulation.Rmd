@@ -642,9 +642,164 @@ SELECT ID, Cat1
 ![](/post/2021-03-29-data-manipulation_files/p11p38.png)
 
 
+# 7 Data Type Conversion (CAST & CONVERT)
+
+Both **CAST** and **CONVERT** are functions used by Data Analysts / Scientists to convert variables of one data type into another data type.
+One difference between CAST and CONVERT is CAST is an ANSI standard while CONVERT is a specific function in the SQL server. This means that the CAST function can be used by many databases.
+CONVERT is more powerful and flexible than CAST in this respect and therefore more popular especially for time values. 
 
 
-# 7 Conclusion
+The syntax of **CAST** is very simple to write. It contains the value to convert and the type of the resulting data type.
+It has 'AS' as a keyword to separate the datatype from the value. 
+Furthermore there is an option to express the length.
+
+`Example: CAST(expression AS datatype(length))`
+
+
+In comparison, the **CONVERT** syntax first specifies the resulting datatype together with the optional length. 
+There is another optional parameter in CONVERT called style. 
+Style allows formatting of the datatype and specifies how the CONVERT function should format the datatype.
+
+`Example: CONVERT(data_type(length), expression, style)`
+
+
+
+## 7.1 Create Example Data
+
+
+```{r, eval=F, echo=T}
+CREATE TABLE customers
+    (Name VARCHAR(100),
+    Debts FLOAT,
+    Salary INT)
+    ;
+```
+
+```{r, eval=F, echo=T}
+INSERT INTO customers (Name, Debts, Salary) VALUES ('A', 480000, 2000)
+INSERT INTO customers (Name, Debts, Salary) VALUES ('B', 225000, 4000)
+INSERT INTO customers (Name, Debts, Salary) VALUES ('C', 407000, 8500)
+INSERT INTO customers (Name, Debts, Salary) VALUES ('D', 670000, 6000)
+INSERT INTO customers (Name, Debts, Salary) VALUES ('E', 160000, 4150)
+```
+
+
+
+```{r, eval=F, echo=T}
+SELECT *
+	FROM customers
+	;
+
+```
+
+![](/post/2021-03-29-data-manipulation_files/p11p39.png)
+
+
+## 7.2 CAST 
+
+Let's say we want to get the salary in thousands:
+
+
+```{r, eval=F, echo=T}
+SELECT Salary / 1000 AS Salary_in_thousand
+	FROM customers
+	;
+```
+
+![](/post/2021-03-29-data-manipulation_files/p11p40.png)
+
+Since the Salary column in the *customers* table is stored as INT, we also receive only INT values as output.
+
+Therefore, we need to use CAST:
+
+
+```{r, eval=F, echo=T}
+SELECT CAST(Salary AS FLOAT) / 1000 AS Salary_in_thousand
+	FROM customers
+	;
+```
+
+![](/post/2021-03-29-data-manipulation_files/p11p41.png)
+
+Tip: Here I only need to cast the Salary column.
+
+Now let's divide the Debt column by the Salary column to see how long it will take me to pay this off. 
+
+
+
+```{r, eval=F, echo=T}
+SELECT Debts / Salary AS num_years
+	FROM customers
+	;
+```
+
+![](/post/2021-03-29-data-manipulation_files/p11p42.png)
+
+
+Also this issue is just not advantageous for my purpose. Therefore we use CAST again. 
+
+```{r, eval=F, echo=T}
+SELECT CAST(Debts AS INT) / CAST(Salary AS INT) AS num_years
+	FROM customers
+	;
+```
+
+![](/post/2021-03-29-data-manipulation_files/p11p43.png)
+
+Do I really need to cast both columns?
+
+No! 
+
+SQL would not be SQL if this could not be done more simply.
+
+
+```{r, eval=F, echo=T}
+SELECT CAST(Debts / Salary AS INT) AS num_years
+	FROM customers
+	;
+```
+
+![](/post/2021-03-29-data-manipulation_files/p11p44.png)
+
+
+## 7.3 CONVERT 
+
+As already described above, CONVERT does this job for us as well, is only slightly different from the syntax notation. 
+
+Here again the original data set:
+
+```{r, eval=F, echo=T}
+SELECT *
+	FROM customers
+	;
+```
+
+![](/post/2021-03-29-data-manipulation_files/p11p45.png)
+
+
+In the following I will show the two examples from the previous chapter again, only this time with CONVERT:
+
+```{r, eval=F, echo=T}
+SELECT CONVERT(FLOAT, Salary) / 1000 AS Salary_in_thousand
+	FROM customers
+	;
+```
+
+![](/post/2021-03-29-data-manipulation_files/p11p46.png)
+
+
+```{r, eval=F, echo=T}
+SELECT CONVERT(INT, Debts / Salary) AS num_years
+	FROM customers
+	;
+```
+
+![](/post/2021-03-29-data-manipulation_files/p11p47.png)
+
+
+
+
+# 8 Conclusion
 
 That's it for now. 
 I didn't get all the available functions for data manipulation in this post but I will write another one about SQL Server functions and link to all relevant places. 

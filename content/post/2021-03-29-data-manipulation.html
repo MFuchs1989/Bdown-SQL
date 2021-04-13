@@ -40,7 +40,13 @@ output:
 </ul></li>
 <li><a href="#rename-columns">5 Rename Columns</a></li>
 <li><a href="#delete-duplicates">6 Delete Duplicates</a></li>
-<li><a href="#conclusion">7 Conclusion</a></li>
+<li><a href="#data-type-conversion-cast-convert">7 Data Type Conversion (CAST &amp; CONVERT)</a>
+<ul>
+<li><a href="#create-example-data">7.1 Create Example Data</a></li>
+<li><a href="#cast">7.2 CAST</a></li>
+<li><a href="#convert">7.3 CONVERT</a></li>
+</ul></li>
+<li><a href="#conclusion">8 Conclusion</a></li>
 </ul>
 </div>
 
@@ -424,8 +430,89 @@ With the following statement SELECT MIN(ID) only the first value will be kept in
     ;</code></pre>
 <p><img src="/post/2021-03-29-data-manipulation_files/p11p38.png" /></p>
 </div>
+<div id="data-type-conversion-cast-convert" class="section level1">
+<h1>7 Data Type Conversion (CAST &amp; CONVERT)</h1>
+<p>Both <strong>CAST</strong> and <strong>CONVERT</strong> are functions used by Data Analysts / Scientists to convert variables of one data type into another data type.
+One difference between CAST and CONVERT is CAST is an ANSI standard while CONVERT is a specific function in the SQL server. This means that the CAST function can be used by many databases.
+CONVERT is more powerful and flexible than CAST in this respect and therefore more popular especially for time values.</p>
+<p>The syntax of <strong>CAST</strong> is very simple to write. It contains the value to convert and the type of the resulting data type.
+It has ‘AS’ as a keyword to separate the datatype from the value.
+Furthermore there is an option to express the length.</p>
+<p><code>Example: CAST(expression AS datatype(length))</code></p>
+<p>In comparison, the <strong>CONVERT</strong> syntax first specifies the resulting datatype together with the optional length.
+There is another optional parameter in CONVERT called style.
+Style allows formatting of the datatype and specifies how the CONVERT function should format the datatype.</p>
+<p><code>Example: CONVERT(data_type(length), expression, style)</code></p>
+<div id="create-example-data" class="section level2">
+<h2>7.1 Create Example Data</h2>
+<pre class="r"><code>CREATE TABLE customers
+    (Name VARCHAR(100),
+    Debts FLOAT,
+    Salary INT)
+    ;</code></pre>
+<pre class="r"><code>INSERT INTO customers (Name, Debts, Salary) VALUES (&#39;A&#39;, 480000, 2000)
+INSERT INTO customers (Name, Debts, Salary) VALUES (&#39;B&#39;, 225000, 4000)
+INSERT INTO customers (Name, Debts, Salary) VALUES (&#39;C&#39;, 407000, 8500)
+INSERT INTO customers (Name, Debts, Salary) VALUES (&#39;D&#39;, 670000, 6000)
+INSERT INTO customers (Name, Debts, Salary) VALUES (&#39;E&#39;, 160000, 4150)</code></pre>
+<pre class="r"><code>SELECT *
+    FROM customers
+    ;</code></pre>
+<p><img src="/post/2021-03-29-data-manipulation_files/p11p39.png" /></p>
+</div>
+<div id="cast" class="section level2">
+<h2>7.2 CAST</h2>
+<p>Let’s say we want to get the salary in thousands:</p>
+<pre class="r"><code>SELECT Salary / 1000 AS Salary_in_thousand
+    FROM customers
+    ;</code></pre>
+<p><img src="/post/2021-03-29-data-manipulation_files/p11p40.png" /></p>
+<p>Since the Salary column in the <em>customers</em> table is stored as INT, we also receive only INT values as output.</p>
+<p>Therefore, we need to use CAST:</p>
+<pre class="r"><code>SELECT CAST(Salary AS FLOAT) / 1000 AS Salary_in_thousand
+    FROM customers
+    ;</code></pre>
+<p><img src="/post/2021-03-29-data-manipulation_files/p11p41.png" /></p>
+<p>Tip: Here I only need to cast the Salary column.</p>
+<p>Now let’s divide the Debt column by the Salary column to see how long it will take me to pay this off.</p>
+<pre class="r"><code>SELECT Debts / Salary AS num_years
+    FROM customers
+    ;</code></pre>
+<p><img src="/post/2021-03-29-data-manipulation_files/p11p42.png" /></p>
+<p>Also this issue is just not advantageous for my purpose. Therefore we use CAST again.</p>
+<pre class="r"><code>SELECT CAST(Debts AS INT) / CAST(Salary AS INT) AS num_years
+    FROM customers
+    ;</code></pre>
+<p><img src="/post/2021-03-29-data-manipulation_files/p11p43.png" /></p>
+<p>Do I really need to cast both columns?</p>
+<p>No!</p>
+<p>SQL would not be SQL if this could not be done more simply.</p>
+<pre class="r"><code>SELECT CAST(Debts / Salary AS INT) AS num_years
+    FROM customers
+    ;</code></pre>
+<p><img src="/post/2021-03-29-data-manipulation_files/p11p44.png" /></p>
+</div>
+<div id="convert" class="section level2">
+<h2>7.3 CONVERT</h2>
+<p>As already described above, CONVERT does this job for us as well, is only slightly different from the syntax notation.</p>
+<p>Here again the original data set:</p>
+<pre class="r"><code>SELECT *
+    FROM customers
+    ;</code></pre>
+<p><img src="/post/2021-03-29-data-manipulation_files/p11p45.png" /></p>
+<p>In the following I will show the two examples from the previous chapter again, only this time with CONVERT:</p>
+<pre class="r"><code>SELECT CONVERT(FLOAT, Salary) / 1000 AS Salary_in_thousand
+    FROM customers
+    ;</code></pre>
+<p><img src="/post/2021-03-29-data-manipulation_files/p11p46.png" /></p>
+<pre class="r"><code>SELECT CONVERT(INT, Debts / Salary) AS num_years
+    FROM customers
+    ;</code></pre>
+<p><img src="/post/2021-03-29-data-manipulation_files/p11p47.png" /></p>
+</div>
+</div>
 <div id="conclusion" class="section level1">
-<h1>7 Conclusion</h1>
+<h1>8 Conclusion</h1>
 <p>That’s it for now.
 I didn’t get all the available functions for data manipulation in this post but I will write another one about SQL Server functions and link to all relevant places.</p>
 </div>
