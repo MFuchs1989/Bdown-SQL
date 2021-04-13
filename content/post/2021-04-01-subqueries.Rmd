@@ -436,6 +436,6 @@ In this post I have shown how to create subqueries and use them with
 + ANY and 
 + ALL 
 
-
+jhkj
 
 
