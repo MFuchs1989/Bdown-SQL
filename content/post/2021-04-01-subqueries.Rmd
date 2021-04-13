@@ -80,27 +80,203 @@ SELECT *
 
 
 
+## 2.3 Creation of the *customers* dataset
+
+
+And one more data set that we will need:
+
+
+```{r, eval=F, echo=T}
+CREATE TABLE customers
+    (Name VARCHAR(100),
+	Age INT,
+	Salary INT)
+    ;
+```
+
+
+```{r, eval=F, echo=T}
+INSERT INTO customers (Name, Age, Salary) VALUES ('A', 25, 2000)
+INSERT INTO customers (Name, Age, Salary) VALUES ('B', 33, 4000)
+INSERT INTO customers (Name, Age, Salary) VALUES ('C', 23, 8500)
+INSERT INTO customers (Name, Age, Salary) VALUES ('D', 27, 6000)
+INSERT INTO customers (Name, Age, Salary) VALUES ('E', 24, 4150)
+```
+
+
+```{r, eval=F, echo=T}
+SELECT * 
+	FROM customers
+	;
+```
+
+![](/post/2021-04-01-subqueries_files/p12p3.png)
+
+
+# 3 Subqueries 
+
+
+Here is a short explanation of the difference between Subqueries and Joins:
+
+**Subquery**: When an existing table needs to be manipulated or aggregated to then be joined to a larger table.
+
+**Joins**: A fully flexible and discretionary use case where a user wants to bring two or more tables together and select and filter as needed.
+
+
+## 3.1 Subqueries in the WHERE statement
+
+For our first example, we will use the **flight** dataset.
+
+There is a column there called 'Dep_Delay', which indicates the delay of aircraft departures. 
+Let's take a look at the mean value for this column:
+
+
+```{r, eval=F, echo=T}
+SELECT AVG(Dep_Delay) AS avg_dep_delay
+	FROM flight
+	;
+```
+
+![](/post/2021-04-01-subqueries_files/p12p4.png)
+
+Now, if we want to look at which flights have a greater delay than this mean (22 minutes), we can write it like this:
+
+```{r, eval=F, echo=T}
+SELECT Tai_lNum, Origin_Airport, Dep_Delay
+	FROM flight
+	WHERE Dep_Delay > 22
+	;
+```
+
+![](/post/2021-04-01-subqueries_files/p12p5.png)
+
+But it is not very smart, because the calculated mean value was hard coded here. 
+There is another way to write this and that is with the help of Subqueries:
+
+```{r, eval=F, echo=T}
+SELECT Tai_lNum, Origin_Airport, Dep_Delay
+	FROM flight
+	WHERE Dep_Delay > (SELECT AVG(Dep_Delay)
+						FROM flight)
+	;
+```
+
+![](/post/2021-04-01-subqueries_files/p12p6.png)
+
+Here we insert a subquery that calculates the mean value to which the main query can then reference. 
 
 
 
+## 3.2 Nested Subqueries in the WHERE statement
+
+
+Of course, you can also use several subqueries nested within each other. Let's take a look at the following data set:
+
+
+```{r, eval=F, echo=T}
+SELECT * 
+	FROM flight_add_info
+	;
+```
+
+![](/post/2021-04-01-subqueries_files/p12p7.png)
+
+What do I want to know here?
+
+I want to display the additional information such as manufacturer or aircraft type (data set *flight_add_info*) for the aircraft whose delayed departure in the data set *flight* is above the mean.
+
+So we use the above query including subquery only with the addition [DISTINCT](https://michael-fuchs-sql.netlify.app/2021/03/23/data-wrangling/#get-distinct-values). 
+
+```{r, eval=F, echo=T}
+SELECT DISTINCT Tai_lNum
+	FROM flight
+	WHERE Dep_Delay > (SELECT AVG(Dep_Delay)
+						FROM flight)
+	;
+```
+
+![](/post/2021-04-01-subqueries_files/p12p8.png)
+
+Based on this, I now want to add all information for which Tai_lNum I also have further information available in *flight_add_info*.
+
+```{r, eval=F, echo=T}
+SELECT *
+	FROM flight_add_info
+	WHERE Tai_lNum IN (SELECT DISTINCT Tai_lNum
+						FROM flight
+						WHERE Dep_Delay > (SELECT AVG(Dep_Delay)
+											FROM flight))
+	;
+```
+
+![](/post/2021-04-01-subqueries_files/p12p9.png)
+
+
+For two numbers I had additional information available. Of course, there are other flight numbers ('Tai_lNum') in the *flight* dataset that were above the mean in terms of departure delay, but for which I did not have any additional information (the dataset was of course very very small). 
 
 
 
+## 3.3 Subqueries in the FROM statement
+
+So far we have written Subqueries in the WHERE statement. But this is also possible in the FROM statement.
+
+Let's have a look at this part of the *flight* dataset: 
+
+```{r, eval=F, echo=T}
+SELECT Flight_Date, Origin_Airport
+	FROM flight
+	;
+```
+
+![](/post/2021-04-01-subqueries_files/p12p10.png)
+
+
+First I extract the day from the date ('Flight_Date') and count the observations grouped by the day from the Flight_Date and the Origin_Airport. 
+
+
+```{r, eval=F, echo=T}
+SELECT DAY(Flight_Date) AS day, 
+	   Origin_Airport, 
+	   COUNT(*) AS event_count
+	FROM flight
+	GROUP BY DAY(Flight_Date), Origin_Airport
+	ORDER BY DAY(Flight_Date), Origin_Airport
+	;
+```
+
+![](/post/2021-04-01-subqueries_files/p12p11.png)
+
+
+The output what you see above is my base (and therefore my following Subquery) for my main query. 
+
+**Tip:** When I want to use Subqueries in a SQL statement, I always start writing with them.
+
+
+```{r, eval=F, echo=T}
+SELECT Origin_Airport, AVG(event_count) AS avg_event_count
+	FROM (SELECT DAY(Flight_Date) AS day, 
+	      Origin_Airport, 
+	      COUNT(*) AS event_count
+			FROM flight
+			GROUP BY DAY(Flight_Date), Origin_Airport) AS sub
+	GROUP BY Origin_Airport
+	;
+```
+
+![](/post/2021-04-01-subqueries_files/p12p12.png)
+
+Based on the previously shown count (now integrated as a Subquery) I can now calculate the mean value of the counted observations grouped by Origin_Airport. 
+
+
+## 3.4 EXISTS Operator
 
 
 
+```{r, eval=F, echo=T}
 
+```
 
-
-
-
-
-
-
-
-
-
-
+![](/post/2021-04-01-subqueries_files/p12p.png)
 
 
 
@@ -119,70 +295,6 @@ SELECT *
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-```{r, eval=F, echo=T}
-
-```
-
-![](/post/2021-04-01-subqueries_files/p12p.png)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-```{r, eval=F, echo=T}
-
-```
-
-![](/post/2021-04-01-subqueries_files/p12p.png)
-
-
-
-
-
-
-
-
-
-
 ```{r, eval=F, echo=T}
 
 ```
@@ -198,20 +310,6 @@ SELECT *
 ```
 
 ![](/post/2021-04-01-subqueries_files/p12p.png)
-
-
-
-
-
-
-
-```{r, eval=F, echo=T}
-
-```
-
-![](/post/2021-04-01-subqueries_files/p12p.png)
-
-
 
 
 
