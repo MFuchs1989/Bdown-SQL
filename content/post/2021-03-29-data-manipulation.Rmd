@@ -657,7 +657,7 @@ Furthermore there is an option to express the length.
 
 
 In comparison, the **CONVERT** syntax first specifies the resulting datatype together with the optional length. 
-There is another optional parameter in CONVERT called style. 
+There is another optional parameter in CONVERT called [style](https://www.w3schools.com/sql/func_sqlserver_convert.asp). 
 Style allows formatting of the datatype and specifies how the CONVERT function should format the datatype.
 
 `Example: CONVERT(data_type(length), expression, style)`
@@ -720,8 +720,6 @@ SELECT CAST(Salary AS FLOAT) / 1000 AS Salary_in_thousand
 ```
 
 ![](/post/2021-03-29-data-manipulation_files/p11p41.png)
-
-Tip: Here I only need to cast the Salary column.
 
 Now let's divide the Debt column by the Salary column to see how long it will take me to pay this off. 
 

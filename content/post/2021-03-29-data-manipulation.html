@@ -440,7 +440,7 @@ It has ‘AS’ as a keyword to separate the datatype from the value.
 Furthermore there is an option to express the length.</p>
 <p><code>Example: CAST(expression AS datatype(length))</code></p>
 <p>In comparison, the <strong>CONVERT</strong> syntax first specifies the resulting datatype together with the optional length.
-There is another optional parameter in CONVERT called style.
+There is another optional parameter in CONVERT called <a href="https://www.w3schools.com/sql/func_sqlserver_convert.asp">style</a>.
 Style allows formatting of the datatype and specifies how the CONVERT function should format the datatype.</p>
 <p><code>Example: CONVERT(data_type(length), expression, style)</code></p>
 <div id="create-example-data" class="section level2">
@@ -473,7 +473,6 @@ INSERT INTO customers (Name, Debts, Salary) VALUES (&#39;E&#39;, 160000, 4150)</
     FROM customers
     ;</code></pre>
 <p><img src="/post/2021-03-29-data-manipulation_files/p11p41.png" /></p>
-<p>Tip: Here I only need to cast the Salary column.</p>
 <p>Now let’s divide the Debt column by the Salary column to see how long it will take me to pay this off.</p>
 <pre class="r"><code>SELECT Debts / Salary AS num_years
     FROM customers
