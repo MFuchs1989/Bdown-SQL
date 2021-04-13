@@ -800,7 +800,7 @@ SELECT CONVERT(INT, Debts / Salary) AS num_years
 # 8 Conclusion
 
 That's it for now. 
-I didn't get all the available functions for Data Manipulation in this post but I will write another one about SQL Server Functions and link to all relevant places. 
+I didn't get all the available functions for Data Manipulation in this post but I will write another one about SQL Server Functions. 
 
 
 
