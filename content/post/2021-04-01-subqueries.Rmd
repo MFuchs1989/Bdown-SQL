@@ -268,54 +268,155 @@ SELECT Origin_Airport, AVG(event_count) AS avg_event_count
 Based on the previously shown count (now integrated as a Subquery) I can now calculate the mean value of the counted observations grouped by Origin_Airport. 
 
 
-## 3.4 EXISTS Operator
+
+# 4 EXISTS Operator
+
+The EXISTS Operator is used to test for the existence of any record in a Subquery.
+
+For example, if I want to check if the Tai_lNums in this table:
+
+```{r, eval=F, echo=T}
+SELECT * 
+	FROM flight_add_info
+	;
+```
+
+![](/post/2021-04-01-subqueries_files/p12p13.png)
+
+are also found in my large *flight* table (of course also within the column 'Tai_lNum'), I can use the following command:
+
+
+```{r, eval=F, echo=T}
+SELECT DISTINCT Tai_lNum
+	FROM flight
+	WHERE EXISTS (SELECT Tai_lNum
+					FROM flight_add_info
+					WHERE flight_add_info.Tai_lNum = flight.Tai_lNum)
+	;
+```
+
+![](/post/2021-04-01-subqueries_files/p12p14.png)
+
+Fits perfectly. Two of the deposited numbers can also be found in *flight*.
+Now I display how often these numbers appear in *flight*:
 
 
 
 ```{r, eval=F, echo=T}
-
+SELECT Tai_lNum, COUNT(*) AS event_count
+	FROM flight
+	WHERE EXISTS (SELECT Tai_lNum
+					FROM flight_add_info
+					WHERE flight_add_info.Tai_lNum = flight.Tai_lNum)
+	GROUP BY Tai_lNum
+	;
 ```
 
-![](/post/2021-04-01-subqueries_files/p12p.png)
+![](/post/2021-04-01-subqueries_files/p12p15.png)
 
 
-
-
-
+This output can also be obtained by using the IN Clause:
 
 
 ```{r, eval=F, echo=T}
-
+SELECT DISTINCT Tai_lNum
+	FROM flight
+	WHERE Tai_lNum IN (SELECT DISTINCT Tai_lNum
+						FROM flight_add_info)
+	;
 ```
 
-![](/post/2021-04-01-subqueries_files/p12p.png)
+![](/post/2021-04-01-subqueries_files/p12p16.png)
+
+
+The IN is best used where you have a static list to pass like [here](https://michael-fuchs-sql.netlify.app/2021/03/23/data-wrangling/#with-lists).
+
+
+Based on rule optimizer:
+
++ **EXISTS** is much faster than IN, when the sub-query results is very large.
++ **IN** is faster than EXISTS, when the sub-query results is very small.
+
+
+**EXISTS** will be faster because once the engine has found a hit, it will quit looking as the condition has proved true.
+
+With **IN**, it will collect all the results from the sub-query before further processing.
 
 
 
+# 5 ANY and ALL Operator
 
+Do I need more operators if I already have **IN**? Yes, because there is a very important difference between ANY/ALL and IN:
+
++ With **ANY or ALL** you must place an =, <>, <, >, <=, or >= operator before ANY/ALL.
++ But with the **IN** operator you cannot use =, <>, <, >, <=, or >=.
+
+
+To get the last shown outputs (using **EXISTS** and **IN**) with ANY, I have to write the syntax as follows:
+
+```{r, eval=F, echo=T}
+SELECT DISTINCT Tai_lNum
+	FROM flight
+	WHERE Tai_lNum = ANY (SELECT Tai_lNum
+							FROM flight_add_info
+							WHERE flight_add_info.Tai_lNum = flight.Tai_lNum)
+	;
+```
+
+![](/post/2021-04-01-subqueries_files/p12p17.png)
+
+To understand ANY and ALL even better, let's consider the following example (dataset *customers*):
 
 
 ```{r, eval=F, echo=T}
-
+SELECT *
+	FROM customers
+	;
 ```
 
-![](/post/2021-04-01-subqueries_files/p12p.png)
+![](/post/2021-04-01-subqueries_files/p12p18.png)
 
-
-
+Let's take a look at the people (we only let the age of the people output) whose income is greater than 5,000. 
 
 
 ```{r, eval=F, echo=T}
-
+SELECT Age 
+	FROM customers 
+	WHERE Salary > 5000
+	;
 ```
 
-![](/post/2021-04-01-subqueries_files/p12p.png)
+![](/post/2021-04-01-subqueries_files/p12p19.png)
 
+Now we use ANY once and ALL once in the WHERE statement:
 
+```{r, eval=F, echo=T}
+SELECT * 
+	FROM customers 
+	WHERE Age > ANY(SELECT Age 
+						FROM customers 
+						WHERE Salary > 5000)
+	;
+```
 
+![](/post/2021-04-01-subqueries_files/p12p20.png)
 
+All persons whose age is greater than 23 **or** 27 are output here.
 
+Now with ALL:
 
+```{r, eval=F, echo=T}
+SELECT * 
+	FROM customers 
+	WHERE Age > ALL(SELECT Age 
+						FROM customers 
+						WHERE Salary > 5000)
+	;
+```
+
+![](/post/2021-04-01-subqueries_files/p12p21.png)
+
+Only persons whose age is greater than 27 are output here.
 
 
 

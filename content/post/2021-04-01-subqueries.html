@@ -29,8 +29,9 @@ output:
 <li><a href="#subqueries-in-the-where-statement">3.1 Subqueries in the WHERE statement</a></li>
 <li><a href="#nested-subqueries-in-the-where-statement">3.2 Nested Subqueries in the WHERE statement</a></li>
 <li><a href="#subqueries-in-the-from-statement">3.3 Subqueries in the FROM statement</a></li>
-<li><a href="#exists-operator">3.4 EXISTS Operator</a></li>
 </ul></li>
+<li><a href="#exists-operator">4 EXISTS Operator</a></li>
+<li><a href="#any-and-all-operator">5 ANY and ALL Operator</a></li>
 </ul>
 </div>
 
@@ -179,11 +180,91 @@ There is another way to write this and that is with the help of Subqueries:</p>
 <p><img src="/post/2021-04-01-subqueries_files/p12p12.png" /></p>
 <p>Based on the previously shown count (now integrated as a Subquery) I can now calculate the mean value of the counted observations grouped by Origin_Airport.</p>
 </div>
-<div id="exists-operator" class="section level2">
-<h2>3.4 EXISTS Operator</h2>
-<p><img src="/post/2021-04-01-subqueries_files/p12p.png" /></p>
-<p><img src="/post/2021-04-01-subqueries_files/p12p.png" /></p>
-<p><img src="/post/2021-04-01-subqueries_files/p12p.png" /></p>
-<p><img src="/post/2021-04-01-subqueries_files/p12p.png" /></p>
 </div>
+<div id="exists-operator" class="section level1">
+<h1>4 EXISTS Operator</h1>
+<p>The EXISTS Operator is used to test for the existence of any record in a Subquery.</p>
+<p>For example, if I want to check if the Tai_lNums in this table:</p>
+<pre class="r"><code>SELECT * 
+    FROM flight_add_info
+    ;</code></pre>
+<p><img src="/post/2021-04-01-subqueries_files/p12p13.png" /></p>
+<p>are also found in my large <em>flight</em> table (of course also within the column ‘Tai_lNum’), I can use the following command:</p>
+<pre class="r"><code>SELECT DISTINCT Tai_lNum
+    FROM flight
+    WHERE EXISTS (SELECT Tai_lNum
+                    FROM flight_add_info
+                    WHERE flight_add_info.Tai_lNum = flight.Tai_lNum)
+    ;</code></pre>
+<p><img src="/post/2021-04-01-subqueries_files/p12p14.png" /></p>
+<p>Fits perfectly. Two of the deposited numbers can also be found in <em>flight</em>.
+Now I display how often these numbers appear in <em>flight</em>:</p>
+<pre class="r"><code>SELECT Tai_lNum, COUNT(*) AS event_count
+    FROM flight
+    WHERE EXISTS (SELECT Tai_lNum
+                    FROM flight_add_info
+                    WHERE flight_add_info.Tai_lNum = flight.Tai_lNum)
+    GROUP BY Tai_lNum
+    ;</code></pre>
+<p><img src="/post/2021-04-01-subqueries_files/p12p15.png" /></p>
+<p>This output can also be obtained by using the IN Clause:</p>
+<pre class="r"><code>SELECT DISTINCT Tai_lNum
+    FROM flight
+    WHERE Tai_lNum IN (SELECT DISTINCT Tai_lNum
+                        FROM flight_add_info)
+    ;</code></pre>
+<p><img src="/post/2021-04-01-subqueries_files/p12p16.png" /></p>
+<p>The IN is best used where you have a static list to pass like <a href="https://michael-fuchs-sql.netlify.app/2021/03/23/data-wrangling/#with-lists">here</a>.</p>
+<p>Based on rule optimizer:</p>
+<ul>
+<li><strong>EXISTS</strong> is much faster than IN, when the sub-query results is very large.</li>
+<li><strong>IN</strong> is faster than EXISTS, when the sub-query results is very small.</li>
+</ul>
+<p><strong>EXISTS</strong> will be faster because once the engine has found a hit, it will quit looking as the condition has proved true.</p>
+<p>With <strong>IN</strong>, it will collect all the results from the sub-query before further processing.</p>
+</div>
+<div id="any-and-all-operator" class="section level1">
+<h1>5 ANY and ALL Operator</h1>
+<p>Do I need more operators if I already have <strong>IN</strong>? Yes, because there is a very important difference between ANY/ALL and IN:</p>
+<ul>
+<li>With <strong>ANY or ALL</strong> you must place an =, &lt;&gt;, &lt;, &gt;, &lt;=, or &gt;= operator before ANY/ALL.</li>
+<li>But with the <strong>IN</strong> operator you cannot use =, &lt;&gt;, &lt;, &gt;, &lt;=, or &gt;=.</li>
+</ul>
+<p>To get the last shown outputs (using <strong>EXISTS</strong> and <strong>IN</strong>) with ANY, I have to write the syntax as follows:</p>
+<pre class="r"><code>SELECT DISTINCT Tai_lNum
+    FROM flight
+    WHERE Tai_lNum = ANY (SELECT Tai_lNum
+                            FROM flight_add_info
+                            WHERE flight_add_info.Tai_lNum = flight.Tai_lNum)
+    ;</code></pre>
+<p><img src="/post/2021-04-01-subqueries_files/p12p17.png" /></p>
+<p>To understand ANY and ALL even better, let’s consider the following example (dataset <em>customers</em>):</p>
+<pre class="r"><code>SELECT *
+    FROM customers
+    ;</code></pre>
+<p><img src="/post/2021-04-01-subqueries_files/p12p18.png" /></p>
+<p>Let’s take a look at the people (we only let the age of the people output) whose income is greater than 5,000.</p>
+<pre class="r"><code>SELECT Age 
+    FROM customers 
+    WHERE Salary &gt; 5000
+    ;</code></pre>
+<p><img src="/post/2021-04-01-subqueries_files/p12p19.png" /></p>
+<p>Now we use ANY once and ALL once in the WHERE statement:</p>
+<pre class="r"><code>SELECT * 
+    FROM customers 
+    WHERE Age &gt; ANY(SELECT Age 
+                        FROM customers 
+                        WHERE Salary &gt; 5000)
+    ;</code></pre>
+<p><img src="/post/2021-04-01-subqueries_files/p12p20.png" /></p>
+<p>All persons whose age is greater than 23 <strong>or</strong> 27 are output here.</p>
+<p>Now with ALL:</p>
+<pre class="r"><code>SELECT * 
+    FROM customers 
+    WHERE Age &gt; ALL(SELECT Age 
+                        FROM customers 
+                        WHERE Salary &gt; 5000)
+    ;</code></pre>
+<p><img src="/post/2021-04-01-subqueries_files/p12p21.png" /></p>
+<p>Only persons whose age is greater than 27 are output here.</p>
 </div>
