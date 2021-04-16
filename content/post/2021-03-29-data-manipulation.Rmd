@@ -796,12 +796,105 @@ SELECT CONVERT(INT, Debts / Salary) AS num_years
 
 
 
+# 8 Rounding numerical Values
 
-# 8 Conclusion
+Now that we have seen how to change the data type of numeric variables, we come to the topic of rounding numbers. 
+For the following examples, we again use the *customers* table created in Chapter 7.
+
+
+```{r, eval=F, echo=T}
+SELECT *
+	FROM customers
+	;
+```
+
+![](/post/2021-03-29-data-manipulation_files/p11p48.png)
+
+
+## 8.1 ROUND
+
+
+With Round we have the possibility to determine the number of decimal places. 
+In our example, we round the Purchasing_Power variable to one decimal place.
+
+
+```{r, eval=F, echo=T}
+SELECT Purchasing_Power, 
+	   ROUND(Purchasing_Power, 1) AS rounded_power_1
+	FROM customers
+	;
+```
+
+![](/post/2021-03-29-data-manipulation_files/p11p49.png)
+
+
+Of course, we also have the option to round to zero decimal places. Here, the function rounds the number down to a value of .49 and up from .50. 
+
+
+```{r, eval=F, echo=T}
+SELECT Purchasing_Power, 
+	   ROUND(Purchasing_Power, 0) AS rounded_power_0
+	FROM customers
+	;
+```
+
+![](/post/2021-03-29-data-manipulation_files/p11p50.png)
+
+
+## 8.2 CEILING
+
+However, if we want the number to always be rounded up regardless of the amount of decimal places, then we need the CEILING function. 
+
+```{r, eval=F, echo=T}
+SELECT Purchasing_Power,
+	   ROUND(Purchasing_Power, 0) AS rounded_power_0,
+	   CEILING(Purchasing_Power) AS ceiled_power
+	FROM customers
+	;
+```
+
+![](/post/2021-03-29-data-manipulation_files/p11p51.png)
+
+
+## 8.3 FLOOR
+
+If we want to have the numbers always rounded off, we need FLOOR.
+
+
+```{r, eval=F, echo=T}
+SELECT Purchasing_Power,
+	   ROUND(Purchasing_Power, 0) AS rounded_power_0,
+	   FLOOR(Purchasing_Power) AS floored_power
+	FROM customers
+	;
+```
+
+![](/post/2021-03-29-data-manipulation_files/p11p52.png)
+
+
+# 9 Power
+
+Sometimes it makes sense to bring the existing values into a higher dimension. This can be done in different ways, one of the most common methods is the POWER function.
+
+
+```{r, eval=F, echo=T}
+SELECT Age,
+	   POWER(Age, 2) AS power_Age,
+	   CONCAT(Age, '*', Age,'=', POWER(Age, 2)) AS [(Calculation:)]
+	FROM customers
+	;
+```
+
+![](/post/2021-03-29-data-manipulation_files/p11p53.png)
+
+
+
+# 10 Conclusion
 
 That's it for now. 
-I didn't get all the available functions for Data Manipulation in this post but I will write another one about SQL Server Functions. 
 
+I have not covered all the available data manipulation functions in this post, but the most commonly used ones. 
+I will discuss String Functions in detail in the following post. 
 
 
 

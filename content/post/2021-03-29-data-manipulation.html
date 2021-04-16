@@ -46,7 +46,14 @@ output:
 <li><a href="#cast">7.2 CAST</a></li>
 <li><a href="#convert">7.3 CONVERT</a></li>
 </ul></li>
-<li><a href="#conclusion">8 Conclusion</a></li>
+<li><a href="#rounding-numerical-values">8 Rounding numerical Values</a>
+<ul>
+<li><a href="#round">8.1 ROUND</a></li>
+<li><a href="#ceiling">8.2 CEILING</a></li>
+<li><a href="#floor">8.3 FLOOR</a></li>
+</ul></li>
+<li><a href="#power">9 Power</a></li>
+<li><a href="#conclusion">10 Conclusion</a></li>
 </ul>
 </div>
 
@@ -510,8 +517,64 @@ INSERT INTO customers (Name, Debts, Salary) VALUES (&#39;E&#39;, 160000, 4150)</
 <p><img src="/post/2021-03-29-data-manipulation_files/p11p47.png" /></p>
 </div>
 </div>
+<div id="rounding-numerical-values" class="section level1">
+<h1>8 Rounding numerical Values</h1>
+<p>Now that we have seen how to change the data type of numeric variables, we come to the topic of rounding numbers.
+For the following examples, we again use the <em>customers</em> table created in Chapter 7.</p>
+<pre class="r"><code>SELECT *
+    FROM customers
+    ;</code></pre>
+<p><img src="/post/2021-03-29-data-manipulation_files/p11p48.png" /></p>
+<div id="round" class="section level2">
+<h2>8.1 ROUND</h2>
+<p>With Round we have the possibility to determine the number of decimal places.
+In our example, we round the Purchasing_Power variable to one decimal place.</p>
+<pre class="r"><code>SELECT Purchasing_Power, 
+       ROUND(Purchasing_Power, 1) AS rounded_power_1
+    FROM customers
+    ;</code></pre>
+<p><img src="/post/2021-03-29-data-manipulation_files/p11p49.png" /></p>
+<p>Of course, we also have the option to round to zero decimal places. Here, the function rounds the number down to a value of .49 and up from .50.</p>
+<pre class="r"><code>SELECT Purchasing_Power, 
+       ROUND(Purchasing_Power, 0) AS rounded_power_0
+    FROM customers
+    ;</code></pre>
+<p><img src="/post/2021-03-29-data-manipulation_files/p11p50.png" /></p>
+</div>
+<div id="ceiling" class="section level2">
+<h2>8.2 CEILING</h2>
+<p>However, if we want the number to always be rounded up regardless of the amount of decimal places, then we need the CEILING function.</p>
+<pre class="r"><code>SELECT Purchasing_Power,
+       ROUND(Purchasing_Power, 0) AS rounded_power_0,
+       CEILING(Purchasing_Power) AS ceiled_power
+    FROM customers
+    ;</code></pre>
+<p><img src="/post/2021-03-29-data-manipulation_files/p11p51.png" /></p>
+</div>
+<div id="floor" class="section level2">
+<h2>8.3 FLOOR</h2>
+<p>If we want to have the numbers always rounded off, we need FLOOR.</p>
+<pre class="r"><code>SELECT Purchasing_Power,
+       ROUND(Purchasing_Power, 0) AS rounded_power_0,
+       FLOOR(Purchasing_Power) AS floored_power
+    FROM customers
+    ;</code></pre>
+<p><img src="/post/2021-03-29-data-manipulation_files/p11p52.png" /></p>
+</div>
+</div>
+<div id="power" class="section level1">
+<h1>9 Power</h1>
+<p>Sometimes it makes sense to bring the existing values into a higher dimension. This can be done in different ways, one of the most common methods is the POWER function.</p>
+<pre class="r"><code>SELECT Age,
+       POWER(Age, 2) AS power_Age,
+       CONCAT(Age, &#39;*&#39;, Age,&#39;=&#39;, POWER(Age, 2)) AS [(Calculation:)]
+    FROM customers
+    ;</code></pre>
+<p><img src="/post/2021-03-29-data-manipulation_files/p11p53.png" /></p>
+</div>
 <div id="conclusion" class="section level1">
-<h1>8 Conclusion</h1>
-<p>That’s it for now.
-I didn’t get all the available functions for Data Manipulation in this post but I will write another one about SQL Server Functions.</p>
+<h1>10 Conclusion</h1>
+<p>That’s it for now.</p>
+<p>I have not covered all the available data manipulation functions in this post, but the most commonly used ones.
+I will discuss String Functions in detail in the following post.</p>
 </div>
