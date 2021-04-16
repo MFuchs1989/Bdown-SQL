@@ -455,13 +455,15 @@ Style allows formatting of the datatype and specifies how the CONVERT function s
 <pre class="r"><code>CREATE TABLE customers
     (Name VARCHAR(100),
     Debts FLOAT,
-    Salary INT)
+    Salary INT,
+    Age INT,
+    Purchasing_Power FLOAT)
     ;</code></pre>
-<pre class="r"><code>INSERT INTO customers (Name, Debts, Salary) VALUES (&#39;A&#39;, 480000, 2000)
-INSERT INTO customers (Name, Debts, Salary) VALUES (&#39;B&#39;, 225000, 4000)
-INSERT INTO customers (Name, Debts, Salary) VALUES (&#39;C&#39;, 407000, 8500)
-INSERT INTO customers (Name, Debts, Salary) VALUES (&#39;D&#39;, 670000, 6000)
-INSERT INTO customers (Name, Debts, Salary) VALUES (&#39;E&#39;, 160000, 4150)</code></pre>
+<pre class="r"><code>INSERT INTO customers (Name, Debts, Salary, Age, Purchasing_Power) VALUES (&#39;A&#39;, 480000, 2000, 25, 150.84)
+INSERT INTO customers (Name, Debts, Salary, Age, Purchasing_Power) VALUES (&#39;B&#39;, 225000, 4000, 30, 420.31)
+INSERT INTO customers (Name, Debts, Salary, Age, Purchasing_Power) VALUES (&#39;C&#39;, 407000, 8500, 42, 85.17)
+INSERT INTO customers (Name, Debts, Salary, Age, Purchasing_Power) VALUES (&#39;D&#39;, 670000, 6000, 22, 320.78)
+INSERT INTO customers (Name, Debts, Salary, Age, Purchasing_Power) VALUES (&#39;E&#39;, 160000, 4150, 18, 240.45)</code></pre>
 <pre class="r"><code>SELECT *
     FROM customers
     ;</code></pre>

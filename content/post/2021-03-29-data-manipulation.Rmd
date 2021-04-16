@@ -671,16 +671,18 @@ Style allows formatting of the datatype and specifies how the CONVERT function s
 CREATE TABLE customers
     (Name VARCHAR(100),
     Debts FLOAT,
-    Salary INT)
+    Salary INT,
+	Age INT,
+	Purchasing_Power FLOAT)
     ;
 ```
 
 ```{r, eval=F, echo=T}
-INSERT INTO customers (Name, Debts, Salary) VALUES ('A', 480000, 2000)
-INSERT INTO customers (Name, Debts, Salary) VALUES ('B', 225000, 4000)
-INSERT INTO customers (Name, Debts, Salary) VALUES ('C', 407000, 8500)
-INSERT INTO customers (Name, Debts, Salary) VALUES ('D', 670000, 6000)
-INSERT INTO customers (Name, Debts, Salary) VALUES ('E', 160000, 4150)
+INSERT INTO customers (Name, Debts, Salary, Age, Purchasing_Power) VALUES ('A', 480000, 2000, 25, 150.84)
+INSERT INTO customers (Name, Debts, Salary, Age, Purchasing_Power) VALUES ('B', 225000, 4000, 30, 420.31)
+INSERT INTO customers (Name, Debts, Salary, Age, Purchasing_Power) VALUES ('C', 407000, 8500, 42, 85.17)
+INSERT INTO customers (Name, Debts, Salary, Age, Purchasing_Power) VALUES ('D', 670000, 6000, 22, 320.78)
+INSERT INTO customers (Name, Debts, Salary, Age, Purchasing_Power) VALUES ('E', 160000, 4150, 18, 240.45)
 ```
 
 
