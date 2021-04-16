@@ -896,7 +896,7 @@ SELECT Age,
 That's it for now. 
 
 I have not covered all the available data manipulation functions in this post, but the most commonly used ones. 
-I will discuss String Functions in detail in the following post. 
+I will discuss [String Functions](https://michael-fuchs-sql.netlify.app/2021/04/03/string-functions/) in detail in the following post. 
 
 
 
