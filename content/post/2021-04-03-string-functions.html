@@ -18,25 +18,372 @@ output:
 <div id="TOC">
 <ul>
 <li><a href="#introduction">1 Introduction</a></li>
+<li><a href="#preparation">2 Preparation</a></li>
+<li><a href="#string-functions">3 String Functions</a>
+<ul>
+<li><a href="#get-the-length-of-a-character-string">3.1 Get the length of a character string</a></li>
+<li><a href="#get-the-length-of-numeric-values">3.2 Get the length of numeric values</a></li>
+<li><a href="#get-character-index">3.3 Get character index</a></li>
+<li><a href="#comparison-of-two-strings">3.4 Comparison of two strings</a></li>
+<li><a href="#receiving-parts-from-a-string">3.5 Receiving parts from a string</a>
+<ul>
+<li><a href="#left">3.5.1 LEFT</a></li>
+<li><a href="#right">3.5.2 RIGHT</a></li>
+<li><a href="#substring">3.5.3 SUBSTRING</a></li>
+</ul></li>
+<li><a href="#connecting-character-strings">3.6 Connecting character strings</a>
+<ul>
+<li><a href="#with-concat">3.6.1 With CONCAT</a></li>
+<li><a href="#with-concat_ws">3.6.2 With CONCAT_WS</a></li>
+</ul></li>
+<li><a href="#separating-character-strings">3.7 Separating character strings</a></li>
+<li><a href="#manipulating-strings">3.8 Manipulating Strings</a>
+<ul>
+<li><a href="#lower">3.8.1 LOWER</a></li>
+<li><a href="#upper">3.8.2 UPPER</a></li>
+<li><a href="#remove-leading-spaces-from-a-string">3.8.3 Remove leading spaces from a string</a>
+<ul>
+<li><a href="#rtrim">3.8.3.1 RTRIM</a></li>
+<li><a href="#ltrim">3.8.3.2 LTRIM</a></li>
+<li><a href="#trim">3.8.3.3 TRIM</a></li>
+</ul></li>
+<li><a href="#replace-string-characters">3.8.4 Replace string characters</a>
+<ul>
+<li><a href="#replace-leading-spaces-from-a-string">3.8.4.1 Replace leading spaces from a string</a></li>
+<li><a href="#replace-specific-character-letters">3.8.4.2 Replace specific character letters</a></li>
+<li><a href="#replace-character-letters-at-a-specific-position">3.8.4.3 Replace character letters at a specific position</a></li>
+</ul></li>
+</ul></li>
+</ul></li>
+<li><a href="#conclusion">4 Conclusion</a></li>
 </ul>
 </div>
 
 <div id="introduction" class="section level1">
 <h1>1 Introduction</h1>
 <p>As announced in my post about <a href="https://michael-fuchs-sql.netlify.app/2021/03/29/data-manipulation/">Data Manipulation</a>, I’ll return here to the String Functions theme in particular.</p>
-<p><img src="/2021-04-03-string-functions_files/p13p.png" /></p>
-<p><img src="/2021-04-03-string-functions_files/p13p.png" /></p>
-<p><img src="/2021-04-03-string-functions_files/p13p.png" /></p>
-<p><img src="/2021-04-03-string-functions_files/p13p.png" /></p>
-<p><img src="/2021-04-03-string-functions_files/p13p.png" /></p>
-<p><img src="/2021-04-03-string-functions_files/p13p.png" /></p>
-<p><img src="/2021-04-03-string-functions_files/p13p.png" /></p>
-<p><img src="/2021-04-03-string-functions_files/p13p.png" /></p>
-<p><img src="/2021-04-03-string-functions_files/p13p.png" /></p>
-<p><img src="/2021-04-03-string-functions_files/p13p.png" /></p>
-<p><img src="/2021-04-03-string-functions_files/p13p.png" /></p>
-<p><img src="/2021-04-03-string-functions_files/p13p.png" /></p>
-<p><img src="/2021-04-03-string-functions_files/p13p.png" /></p>
-<p><img src="/2021-04-03-string-functions_files/p13p.png" /></p>
-<p><img src="/2021-04-03-string-functions_files/p13p.png" /></p>
+<p>SQL Server offers some useful functions that make life much easier when dealing with strings.</p>
+</div>
+<div id="preparation" class="section level1">
+<h1>2 Preparation</h1>
+<pre class="r"><code>SET LANGUAGE ENGLISH
+
+
+CREATE DATABASE String_Functions;
+
+USE String_Functions;</code></pre>
+<pre class="r"><code>CREATE TABLE customers
+    (First_Name VARCHAR(100) NOT NULL,
+    Last_Name VARCHAR(100) NOT NULL,
+    Purchasing_Power FLOAT NOT NULL,
+    Country VARCHAR(100) NOT NULL,
+    Webpage VARCHAR(100) NOT NULL)
+    ;</code></pre>
+<pre class="r"><code>INSERT INTO customers (First_Name, Last_Name, Purchasing_Power, Country, Webpage) VALUES (&#39;Andrew G.&#39;, &#39;Evergreen&#39;, 150.84, &#39;USA-Alaska&#39;, &#39;us.Alaska.com&#39;)
+INSERT INTO customers (First_Name, Last_Name, Purchasing_Power, Country, Webpage) VALUES (&#39;Max &#39;, &#39;Steel&#39;, 420.31, &#39;Europe-Germany&#39;, &#39;eu.Germany.com&#39;)
+INSERT INTO customers (First_Name, Last_Name, Purchasing_Power, Country, Webpage) VALUES (&#39;Jessy&#39;, &#39;Williams&#39;, 85.17, &#39;Asia-China&#39;, &#39;as.China.com&#39;)
+INSERT INTO customers (First_Name, Last_Name, Purchasing_Power, Country, Webpage) VALUES (&#39;Marc&#39;, &#39;Pike&#39;, 198.22, &#39;Europe-France&#39;, &#39;eu.France.com&#39;)
+INSERT INTO customers (First_Name, Last_Name, Purchasing_Power, Country, Webpage) VALUES (&#39;Emily&#39;, &#39;Taylor&#39;, 320.78, &#39;USA-Iowa&#39;, &#39;us.Iowa.com&#39;)
+INSERT INTO customers (First_Name, Last_Name, Purchasing_Power, Country, Webpage) VALUES (&#39;Alex&#39;, &#39;Smith&#39;, 240.45, &#39;USA-Kansas&#39;, &#39;us.Kansas.com&#39;)</code></pre>
+<p>This is our data set that we will work with:</p>
+<pre class="r"><code>SELECT *
+    FROM customers
+    ;</code></pre>
+<p><img src="/post/2021-04-03-string-functions_files/p13p1.png" /></p>
+</div>
+<div id="string-functions" class="section level1">
+<h1>3 String Functions</h1>
+<div id="get-the-length-of-a-character-string" class="section level2">
+<h2>3.1 Get the length of a character string</h2>
+<p>For this we can use two functions:</p>
+<ul>
+<li>LEN</li>
+<li>DATALENGTH</li>
+</ul>
+<p>Both have their own peculiarities and you should be aware of the difference between them.</p>
+<pre class="r"><code>SELECT First_Name,
+       LEN(First_Name) AS len_first_name
+    FROM customers
+    ;</code></pre>
+<p><img src="/post/2021-04-03-string-functions_files/p13p2.png" /></p>
+<p><strong>Spaces at the end</strong> of the string are not taken into account when calculating the length.
+However, spaces at the beginning or between the string are taken into account when calculating the length (see customer 1).</p>
+<pre class="r"><code>SELECT First_Name,
+       DATALENGTH(First_Name) AS length_first_name
+    FROM customers
+    ;</code></pre>
+<p><img src="/post/2021-04-03-string-functions_files/p13p3.png" /></p>
+<p>Compared to LEN, the DATALENGTH() function counts both <strong>leading and trailing spaces</strong> when calculating the length of the expression.
+See customer 2 (‘Max’). Here, a space was inserted at the end of the first name in the table when the column was inserted.</p>
+</div>
+<div id="get-the-length-of-numeric-values" class="section level2">
+<h2>3.2 Get the length of numeric values</h2>
+<p>This also works with LEN:</p>
+<pre class="r"><code>SELECT Purchasing_Power,
+       LEN(Purchasing_Power) AS len_first_name
+    FROM customers
+    ;</code></pre>
+<p><img src="/post/2021-04-03-string-functions_files/p13p4.png" /></p>
+<p>But not with DATALENGTH</p>
+<pre class="r"><code>SELECT Purchasing_Power,
+       DATALENGTH(Purchasing_Power) AS length_first_name
+    FROM customers
+    ;</code></pre>
+<p><img src="/post/2021-04-03-string-functions_files/p13p5.png" /></p>
+</div>
+<div id="get-character-index" class="section level2">
+<h2>3.3 Get character index</h2>
+<pre class="r"><code>SELECT Country, CHARINDEX(&#39;a&#39;, Country) AS MatchPosition
+    FROM customers
+    ; </code></pre>
+<p><img src="/post/2021-04-03-string-functions_files/p13p6.png" /></p>
+<p>The CHARINDEX() function searches for a substring in a string and returns the position. If this substing should not be found because it is not contained, the function returns the value 0.</p>
+<pre class="r"><code>SELECT Country, CHARINDEX(&#39;as&#39;, Country) AS MatchPosition
+    FROM customers
+    ; </code></pre>
+<p><img src="/post/2021-04-03-string-functions_files/p13p7.png" /></p>
+</div>
+<div id="comparison-of-two-strings" class="section level2">
+<h2>3.4 Comparison of two strings</h2>
+<p>DIFFERENCE compares two strings with each other and returns their similarity in a range of 0-4.</p>
+<pre class="r"><code>SELECT DIFFERENCE(&#39;Michael&#39;, &#39;Mike&#39;); </code></pre>
+<p><img src="/post/2021-04-03-string-functions_files/p13p8.png" /></p>
+<p>We see here that the names ‘Michael’ and ‘Mike’ with a value of 3 are similar.</p>
+<pre class="r"><code>SELECT DIFFERENCE(&#39;Michael&#39;, &#39;Andreas&#39;); </code></pre>
+<p><img src="/post/2021-04-03-string-functions_files/p13p9.png" /></p>
+<p>Whereas ‘Michael’ and ‘Andreas’ have less in common.</p>
+<p>Let’s compare the first and last names of the people in our table:</p>
+<pre class="r"><code>SELECT First_Name, Last_Name,
+       DIFFERENCE(First_Name, Last_Name) AS diff
+    FROM customers
+    ;</code></pre>
+<p><img src="/post/2021-04-03-string-functions_files/p13p10.png" /></p>
+</div>
+<div id="receiving-parts-from-a-string" class="section level2">
+<h2>3.5 Receiving parts from a string</h2>
+<div id="left" class="section level3">
+<h3>3.5.1 LEFT</h3>
+<p>Here we get the first character of the string from Last_Name.</p>
+<pre class="r"><code>SELECT Last_Name,
+       LEFT(Last_Name, 1) AS first_char
+    FROM customers
+    ;</code></pre>
+<p><img src="/post/2021-04-03-string-functions_files/p13p11.png" /></p>
+</div>
+<div id="right" class="section level3">
+<h3>3.5.2 RIGHT</h3>
+<p>Here we get the last 3 characters of the string from Last_Name.</p>
+<pre class="r"><code>SELECT Last_Name,
+       RIGHT(Last_Name, 3) AS last_3_chars
+    FROM customers
+    ;</code></pre>
+<p><img src="/post/2021-04-03-string-functions_files/p13p12.png" /></p>
+</div>
+<div id="substring" class="section level3">
+<h3>3.5.3 SUBSTRING</h3>
+<p>So far we have only output the first or last characters of a string.
+We can determine the position and length of the desired substring even more precisely with the SUBSTRING function.</p>
+<p>Example: <code>SUBSTRING(string, start, length)</code></p>
+<pre class="r"><code>SELECT Webpage,
+       SUBSTRING(Webpage, 4, 3) AS extracted_substring
+    FROM customers
+    ;</code></pre>
+<p><img src="/post/2021-04-03-string-functions_files/p13p13.png" /></p>
+</div>
+</div>
+<div id="connecting-character-strings" class="section level2">
+<h2>3.6 Connecting character strings</h2>
+<div id="with-concat" class="section level3">
+<h3>3.6.1 With CONCAT</h3>
+<p>In my post <a href="https://michael-fuchs-sql.netlify.app/2021/03/23/data-wrangling/#with-text-1">Data Wrangling</a> I showed how to (quick and dirty) join two string columns.
+The correct function for this would be CONCAT.</p>
+<pre class="r"><code>SELECT First_Name, Last_Name,
+       CONCAT(First_Name, Last_Name) AS Full_Name
+    FROM customers
+    ;</code></pre>
+<p><img src="/post/2021-04-03-string-functions_files/p13p14.png" /></p>
+<p>Or a little more beautiful:</p>
+<pre class="r"><code>SELECT First_Name, Last_Name,
+       CONCAT(First_Name, &#39; &#39;, Last_Name) AS Full_Name
+    FROM customers
+    ;</code></pre>
+<p><img src="/post/2021-04-03-string-functions_files/p13p15.png" /></p>
+</div>
+<div id="with-concat_ws" class="section level3">
+<h3>3.6.2 With CONCAT_WS</h3>
+<p>With CONCAT_WS it is even easier to connect several string variables and you save writing work:</p>
+<pre class="r"><code>SELECT First_Name, Last_Name, Country,
+        CONCAT_WS(&#39;, &#39;, First_Name, Last_Name, Country) AS Full_Name_with_country
+    FROM customers
+    ;</code></pre>
+<p><img src="/post/2021-04-03-string-functions_files/p13p16.png" /></p>
+</div>
+</div>
+<div id="separating-character-strings" class="section level2">
+<h2>3.7 Separating character strings</h2>
+<p>The separation of strings is a bit more difficult and for this we need the knowledge gained in the previous chapters.</p>
+<p>For this, let’s look at the Country column.
+In addition to the country, it also contains the corresponding continent and is therefore not a real country column.</p>
+<pre class="r"><code>SELECT Country
+    FROM customers
+    ;</code></pre>
+<p><img src="/post/2021-04-03-string-functions_files/p13p17.png" /></p>
+<p>But we can create a proper country column:</p>
+<pre class="r"><code>SELECT Country,
+       SUBSTRING(Country, 1, CHARINDEX(&#39;-&#39;, Country)-1) AS Continent,
+       SUBSTRING(Country, CHARINDEX(&#39;-&#39;, Country)+1, LEN(Country)) AS real_Country
+    FROM customers
+    ;</code></pre>
+<p><img src="/post/2021-04-03-string-functions_files/p13p18.png" /></p>
+<p>How exactly does this Select Statement work?</p>
+<p>On the one hand I use the SUBSTRING function to extract parts of the complete string.
+As described above, with this function I can determine from which and up to which position of the whole string I want to extract the substring.</p>
+<p>For the first substring I want to extract the continent.
+Therefore I tell the SUBSTRING function to start at position 1 to extract the substring up to the position of the hyphen (-) character (minus 1, so I don’t take over the hyphen).</p>
+<p>For the second substring I start at the position of the hyphen (plus 1, so I don’t take over the hyphen again) and output all remaining characters of the string with the LEN function.</p>
+</div>
+<div id="manipulating-strings" class="section level2">
+<h2>3.8 Manipulating Strings</h2>
+<div id="lower" class="section level3">
+<h3>3.8.1 LOWER</h3>
+<pre class="r"><code>SELECT Last_Name,
+       LOWER(Last_Name) AS lower_last_name
+    FROM customers
+    ;</code></pre>
+<p><img src="/post/2021-04-03-string-functions_files/p13p19.png" /></p>
+</div>
+<div id="upper" class="section level3">
+<h3>3.8.2 UPPER</h3>
+<pre class="r"><code>SELECT Last_Name,
+       UPPER(Last_Name) AS upper_last_name
+    FROM customers
+    ;</code></pre>
+<p><img src="/post/2021-04-03-string-functions_files/p13p20.png" /></p>
+</div>
+<div id="remove-leading-spaces-from-a-string" class="section level3">
+<h3>3.8.3 Remove leading spaces from a string</h3>
+<div id="rtrim" class="section level4">
+<h4>3.8.3.1 RTRIM</h4>
+<p>RTRIM removes all spaces to the right of a string.</p>
+<p>We saw above that the DATALENGTH function counted 4 characters for Max because Max was inserted into the table with a space <strong>at the end of the name</strong>.</p>
+<pre class="r"><code>SELECT First_Name,
+       DATALENGTH(First_Name) AS length_first_name
+    FROM customers
+    WHERE First_Name = &#39;Max&#39;
+    ;</code></pre>
+<p><img src="/post/2021-04-03-string-functions_files/p13p21.png" /></p>
+<p>If you have a problem with spaces within strings, it may be advisable to remove them.
+This works in our case with RTRIM, because the space was inserted at the end of the first name.</p>
+<pre class="r"><code>SELECT First_Name,
+       DATALENGTH(RTRIM(First_Name)) AS length_trimmed_first_name
+    FROM customers
+    WHERE First_Name = &#39;Max&#39;
+    ;</code></pre>
+<p><img src="/post/2021-04-03-string-functions_files/p13p22.png" /></p>
+</div>
+<div id="ltrim" class="section level4">
+<h4>3.8.3.2 LTRIM</h4>
+<p>LTRIM removes all spaces to the left of a string.</p>
+<p>We do not have an example for this in our table, but it is also possible to demonstrate it:</p>
+<pre class="r"><code>SELECT  &#39;       SQL Server Functions&#39; AS normal_string,
+        LTRIM(&#39;       SQL Server Functions&#39;) AS trimmed_string
+    ; </code></pre>
+<p><img src="/post/2021-04-03-string-functions_files/p13p23.png" /></p>
+</div>
+<div id="trim" class="section level4">
+<h4>3.8.3.3 TRIM</h4>
+<p>Now we have seen how to remove left and right spaces from a string. But what if we have a space on both sides?</p>
+<pre class="r"><code>SELECT &#39;       SQL Server Functions       &#39; AS normal_string,
+       DATALENGTH(&#39;       SQL Server Functions       &#39;) AS length_normal_str
+       ;</code></pre>
+<p><img src="/post/2021-04-03-string-functions_files/p13p24.png" /></p>
+<p>Do I really need to use both functions (LTRIM and RTRIM) at the same time here?</p>
+<pre class="r"><code>SELECT &#39;       SQL Server Functions       &#39; AS normal_string,
+       DATALENGTH(&#39;       SQL Server Functions       &#39;) AS length_normal_str,
+       DATALENGTH(LTRIM(RTRIM(&#39;       SQL Server Functions       &#39;))) AS trimmed_str 
+       ;</code></pre>
+<p><img src="/post/2021-04-03-string-functions_files/p13p25.png" /></p>
+<p>Of course not! There is also a function in SQL for this: TRIM</p>
+<p>Here is a comparison of all TRIM types we have seen so far, including the TRIM function:</p>
+<pre class="r"><code>SELECT &#39;       SQL Server Functions       &#39; AS normal_string,
+       DATALENGTH(&#39;       SQL Server Functions       &#39;) AS length_normal_str,
+       DATALENGTH(LTRIM(&#39;       SQL Server Functions       &#39;)) AS left_trimmed_str,
+       DATALENGTH(RTRIM(&#39;       SQL Server Functions       &#39;)) AS right_trimmed_str,
+       DATALENGTH(TRIM(&#39;       SQL Server Functions       &#39;)) AS trimmed_str
+    ; </code></pre>
+<p><img src="/post/2021-04-03-string-functions_files/p13p26.png" /></p>
+</div>
+</div>
+<div id="replace-string-characters" class="section level3">
+<h3>3.8.4 Replace string characters</h3>
+<div id="replace-leading-spaces-from-a-string" class="section level4">
+<h4>3.8.4.1 Replace leading spaces from a string</h4>
+<p>However, we have not yet solved one problem. What do we do with unwanted spaces between two strings from one column?
+We cannot accomplish this with LTRIM, RTRIM or TRIM.</p>
+<p>We had shown an example at the beginning that contains exactly this problem. See here customer number 1 with the function DATALENGTH:</p>
+<pre class="r"><code>SELECT First_Name,
+       DATALENGTH(First_Name) AS length_first_name
+    FROM customers
+    WHERE First_Name = &#39;Andrew G.&#39;
+    ;</code></pre>
+<p><img src="/post/2021-04-03-string-functions_files/p13p27.png" /></p>
+<p>To remove spaces between two strings we need REPLACE.</p>
+<pre class="r"><code>SELECT First_Name,
+       DATALENGTH(First_Name) AS length_first_name,
+       DATALENGTH(REPLACE(First_Name, &#39; &#39;, &#39;&#39;)) AS length_replaced_first_name
+    FROM customers
+    WHERE First_Name = &#39;Andrew G.&#39;
+    ;</code></pre>
+<p><img src="/post/2021-04-03-string-functions_files/p13p28.png" /></p>
+<p>REPLACE also works wonderfully with spaces before or at the end of strings.
+See our updated example from the previous chapter:</p>
+<pre class="r"><code>SELECT &#39;       SQL Server Functions       &#39; AS normal_string,
+       DATALENGTH(&#39;       SQL Server Functions       &#39;) AS length_normal_str,
+       DATALENGTH(LTRIM(&#39;       SQL Server Functions       &#39;)) AS left_trimmed_str,
+       DATALENGTH(RTRIM(&#39;       SQL Server Functions       &#39;)) AS right_trimmed_str,
+       DATALENGTH(TRIM(&#39;       SQL Server Functions       &#39;)) AS trimmed_str,
+       DATALENGTH(REPLACE(&#39;       SQL Server Functions       &#39;, &#39; &#39;, &#39;&#39;)) AS length_replaced_str
+    ; </code></pre>
+<p><img src="/post/2021-04-03-string-functions_files/p13p29.png" /></p>
+</div>
+<div id="replace-specific-character-letters" class="section level4">
+<h4>3.8.4.2 Replace specific character letters</h4>
+<p>Of course, REPLACE can also be used to replace certain letters with others.</p>
+<pre class="r"><code>SELECT Country,
+       REPLACE(Country, &#39;USA&#39;, &#39; United States of America&#39;) AS full_country
+    FROM customers
+    ;</code></pre>
+<p><img src="/post/2021-04-03-string-functions_files/p13p30.png" /></p>
+</div>
+<div id="replace-character-letters-at-a-specific-position" class="section level4">
+<h4>3.8.4.3 Replace character letters at a specific position</h4>
+<p>REPLACE is a powerful function but it also has its limits, see the following example.</p>
+<pre class="r"><code>SELECT Webpage
+    FROM customers
+    ;</code></pre>
+<p><img src="/post/2021-04-03-string-functions_files/p13p31.png" /></p>
+<p>Someone has used here the abbreviations of the continents, which do not work as address of a homepage so. They should start with www.</p>
+<p>Let’s try it with a nested REPLACE statement.</p>
+<pre class="r"><code>SELECT Webpage,
+       REPLACE(REPLACE(REPLACE(Webpage, &#39;us&#39;, &#39;www&#39;), &#39;eu&#39;, &#39;www&#39;), &#39;as&#39;, &#39;www&#39;) AS repl_Webpage
+    FROM customers
+    ;</code></pre>
+<p><img src="/post/2021-04-03-string-functions_files/p13p32.png" /></p>
+<p>Doesn’t work (see Alaska and Kansas) even if you were to change the order a little bit here.
+And even if it did, the syntax wouldn’t be very nice to read.
+If we have the problem to replace certain parts of a string that are always the same in position, we can resort to the STUFF function.
+It deletes a part of a string and then inserts another part into the string, starting at a certain position.</p>
+<pre class="r"><code>SELECT Webpage,
+       STUFF(Webpage, 1, 2, &#39;www&#39;) AS repl_Webpage
+    FROM customers
+    ; </code></pre>
+<p><img src="/post/2021-04-03-string-functions_files/p13p33.png" /></p>
+<p>Looks already much better and is much easier to write / read.</p>
+</div>
+</div>
+</div>
+</div>
+<div id="conclusion" class="section level1">
+<h1>4 Conclusion</h1>
+<p>In this post I have shown the most common functions with which you can change and manupulate strings in columns.</p>
 </div>

@@ -18,289 +18,536 @@ output:
 
 As announced in my post about [Data Manipulation](https://michael-fuchs-sql.netlify.app/2021/03/29/data-manipulation/), I'll return here to the String Functions theme in particular. 
 
+SQL Server offers some useful functions that make life much easier when dealing with strings.
+
+
+
+# 2 Preparation
 
 
 ```{r, eval=F, echo=T}
+SET LANGUAGE ENGLISH
 
+
+CREATE DATABASE String_Functions;
+
+USE String_Functions;
 ```
-
-![](/2021-04-03-string-functions_files/p13p.png)
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 ```{r, eval=F, echo=T}
-
+CREATE TABLE customers
+    (First_Name VARCHAR(100) NOT NULL,
+    Last_Name VARCHAR(100) NOT NULL,
+	Purchasing_Power FLOAT NOT NULL,
+	Country VARCHAR(100) NOT NULL,
+	Webpage VARCHAR(100) NOT NULL)
+    ;
 ```
 
-![](/2021-04-03-string-functions_files/p13p.png)
+```{r, eval=F, echo=T}
+INSERT INTO customers (First_Name, Last_Name, Purchasing_Power, Country, Webpage) VALUES ('Andrew G.', 'Evergreen', 150.84, 'USA-Alaska', 'us.Alaska.com')
+INSERT INTO customers (First_Name, Last_Name, Purchasing_Power, Country, Webpage) VALUES ('Max ', 'Steel', 420.31, 'Europe-Germany', 'eu.Germany.com')
+INSERT INTO customers (First_Name, Last_Name, Purchasing_Power, Country, Webpage) VALUES ('Jessy', 'Williams', 85.17, 'Asia-China', 'as.China.com')
+INSERT INTO customers (First_Name, Last_Name, Purchasing_Power, Country, Webpage) VALUES ('Marc', 'Pike', 198.22, 'Europe-France', 'eu.France.com')
+INSERT INTO customers (First_Name, Last_Name, Purchasing_Power, Country, Webpage) VALUES ('Emily', 'Taylor', 320.78, 'USA-Iowa', 'us.Iowa.com')
+INSERT INTO customers (First_Name, Last_Name, Purchasing_Power, Country, Webpage) VALUES ('Alex', 'Smith', 240.45, 'USA-Kansas', 'us.Kansas.com')
+```
 
 
+This is our data set that we will work with:
+
+```{r, eval=F, echo=T}
+SELECT *
+	FROM customers
+	;
+```
+
+![](/post/2021-04-03-string-functions_files/p13p1.png)
 
 
+# 3 String Functions
 
 
+## 3.1 Get the length of a character string
 
+For this we can use two functions:
 
++ LEN
++ DATALENGTH
 
+Both have their own peculiarities and you should be aware of the difference between them. 
 
 
 ```{r, eval=F, echo=T}
-
+SELECT First_Name,
+	   LEN(First_Name) AS len_first_name
+	FROM customers
+	;
 ```
 
-![](/2021-04-03-string-functions_files/p13p.png)
+![](/post/2021-04-03-string-functions_files/p13p2.png)
 
-
-
-
-
-
-
-
-
-
-
+**Spaces at the end** of the string are not taken into account when calculating the length. 
+However, spaces at the beginning or between the string are taken into account when calculating the length (see customer 1).
 
 
 ```{r, eval=F, echo=T}
-
+SELECT First_Name,
+	   DATALENGTH(First_Name) AS length_first_name
+	FROM customers
+	;
 ```
 
-![](/2021-04-03-string-functions_files/p13p.png)
+![](/post/2021-04-03-string-functions_files/p13p3.png)
+
+Compared to LEN, the DATALENGTH() function counts both **leading and trailing spaces** when calculating the length of the expression.
+See customer 2 ('Max'). Here, a space was inserted at the end of the first name in the table when the column was inserted. 
 
 
+## 3.2 Get the length of numeric values
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+This also works with LEN: 
 
 
 ```{r, eval=F, echo=T}
-
+SELECT Purchasing_Power,
+	   LEN(Purchasing_Power) AS len_first_name
+	FROM customers
+	;
 ```
 
-![](/2021-04-03-string-functions_files/p13p.png)
+![](/post/2021-04-03-string-functions_files/p13p4.png)
 
 
-
-
-
-
-
-
-
-
-
-
-
+But not with DATALENGTH
 
 
 ```{r, eval=F, echo=T}
-
+SELECT Purchasing_Power,
+	   DATALENGTH(Purchasing_Power) AS length_first_name
+	FROM customers
+	;
 ```
 
-![](/2021-04-03-string-functions_files/p13p.png)
+![](/post/2021-04-03-string-functions_files/p13p5.png)
 
 
-
-
-
-
-
-
-
-
-
+## 3.3 Get character index
 
 
 ```{r, eval=F, echo=T}
-
+SELECT Country, CHARINDEX('a', Country) AS MatchPosition
+	FROM customers
+	; 
 ```
 
-![](/2021-04-03-string-functions_files/p13p.png)
+![](/post/2021-04-03-string-functions_files/p13p6.png)
 
 
-
-
-
-
-
-
-
-
-
-
-
-
+The CHARINDEX() function searches for a substring in a string and returns the position. If this substing should not be found because it is not contained, the function returns the value 0. 
 
 
 ```{r, eval=F, echo=T}
-
+SELECT Country, CHARINDEX('as', Country) AS MatchPosition
+	FROM customers
+	; 
 ```
 
-![](/2021-04-03-string-functions_files/p13p.png)
+![](/post/2021-04-03-string-functions_files/p13p7.png)
 
+## 3.4 Comparison of two strings
 
+DIFFERENCE compares two strings with each other and returns their similarity in a range of 0-4. 
 
+```{r, eval=F, echo=T}
+SELECT DIFFERENCE('Michael', 'Mike'); 
+```
 
+![](/post/2021-04-03-string-functions_files/p13p8.png)
 
-
-
-
-
-
-
-
-
+We see here that the names 'Michael' and 'Mike' with a value of 3 are similar.
 
 
 ```{r, eval=F, echo=T}
-
+SELECT DIFFERENCE('Michael', 'Andreas'); 
 ```
 
-![](/2021-04-03-string-functions_files/p13p.png)
+![](/post/2021-04-03-string-functions_files/p13p9.png)
 
 
+Whereas 'Michael' and 'Andreas' have less in common. 
+
+Let's compare the first and last names of the people in our table:
+
+```{r, eval=F, echo=T}
+SELECT First_Name, Last_Name,
+	   DIFFERENCE(First_Name, Last_Name) AS diff
+	FROM customers
+	;
+```
+
+![](/post/2021-04-03-string-functions_files/p13p10.png)
 
 
+## 3.5 Receiving parts from a string
 
+### 3.5.1 LEFT
 
-
-
-
-
-
-
-
-
+Here we get the first character of the string from Last_Name. 
 
 
 ```{r, eval=F, echo=T}
-
+SELECT Last_Name,
+	   LEFT(Last_Name, 1) AS first_char
+	FROM customers
+	;
 ```
 
-![](/2021-04-03-string-functions_files/p13p.png)
+![](/post/2021-04-03-string-functions_files/p13p11.png)
 
 
+### 3.5.2 RIGHT
 
-
-
-
-
-
-
-
-
-
-
-
-
+Here we get the last 3 characters of the string from Last_Name. 
 
 
 ```{r, eval=F, echo=T}
-
+SELECT Last_Name,
+	   RIGHT(Last_Name, 3) AS last_3_chars
+	FROM customers
+	;
 ```
 
-![](/2021-04-03-string-functions_files/p13p.png)
+![](/post/2021-04-03-string-functions_files/p13p12.png)
 
 
+### 3.5.3 SUBSTRING
 
+So far we have only output the first or last characters of a string. 
+We can determine the position and length of the desired substring even more precisely with the SUBSTRING function.
 
-
-
-
-
-
-
-
-
-
-
+Example: `SUBSTRING(string, start, length)`
 
 
 ```{r, eval=F, echo=T}
-
+SELECT Webpage,
+	   SUBSTRING(Webpage, 4, 3) AS extracted_substring
+	FROM customers
+	;
 ```
 
-![](/2021-04-03-string-functions_files/p13p.png)
+![](/post/2021-04-03-string-functions_files/p13p13.png)
 
 
+## 3.6 Connecting character strings
 
+### 3.6.1 With CONCAT
 
-
-
-
-
-
-
-
+In my post [Data Wrangling](https://michael-fuchs-sql.netlify.app/2021/03/23/data-wrangling/#with-text-1) I showed how to (quick and dirty) join two string columns. 
+The correct function for this would be CONCAT. 
 
 
 ```{r, eval=F, echo=T}
-
+SELECT First_Name, Last_Name,
+	   CONCAT(First_Name, Last_Name) AS Full_Name
+	FROM customers
+	;
 ```
 
-![](/2021-04-03-string-functions_files/p13p.png)
+![](/post/2021-04-03-string-functions_files/p13p14.png)
+
+Or a little more beautiful:
+
+```{r, eval=F, echo=T}
+SELECT First_Name, Last_Name,
+	   CONCAT(First_Name, ' ', Last_Name) AS Full_Name
+	FROM customers
+	;
+```
+
+![](/post/2021-04-03-string-functions_files/p13p15.png)
 
 
+### 3.6.2 With CONCAT_WS
 
-
-
-
-
-
-
-
-
-
-
+With CONCAT_WS it is even easier to connect several string variables and you save writing work:
 
 
 ```{r, eval=F, echo=T}
-
+SELECT First_Name, Last_Name, Country,
+	    CONCAT_WS(', ', First_Name, Last_Name, Country) AS Full_Name_with_country
+	FROM customers
+	;
 ```
 
-![](/2021-04-03-string-functions_files/p13p.png)
+![](/post/2021-04-03-string-functions_files/p13p16.png)
+
+
+## 3.7 Separating character strings
+
+The separation of strings is a bit more difficult and for this we need the knowledge gained in the previous chapters.
+
+For this, let's look at the Country column. 
+In addition to the country, it also contains the corresponding continent and is therefore not a real country column. 
+
+```{r, eval=F, echo=T}
+SELECT Country
+	FROM customers
+	;
+```
+
+![](/post/2021-04-03-string-functions_files/p13p17.png)
+
+But we can create a proper country column:
+
+```{r, eval=F, echo=T}
+SELECT Country,
+	   SUBSTRING(Country, 1, CHARINDEX('-', Country)-1) AS Continent,
+	   SUBSTRING(Country, CHARINDEX('-', Country)+1, LEN(Country)) AS real_Country
+	FROM customers
+	;
+```
+
+![](/post/2021-04-03-string-functions_files/p13p18.png)
+
+
+How exactly does this Select Statement work?
+
+On the one hand I use the SUBSTRING function to extract parts of the complete string. 
+As described above, with this function I can determine from which and up to which position of the whole string I want to extract the substring. 
+
+For the first substring I want to extract the continent. 
+Therefore I tell the SUBSTRING function to start at position 1 to extract the substring up to the position of the hyphen (-) character (minus 1, so I don't take over the hyphen). 
+
+For the second substring I start at the position of the hyphen (plus 1, so I don't take over the hyphen again) and output all remaining characters of the string with the LEN function. 
 
 
 
 
+## 3.8 Manipulating Strings
+
+### 3.8.1 LOWER
+
+```{r, eval=F, echo=T}
+SELECT Last_Name,
+	   LOWER(Last_Name) AS lower_last_name
+	FROM customers
+	;
+```
+
+![](/post/2021-04-03-string-functions_files/p13p19.png)
 
 
 
+### 3.8.2 UPPER
+
+```{r, eval=F, echo=T}
+SELECT Last_Name,
+	   UPPER(Last_Name) AS upper_last_name
+	FROM customers
+	;
+```
+
+![](/post/2021-04-03-string-functions_files/p13p20.png)
 
 
+###  3.8.3 Remove leading spaces from a string
+
+#### 3.8.3.1 RTRIM
+
+RTRIM removes all spaces to the right of a string.
+
+We saw above that the DATALENGTH function counted 4 characters for Max because Max was inserted into the table with a space **at the end of the name**. 
+
+```{r, eval=F, echo=T}
+SELECT First_Name,
+	   DATALENGTH(First_Name) AS length_first_name
+	FROM customers
+	WHERE First_Name = 'Max'
+	;
+```
+
+![](/post/2021-04-03-string-functions_files/p13p21.png)
+
+
+If you have a problem with spaces within strings, it may be advisable to remove them. 
+This works in our case with RTRIM, because the space was inserted at the end of the first name. 
+
+```{r, eval=F, echo=T}
+SELECT First_Name,
+	   DATALENGTH(RTRIM(First_Name)) AS length_trimmed_first_name
+	FROM customers
+	WHERE First_Name = 'Max'
+	;
+```
+
+![](/post/2021-04-03-string-functions_files/p13p22.png)
+
+#### 3.8.3.2 LTRIM
+
+LTRIM removes all spaces to the left of a string.
+
+We do not have an example for this in our table, but it is also possible to demonstrate it:
 
 
 ```{r, eval=F, echo=T}
-
+SELECT  '       SQL Server Functions' AS normal_string,
+	    LTRIM('       SQL Server Functions') AS trimmed_string
+	; 
 ```
 
-![](/2021-04-03-string-functions_files/p13p.png)
+![](/post/2021-04-03-string-functions_files/p13p23.png)
+
+
+#### 3.8.3.3 TRIM
+
+Now we have seen how to remove left and right spaces from a string. But what if we have a space on both sides? 
+
+```{r, eval=F, echo=T}
+SELECT '       SQL Server Functions       ' AS normal_string,
+	   DATALENGTH('       SQL Server Functions       ') AS length_normal_str
+	   ;
+```
+
+![](/post/2021-04-03-string-functions_files/p13p24.png)
+
+Do I really need to use both functions (LTRIM and RTRIM) at the same time here?
+
+
+```{r, eval=F, echo=T}
+SELECT '       SQL Server Functions       ' AS normal_string,
+       DATALENGTH('       SQL Server Functions       ') AS length_normal_str,
+	   DATALENGTH(LTRIM(RTRIM('       SQL Server Functions       '))) AS trimmed_str 
+	   ;
+```
+
+![](/post/2021-04-03-string-functions_files/p13p25.png)
+
+Of course not! There is also a function in SQL for this: TRIM
+
+Here is a comparison of all TRIM types we have seen so far, including the TRIM function:
+
+```{r, eval=F, echo=T}
+SELECT '       SQL Server Functions       ' AS normal_string,
+	   DATALENGTH('       SQL Server Functions       ') AS length_normal_str,
+	   DATALENGTH(LTRIM('       SQL Server Functions       ')) AS left_trimmed_str,
+	   DATALENGTH(RTRIM('       SQL Server Functions       ')) AS right_trimmed_str,
+	   DATALENGTH(TRIM('       SQL Server Functions       ')) AS trimmed_str
+	; 
+```
+
+![](/post/2021-04-03-string-functions_files/p13p26.png)
+
+
+### 3.8.4 Replace string characters
+
+#### 3.8.4.1 Replace leading spaces from a string
+
+However, we have not yet solved one problem. What do we do with unwanted spaces between two strings from one column?
+We cannot accomplish this with LTRIM, RTRIM or TRIM.
+
+We had shown an example at the beginning that contains exactly this problem. See here customer number 1 with the function DATALENGTH:
+
+
+```{r, eval=F, echo=T}
+SELECT First_Name,
+	   DATALENGTH(First_Name) AS length_first_name
+	FROM customers
+	WHERE First_Name = 'Andrew G.'
+	;
+```
+
+![](/post/2021-04-03-string-functions_files/p13p27.png)
+
+To remove spaces between two strings we need REPLACE.
+
+```{r, eval=F, echo=T}
+SELECT First_Name,
+	   DATALENGTH(First_Name) AS length_first_name,
+	   DATALENGTH(REPLACE(First_Name, ' ', '')) AS length_replaced_first_name
+	FROM customers
+	WHERE First_Name = 'Andrew G.'
+	;
+```
+
+![](/post/2021-04-03-string-functions_files/p13p28.png)
+
+
+REPLACE also works wonderfully with spaces before or at the end of strings. 
+See our updated example from the previous chapter:
+
+```{r, eval=F, echo=T}
+SELECT '       SQL Server Functions       ' AS normal_string,
+	   DATALENGTH('       SQL Server Functions       ') AS length_normal_str,
+	   DATALENGTH(LTRIM('       SQL Server Functions       ')) AS left_trimmed_str,
+	   DATALENGTH(RTRIM('       SQL Server Functions       ')) AS right_trimmed_str,
+	   DATALENGTH(TRIM('       SQL Server Functions       ')) AS trimmed_str,
+	   DATALENGTH(REPLACE('       SQL Server Functions       ', ' ', '')) AS length_replaced_str
+	; 
+```
+
+![](/post/2021-04-03-string-functions_files/p13p29.png)
+
+#### 3.8.4.2 Replace specific character letters
+
+Of course, REPLACE can also be used to replace certain letters with others.
+
+```{r, eval=F, echo=T}
+SELECT Country,
+	   REPLACE(Country, 'USA', ' United States of America') AS full_country
+	FROM customers
+	;
+```
+
+![](/post/2021-04-03-string-functions_files/p13p30.png)
+
+#### 3.8.4.3 Replace character letters at a specific position
+
+REPLACE is a powerful function but it also has its limits, see the following example. 
+
+```{r, eval=F, echo=T}
+SELECT Webpage
+	FROM customers
+	;
+```
+
+![](/post/2021-04-03-string-functions_files/p13p31.png)
+
+
+Someone has used here the abbreviations of the continents, which do not work as address of a homepage so. They should start with www. 
+
+Let's try it with a nested REPLACE statement.
+
+```{r, eval=F, echo=T}
+SELECT Webpage,
+	   REPLACE(REPLACE(REPLACE(Webpage, 'us', 'www'), 'eu', 'www'), 'as', 'www') AS repl_Webpage
+	FROM customers
+	;
+```
+
+![](/post/2021-04-03-string-functions_files/p13p32.png)
+
+Doesn't work (see Alaska and Kansas) even if you were to change the order a little bit here. 
+And even if it did, the syntax wouldn't be very nice to read.
+If we have the problem to replace certain parts of a string that are always the same in position, we can resort to the STUFF function. 
+It deletes a part of a string and then inserts another part into the string, starting at a certain position.
+
+
+```{r, eval=F, echo=T}
+SELECT Webpage,
+	   STUFF(Webpage, 1, 2, 'www') AS repl_Webpage
+	FROM customers
+	; 
+```
+
+![](/post/2021-04-03-string-functions_files/p13p33.png)
+
+Looks already much better and is much easier to write / read. 
 
 
 
+# 4 Conclusion
 
-
+In this post I have shown the most common functions with which you can change and manupulate strings in columns. 
 
