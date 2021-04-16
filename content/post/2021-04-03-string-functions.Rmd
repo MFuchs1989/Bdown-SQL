@@ -530,7 +530,8 @@ SELECT Webpage,
 
 Doesn't work (see Alaska and Kansas) even if you were to change the order a little bit here. 
 And even if it did, the syntax wouldn't be very nice to read.
-If we have the problem to replace certain parts of a string that are always the same in position, we can resort to the STUFF function. 
+
+If we have the problem to **replace certain parts** of a string that are **always the same in position**, we can resort to the STUFF function. 
 It deletes a part of a string and then inserts another part into the string, starting at a certain position.
 
 
