@@ -272,7 +272,7 @@ Therefore I tell the SUBSTRING function to start at position 1 to extract the su
     WHERE First_Name = &#39;Max&#39;
     ;</code></pre>
 <p><img src="/post/2021-04-03-string-functions_files/p13p21.png" /></p>
-<p>If you have a problem with spaces within strings, it may be advisable to remove them.
+<p>If you have a problem with spaces, it may be advisable to remove them.
 This works in our case with RTRIM, because the space was inserted at the end of the first name.</p>
 <pre class="r"><code>SELECT First_Name,
        DATALENGTH(RTRIM(First_Name)) AS length_trimmed_first_name

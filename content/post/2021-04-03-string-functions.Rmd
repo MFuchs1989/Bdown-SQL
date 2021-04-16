@@ -371,7 +371,7 @@ SELECT First_Name,
 ![](/post/2021-04-03-string-functions_files/p13p21.png)
 
 
-If you have a problem with spaces within strings, it may be advisable to remove them. 
+If you have a problem with spaces, it may be advisable to remove them. 
 This works in our case with RTRIM, because the space was inserted at the end of the first name. 
 
 ```{r, eval=F, echo=T}
