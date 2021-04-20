@@ -84,6 +84,13 @@ I have placed the TestCSV in a folder (‘datasets’) on my desktop for this pu
 <p><img src="/post/2021-03-20-read-and-write-to-files_files/p8p8.png" /></p>
 <p>Perfect, our new record is loaded:</p>
 <p><img src="/post/2021-03-20-read-and-write-to-files_files/p8p9.png" /></p>
+<p><strong>Caution!</strong></p>
+<p>When importing data as just shown, it is important to pay attention to the format in which the data is stored, for example in a .csv file.
+In my case I have downloaded the German version of SSMS and set up the database accordingly.</p>
+<p>With a data set with the following formatting SSMS (via the Importing Flat File function) would get problems:</p>
+<p><img src="/post/2021-03-20-read-and-write-to-files_files/p8z1.png" /></p>
+<p>The data should therefore be changed as follows (comma to semicolon and dot to comma):</p>
+<p><img src="/post/2021-03-20-read-and-write-to-files_files/p8z2.png" /></p>
 </div>
 </div>
 <div id="write-to-csv" class="section level1">

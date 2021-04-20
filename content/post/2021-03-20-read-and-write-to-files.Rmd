@@ -117,6 +117,20 @@ Perfect, our new record is loaded:
 ![](/post/2021-03-20-read-and-write-to-files_files/p8p9.png)
 
 
+**Caution!**
+
+When importing data as just shown, it is important to pay attention to the format in which the data is stored, for example in a .csv file. 
+In my case I have downloaded the German version of SSMS and set up the database accordingly. 
+
+With a data set with the following formatting SSMS (via the Importing Flat File function) would get problems:
+
+![](/post/2021-03-20-read-and-write-to-files_files/p8z1.png)
+
+The data should therefore be changed as follows (comma to semicolon and dot to comma):
+
+![](/post/2021-03-20-read-and-write-to-files_files/p8z2.png)
+
+
 
 # 3 Write to csv
 
