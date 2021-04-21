@@ -24,7 +24,7 @@ output:
 <li><a href="#count">3.1 Count</a></li>
 <li><a href="#sum">3.2 Sum</a></li>
 <li><a href="#min-max-and-average">3.3 Min, Max and Average</a></li>
-<li><a href="#group-by">3.4 Group By</a>
+<li><a href="#group-by-order-by">3.4 Group By &amp; Order By</a>
 <ul>
 <li><a href="#simple-group-by-with-avg">3.4.1 Simple Group By with AVG</a></li>
 <li><a href="#group-and-order-by-with-avg">3.4.2 Group and Order By with AVG</a></li>
@@ -33,6 +33,7 @@ output:
 <li><a href="#multiple-group-and-order-by">3.4.5 Multiple Group and Order By</a></li>
 </ul></li>
 <li><a href="#having">3.5 Having</a></li>
+<li><a href="#order-by-in-a-specific-order">3.6 Order By in a specific order</a></li>
 </ul></li>
 <li><a href="#conclusion">4 Conclusion</a></li>
 </ul>
@@ -54,6 +55,10 @@ CREATE DATABASE Aggregation;
 USE Aggregation;</code></pre>
 <p>I now import the record <em>flight</em> into this database (‘Aggregation’). I have described how to do this <a href="https://michael-fuchs-sql.netlify.app/2021/03/20/read-and-write-to-files/#via-ssms">here</a>.
 <strong>Tip</strong>: Pay attention to the data types assigned to the columns. For example, Dep_Delay is stored as nvchar by default. Change all data types accordingly.</p>
+<pre class="r"><code>SELECT *
+    FROM flight
+    ;</code></pre>
+<p><img src="/post/2021-03-26-data-aggregation_files/p10z1.png" /></p>
 <p>Furthermore, I create a table that contains NULL values among other things:</p>
 <pre class="r"><code>CREATE TABLE example_Table
     (ID INT NOT NULL IDENTITY(1,1) PRIMARY KEY,
@@ -151,8 +156,8 @@ Here, for example, I would like to have the sum of the flight distances travelle
     ;</code></pre>
 <p><img src="/post/2021-03-26-data-aggregation_files/p10p12.png" /></p>
 </div>
-<div id="group-by" class="section level2">
-<h2>3.4 Group By</h2>
+<div id="group-by-order-by" class="section level2">
+<h2>3.4 Group By &amp; Order By</h2>
 <p>Now we come to the probably most used aggregation function: Group By.
 All of the functions that we have learned about before can be used here and only really develop their added value with Group By.</p>
 <p>With the Group By command, we can have values, such as the mean value, output in groups.</p>
@@ -239,6 +244,33 @@ Means in our example if a weekday of a departure airport has less than 100 depar
     ;</code></pre>
 <p><img src="/post/2021-03-26-data-aggregation_files/p10p20.png" /></p>
 <p>And already we have a clear output of only 21 observations.</p>
+</div>
+<div id="order-by-in-a-specific-order" class="section level2">
+<h2>3.6 Order By in a specific order</h2>
+<p>Let’s take a look at this simple Group By and Order By query:</p>
+<pre class="r"><code>SELECT Origin_Airport, 
+       COUNT(*) As total_num_flights
+    FROM flight
+    WHERE Origin_Airport IN (&#39;LGA&#39;, &#39;PHX&#39;, &#39;SFO&#39;)
+    GROUP BY Origin_Airport
+    ORDER BY Origin_Airport
+    ;</code></pre>
+<p><img src="/post/2021-03-26-data-aggregation_files/p10z2.png" /></p>
+<p>As expected, we get the sum of flights divided and ordered by Origin_Airport, which is ordered by alphabet.</p>
+<p>However, this is not always desired. For example, the requirement may be that we should not be sorted by alphabet but by the size of the airport. We do not have this information in our dataset and therefore cannot use it. But there is a way, which is admittedly a bit awkward but works, to specify a specific order of the output.</p>
+<p>Look at this:</p>
+<pre class="r"><code>SELECT Origin_Airport, 
+       COUNT(*) As total_num_flights
+    FROM flight
+    WHERE Origin_Airport IN (&#39;LGA&#39;, &#39;PHX&#39;, &#39;SFO&#39;)
+    GROUP BY Origin_Airport
+    ORDER BY CASE Origin_Airport
+                WHEN &#39;PHX&#39; THEN 1
+                WHEN &#39;SFO&#39; THEN 2
+                ELSE 3
+                END
+    ;</code></pre>
+<p><img src="/post/2021-03-26-data-aggregation_files/p10z3.png" /></p>
 </div>
 </div>
 <div id="conclusion" class="section level1">

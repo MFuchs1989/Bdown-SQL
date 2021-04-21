@@ -35,6 +35,15 @@ USE Aggregation;
 I now import the record *flight* into this database ('Aggregation'). I have described how to do this [here](https://michael-fuchs-sql.netlify.app/2021/03/20/read-and-write-to-files/#via-ssms).
 **Tip**: Pay attention to the data types assigned to the columns. For example, Dep_Delay is stored as nvchar by default. Change all data types accordingly. 
 
+```{r, eval=F, echo=T}
+SELECT *
+	FROM flight
+	;
+```
+
+![](/post/2021-03-26-data-aggregation_files/p10z1.png)
+
+
 
 Furthermore, I create a table that contains NULL values among other things:
 
@@ -216,7 +225,7 @@ SELECT AVG(Dep_Delay) AS avg_dep_delay
 
 
 
-## 3.4 Group By
+## 3.4 Group By & Order By
 
 Now we come to the probably most used aggregation function: Group By. 
 All of the functions that we have learned about before can be used here and only really develop their added value with Group By. 
@@ -348,6 +357,46 @@ SELECT Origin_Airport, DayOfWeek,
 
 And already we have a clear output of only 21 observations. 
 
+
+
+## 3.6 Order By in a specific order
+
+
+Let's take a look at this simple Group By and Order By query:
+
+```{r, eval=F, echo=T}
+SELECT Origin_Airport, 
+	   COUNT(*) As total_num_flights
+	FROM flight
+	WHERE Origin_Airport IN ('LGA', 'PHX', 'SFO')
+	GROUP BY Origin_Airport
+	ORDER BY Origin_Airport
+	;
+```
+
+![](/post/2021-03-26-data-aggregation_files/p10z2.png)
+
+As expected, we get the sum of flights divided and ordered by Origin_Airport, which is ordered by alphabet. 
+
+However, this is not always desired. For example, the requirement may be that we should not be sorted by alphabet but by the size of the airport. We do not have this information in our dataset and therefore cannot use it. But there is a way, which is admittedly a bit awkward but works, to specify a specific order of the output. 
+
+Look at this:
+
+```{r, eval=F, echo=T}
+SELECT Origin_Airport, 
+	   COUNT(*) As total_num_flights
+	FROM flight
+	WHERE Origin_Airport IN ('LGA', 'PHX', 'SFO')
+	GROUP BY Origin_Airport
+	ORDER BY CASE Origin_Airport
+				WHEN 'PHX' THEN 1
+				WHEN 'SFO' THEN 2
+				ELSE 3
+				END
+	;
+```
+
+![](/post/2021-03-26-data-aggregation_files/p10z3.png)
 
 
 # 4 Conclusion
