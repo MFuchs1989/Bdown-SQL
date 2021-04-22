@@ -461,97 +461,72 @@ SELECT Firstname,
 
 ### 4.2.2 Aliases
 
-If you can remember we have under chapter PARTITION BY & ORDER BY Combined section with all kinds of aggregation functions we wrote a rather long SELECT statement:
-
-
-
+If you can remember we have under chapter [PARTITION BY & ORDER BY Combined](https://michael-fuchs-sql.netlify.app/2021/04/12/window-functions/#partition-by-order-by-combined) section [with all kinds of aggregation functions](https://michael-fuchs-sql.netlify.app/2021/04/12/window-functions/#with-all-kinds-of-aggregation-functions) we wrote a rather long SELECT statement:
 
 
 ```{r, eval=F, echo=T}
-
+SELECT Firstname, 
+	   Lastname,
+	   Department,
+	   MONTH(StartDate) AS month,
+	   Salary, 
+	   SUM(Salary) OVER(PARTITION BY Department ORDER BY MONTH(StartDate)) AS sum_salary,
+	   COUNT(*) OVER(PARTITION BY Department ORDER BY MONTH(StartDate)) AS count_salary,
+	   AVG(Salary) OVER(PARTITION BY Department ORDER BY MONTH(StartDate)) AS avg_salary,
+	   MIN(Salary) OVER(PARTITION BY Department ORDER BY MONTH(StartDate)) AS min_salary,
+	   MAX(Salary) OVER(PARTITION BY Department ORDER BY MONTH(StartDate)) AS max_salary
+	FROM company
+	;
 ```
 
-![](/post/2021-04-12-window-functions_files/p14p.png)
+![](/post/2021-04-12-window-functions_files/p14p21.png)
 
 
-
-
-
-
-
-
-
+This can be written in a simpler and more effective way but unfortunately this feature is **not available in SQL Server** but in MySQL it would work.
 
 ```{r, eval=F, echo=T}
-
+SELECT Firstname, 
+	   Lastname,
+	   Department,
+	   MONTH(StartDate) AS month,
+	   Salary, 
+	   SUM(Salary) OVER monthly_window AS sum_salary,
+	   COUNT(*) OVER monthly_window AS count_salary,
+	   AVG(Salary) OVER monthly_window AS avg_salary,
+	   MIN(Salary) OVER monthly_window AS min_salary,
+	   MAX(Salary) OVER monthly_window AS max_salary
+	FROM company
+	WINDOW monthly_window AS 
+			(PARTITION BY Department ORDER BY MONTH(StartDate))
+	;
 ```
 
-![](/post/2021-04-12-window-functions_files/p14p.png)
 
 
+### 4.2.3 LAG and LEAD
 
-
-
-
-
-
-
-
-
+With LAG and LEAD you can wonderfully output the development of features.
 
 ```{r, eval=F, echo=T}
-
+SELECT Firstname, 
+	   Lastname,
+	   Department,
+	   Salary, 
+	   LAG(Salary) OVER(ORDER BY Department) AS lag,
+	   LEAD(Salary) OVER(ORDER BY Department) AS lead,
+	   Salary - LAG(Salary) OVER(ORDER BY Department) AS lag_diff,
+	   LEAD(Salary) OVER(ORDER BY Department) - Salary AS lead_diff
+	FROM company
+	WHERE Department = 'Department_1'
+	;
 ```
 
-![](/post/2021-04-12-window-functions_files/p14p.png)
+![](/post/2021-04-12-window-functions_files/p14p22.png)
 
 
+# 5 Conclusion
 
-
-
-
-
-
-
-
-```{r, eval=F, echo=T}
-
-```
-
-![](/post/2021-04-12-window-functions_files/p14p.png)
-
-
-
-
-
-
-
-
-
-
-
-```{r, eval=F, echo=T}
-
-```
-
-![](/post/2021-04-12-window-functions_files/p14p.png)
-
-
-
-
-
-
-
-
-```{r, eval=F, echo=T}
-
-```
-
-![](/post/2021-04-12-window-functions_files/p14p.png)
-
-
-
-
+In this post, I went into detail about the benefits and uses of Window Functions. 
 
 
 

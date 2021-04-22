@@ -49,8 +49,10 @@ output:
 <ul>
 <li><a href="#percentiles">4.2.1 Percentiles</a></li>
 <li><a href="#aliases">4.2.2 Aliases</a></li>
+<li><a href="#lag-and-lead">4.2.3 LAG and LEAD</a></li>
 </ul></li>
 </ul></li>
+<li><a href="#conclusion">5 Conclusion</a></li>
 </ul>
 </div>
 
@@ -370,13 +372,55 @@ ORDER BY is typically followed a datetime column.</p>
 </div>
 <div id="aliases" class="section level3">
 <h3>4.2.2 Aliases</h3>
-<p>If you can remember we have under chapter PARTITION BY &amp; ORDER BY Combined section with all kinds of aggregation functions we wrote a rather long SELECT statement:</p>
-<p><img src="/post/2021-04-12-window-functions_files/p14p.png" /></p>
-<p><img src="/post/2021-04-12-window-functions_files/p14p.png" /></p>
-<p><img src="/post/2021-04-12-window-functions_files/p14p.png" /></p>
-<p><img src="/post/2021-04-12-window-functions_files/p14p.png" /></p>
-<p><img src="/post/2021-04-12-window-functions_files/p14p.png" /></p>
-<p><img src="/post/2021-04-12-window-functions_files/p14p.png" /></p>
+<p>If you can remember we have under chapter <a href="https://michael-fuchs-sql.netlify.app/2021/04/12/window-functions/#partition-by-order-by-combined">PARTITION BY &amp; ORDER BY Combined</a> section <a href="https://michael-fuchs-sql.netlify.app/2021/04/12/window-functions/#with-all-kinds-of-aggregation-functions">with all kinds of aggregation functions</a> we wrote a rather long SELECT statement:</p>
+<pre class="r"><code>SELECT Firstname, 
+       Lastname,
+       Department,
+       MONTH(StartDate) AS month,
+       Salary, 
+       SUM(Salary) OVER(PARTITION BY Department ORDER BY MONTH(StartDate)) AS sum_salary,
+       COUNT(*) OVER(PARTITION BY Department ORDER BY MONTH(StartDate)) AS count_salary,
+       AVG(Salary) OVER(PARTITION BY Department ORDER BY MONTH(StartDate)) AS avg_salary,
+       MIN(Salary) OVER(PARTITION BY Department ORDER BY MONTH(StartDate)) AS min_salary,
+       MAX(Salary) OVER(PARTITION BY Department ORDER BY MONTH(StartDate)) AS max_salary
+    FROM company
+    ;</code></pre>
+<p><img src="/post/2021-04-12-window-functions_files/p14p21.png" /></p>
+<p>This can be written in a simpler and more effective way but unfortunately this feature is <strong>not available in SQL Server</strong> but in MySQL it would work.</p>
+<pre class="r"><code>SELECT Firstname, 
+       Lastname,
+       Department,
+       MONTH(StartDate) AS month,
+       Salary, 
+       SUM(Salary) OVER monthly_window AS sum_salary,
+       COUNT(*) OVER monthly_window AS count_salary,
+       AVG(Salary) OVER monthly_window AS avg_salary,
+       MIN(Salary) OVER monthly_window AS min_salary,
+       MAX(Salary) OVER monthly_window AS max_salary
+    FROM company
+    WINDOW monthly_window AS 
+            (PARTITION BY Department ORDER BY MONTH(StartDate))
+    ;</code></pre>
+</div>
+<div id="lag-and-lead" class="section level3">
+<h3>4.2.3 LAG and LEAD</h3>
+<p>With LAG and LEAD you can wonderfully output the development of features.</p>
+<pre class="r"><code>SELECT Firstname, 
+       Lastname,
+       Department,
+       Salary, 
+       LAG(Salary) OVER(ORDER BY Department) AS lag,
+       LEAD(Salary) OVER(ORDER BY Department) AS lead,
+       Salary - LAG(Salary) OVER(ORDER BY Department) AS lag_diff,
+       LEAD(Salary) OVER(ORDER BY Department) - Salary AS lead_diff
+    FROM company
+    WHERE Department = &#39;Department_1&#39;
+    ;</code></pre>
+<p><img src="/post/2021-04-12-window-functions_files/p14p22.png" /></p>
 </div>
 </div>
+</div>
+<div id="conclusion" class="section level1">
+<h1>5 Conclusion</h1>
+<p>In this post, I went into detail about the benefits and uses of Window Functions.</p>
 </div>
