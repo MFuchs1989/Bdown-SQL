@@ -58,11 +58,13 @@ SELECT MIN(StartDate) AS oldest_start_date,
 
 ![](/post/2021-04-12-window-functions_files/p14p2.png)
 
-# 3 Simple Window Function
+# 3 Window Functions
 
 First of all, what is a Window Function?
 
 The term [window](https://drill.apache.org/docs/sql-window-functions-introduction/) describes the set of rows on which the function operates. A [window function](https://mode.com/sql-tutorial/sql-window-functions/) uses values from the rows in a window to calculate the returned values.
+
+## 3.1 Simple Window Function
 
 So far, I have solved such tasks in this way:
 
@@ -123,7 +125,7 @@ SELECT Firstname,
 Based on the output, we can see that Zula (first person in the table) was one of 1804 people hired in 2019-2020. For the used window functions all possible aggregate functions like SUM(), AVG(), MIN(), MAX() ... can be used. 
 
 
-# 4 PARTITION BY & ORDER BY
+## 3.2 PARTITION BY & ORDER BY
 
 Partitions allow you to filter the window into sections by certain values. Each section is called the window frame. Partition by is the 'group by' equivalent in a window functions. 
 
@@ -163,121 +165,303 @@ Let's notice again Zula in line one we see that she is still one of 7 people who
 If we go one line further, it becomes even clearer. Two more people join on 01/03/2019. So far we have had 8 new hires before 01/03/2019, accordingly here the aggregation jumps to 10 (8 previous and 2 for 01/03/2019). 
 
 
-```{r, eval=F, echo=T}
-
-```
-
-![](/post/2021-04-12-window-functions_files/p14p.png)
-
-
-
-
-
-
-
-
-
-
-
+## 3.3 Multiple Window Functions
 
 
 ```{r, eval=F, echo=T}
-
+SELECT Firstname, 
+	   Lastname, 
+	   DATENAME(day, StartDate) + ' ' + 
+	   DATENAME(month, StartDate) + ' ' + 
+	   DATENAME(year, StartDate) AS Date_Started, 
+	   COUNT(*) OVER(PARTITION BY YEAR(StartDate)) As total_num_employees_by_year,
+	   COUNT(*) OVER(PARTITION BY MONTH(StartDate)) As total_num_employees_by_month
+	FROM company
+	;
 ```
 
-![](/post/2021-04-12-window-functions_files/p14p.png)
+![](/post/2021-04-12-window-functions_files/p14p8.png)
+
+Let's see how we can read this output again: Edna appears in line 1 and is one of 890 people who started working for the company in 2019 and one of 154 who started in **a** January. 
 
 
-
-
-
-
-
-
-
-
-
+### 3.3.1 Plausibility Check for Multiple Window Functions
 
 
 ```{r, eval=F, echo=T}
-
+SELECT DATENAME(year, StartDate) AS year, 
+	   COUNT(*) AS num_employees_total
+	FROM company
+	GROUP BY DATENAME(year, StartDate)
+	;
 ```
 
-![](/post/2021-04-12-window-functions_files/p14p.png)
-
-
-
-
-
-
-
-
-
-
+![](/post/2021-04-12-window-functions_files/p14p9.png)
 
 
 ```{r, eval=F, echo=T}
-
+SELECT DATENAME(month, StartDate) AS month, 
+	   COUNT(*) AS num_employees
+	FROM company
+	GROUP BY DATENAME(month, StartDate)
+	ORDER BY CASE DATENAME(month, StartDate)
+		WHEN 'January' THEN 1
+		WHEN 'February' THEN 2
+		WHEN 'March' THEN 3
+		WHEN 'April' THEN 4
+		WHEN 'May' THEN 5
+		WHEN 'June' THEN 6
+		WHEN 'July' THEN 7
+		WHEN 'August' THEN 8
+		WHEN 'September' THEN 9
+		WHEN 'October' THEN 10
+		WHEN 'November' THEN 11
+		ELSE 12
+		END
+	;
 ```
 
-![](/post/2021-04-12-window-functions_files/p14p.png)
+![](/post/2021-04-12-window-functions_files/p14p10.png)
+
+From the output shown above with the Window function, we can so far read out how many people started with Edna in 2019 and in a January but not how many people she joined the company together with in January 2019. To get this information we need a **multiple PARTITION BY** statement. 
 
 
-
-
-
-
-
-
-
-
-
+## 3.4 Multiple PARTITION BY Statements
 
 
 ```{r, eval=F, echo=T}
-
+SELECT Firstname, 
+	   Lastname, 
+	   DATENAME(day, StartDate) + ' ' + 
+	   DATENAME(month, StartDate) + ' ' + 
+	   DATENAME(year, StartDate) AS Date_Started, 
+	   COUNT(*) OVER(PARTITION BY YEAR(StartDate)) As total_num_employees_by_year,
+	   COUNT(*) OVER(PARTITION BY MONTH(StartDate)) As total_num_employees_by_month,
+	   COUNT(*) OVER(PARTITION BY YEAR(StartDate), MONTH(StartDate)) As total_num_employees_by_YearMonth
+	FROM company
+	;
 ```
 
-![](/post/2021-04-12-window-functions_files/p14p.png)
+![](/post/2021-04-12-window-functions_files/p14p11.png)
 
 
+Now we have gathered all the information we need. So Edna is one of 890 people who started in 2019, one of 154 who started in a January, and one of 72 who started January 2019. 
 
 
-
-
-
-
-
-
+### 3.4.1 Plausibility Check for Multiple PARTITION BY Statements 
 
 
 ```{r, eval=F, echo=T}
-
+SELECT DATENAME(year, StartDate) AS year, 
+	   DATENAME(month, StartDate) AS month, 
+	   COUNT(*)
+	FROM company
+	GROUP BY DATENAME(year, StartDate), DATENAME(month, StartDate)
+	ORDER BY CASE DATENAME(month, StartDate)
+				WHEN 'January' THEN 1
+				WHEN 'February' THEN 2
+				WHEN 'March' THEN 3
+				WHEN 'April' THEN 4
+				WHEN 'May' THEN 5
+				WHEN 'June' THEN 6
+				WHEN 'July' THEN 7
+				WHEN 'August' THEN 8
+				WHEN 'September' THEN 9	
+				WHEN 'October' THEN 10
+				WHEN 'November' THEN 11
+				ELSE 12
+				END	
+	;
 ```
 
-![](/post/2021-04-12-window-functions_files/p14p.png)
+![](/post/2021-04-12-window-functions_files/p14p12.png)
 
 
 
-
-
-
-
-
-
-
+Does the order of the MULTIPLE PARTITION BY STATEMENTS matter? No not really, the output is just arranged differently. 
 
 
 ```{r, eval=F, echo=T}
+SELECT Firstname, 
+	   Lastname, 
+	   DATENAME(day, StartDate) + ' ' + 
+	   DATENAME(month, StartDate) + ' ' + 
+	   DATENAME(year, StartDate) AS Date_Started, 
+	   COUNT(*) OVER(PARTITION BY YEAR(StartDate)) As total_num_employees_by_year,
+	   COUNT(*) OVER(PARTITION BY MONTH(StartDate)) As total_num_employees_by_month,
+	   COUNT(*) OVER(PARTITION BY YEAR(StartDate), MONTH(StartDate)) As total_num_employees_by_YearMonth
+	FROM company
+	;
 
+SELECT Firstname, 
+	   Lastname, 
+	   DATENAME(day, StartDate) + ' ' + 
+	   DATENAME(month, StartDate) + ' ' + 
+	   DATENAME(year, StartDate) AS Date_Started, 
+	   COUNT(*) OVER(PARTITION BY YEAR(StartDate)) As total_num_employees_by_year,
+	   COUNT(*) OVER(PARTITION BY MONTH(StartDate)) As total_num_employees_by_month,
+	   COUNT(*) OVER(PARTITION BY MONTH(StartDate), YEAR(StartDate)) As total_num_employees_by_YearMonth
+	FROM company
+	;
 ```
 
-![](/post/2021-04-12-window-functions_files/p14p.png)
+![](/post/2021-04-12-window-functions_files/p14p13.png)
+
+This cannot be seen in the output shown in this example, but if you scroll down in the two tables, you will see that the date is not output in order. 
 
 
+## 3.5 PARTITION BY & ORDER BY Combined
+
+### 3.5.1 with SUM()
+
+As already mentioned above, PARTITION BY is the equivalent of 'group by' in a window function.
+ORDER BY is typically followed a datetime column.
+
+This time we will not use COUNT but SUM as aggregation function:
+
+```{r, eval=F, echo=T}
+SELECT Firstname, 
+	   Lastname,
+	   Department,
+	   Salary, 
+	   SUM(Salary) OVER(PARTITION BY Department ORDER BY MONTH(StartDate)) AS sum_salary
+	FROM company
+	;
+```
+
+![](/post/2021-04-12-window-functions_files/p14p14.png)
+
+Now once again with the specification of the respective percentage value:
+
+```{r, eval=F, echo=T}
+SELECT Firstname, 
+	   Lastname,
+	   Department,
+	   Salary, 
+	   SUM(Salary) OVER(PARTITION BY Department ORDER BY MONTH(StartDate)) AS sum_salary,
+	   ROUND(CAST(Salary AS FLOAT) / SUM(Salary)OVER(PARTITION BY Department ORDER BY MONTH(StartDate)) * 100, 2) AS percentage_salary 
+	FROM company
+	;
+```
+
+![](/post/2021-04-12-window-functions_files/p14p15.png)
 
 
+### 3.5.2 with all kinds of aggregation functions
 
+
+```{r, eval=F, echo=T}
+SELECT Firstname, 
+	   Lastname,
+	   Department,
+	   MONTH(StartDate) AS month,
+	   Salary, 
+	   SUM(Salary) OVER(PARTITION BY Department ORDER BY MONTH(StartDate)) AS sum_salary,
+	   COUNT(*) OVER(PARTITION BY Department ORDER BY MONTH(StartDate)) AS count_salary,
+	   AVG(Salary) OVER(PARTITION BY Department ORDER BY MONTH(StartDate)) AS avg_salary,
+	   MIN(Salary) OVER(PARTITION BY Department ORDER BY MONTH(StartDate)) AS min_salary,
+	   MAX(Salary) OVER(PARTITION BY Department ORDER BY MONTH(StartDate)) AS max_salary
+	FROM company
+	;
+```
+
+![](/post/2021-04-12-window-functions_files/p14p16.png)
+
+So now we have an output with a lot of information about the individual employees.
+
+How to read the information?
+
+We always group by department and order by month. Nancy (line 1) joined department 1 in January with a salary of 100k. The salary number of all employees who went to department 1 in January was 1.15m, the average was 71.875 the lowest salary was 40k and the highest was 105k. 
+
+These are only aggregate values for employees who joined Division 1 in a January.  
+
+
+# 4 Advanced Window Functions
+
+## 4.1 Ranking
+
+### 4.1.1 ROW_NUMBER()
+
+
+```{r, eval=F, echo=T}
+SELECT Firstname, 
+	   Lastname,
+	   Department,
+	   MONTH(StartDate) AS month,
+	   Salary, 
+	   SUM(Salary) OVER(PARTITION BY Department ORDER BY MONTH(StartDate)) AS sum_salary,
+	   ROW_NUMBER() OVER(ORDER BY MONTH(StartDate)) AS row_number
+	FROM company
+	;
+```
+
+![](/post/2021-04-12-window-functions_files/p14p17.png)
+
+
+### 4.1.2 RANK()
+
+Ranking is the same amongst tied values and ranks skip for subsequent values. We have already seen the same aggregation under chapter PARTITION BY & ORDER BY when we only used the ORDER BY command in the Window Function. At that time the totals of the employees were aggregated. Here the ranks are listed aggregated. 
+
+```{r, eval=F, echo=T}
+SELECT Firstname, 
+	   Lastname,
+	   Department,
+	   MONTH(StartDate) AS month,
+	   Salary, 
+	   SUM(Salary) OVER(PARTITION BY Department ORDER BY MONTH(StartDate)) AS sum_salary,
+	   RANK() OVER(ORDER BY MONTH(StartDate)) AS rank
+	FROM company
+	;
+```
+
+![](/post/2021-04-12-window-functions_files/p14p18.png)
+
+
+### 4.1.3 DENSE_RANK()
+
+The DENSE_RANK() function is similar to RANK() but ranks are not skipped with ties. 
+
+
+```{r, eval=F, echo=T}
+SELECT Firstname, 
+	   Lastname,
+	   Department,
+	   MONTH(StartDate) AS month,
+	   Salary, 
+	   SUM(Salary) OVER(PARTITION BY Department ORDER BY MONTH(StartDate)) AS sum_salary,
+	   DENSE_RANK() OVER(ORDER BY MONTH(StartDate)) AS dense_rank
+	FROM company
+	;
+```
+
+![](/post/2021-04-12-window-functions_files/p14p19.png)
+
+## 4.2 Tips and Tricks 
+
+
+### 4.2.1 Percentiles 
+
+The following components are important to consider when building a query with percentiles:
+
+
+```{r, eval=F, echo=T}
+SELECT Firstname, 
+	   Lastname,
+	   Department,
+	   MONTH(StartDate) AS month,
+	   Salary, 
+	   SUM(Salary) OVER(PARTITION BY Department ORDER BY MONTH(StartDate)) AS sum_salary,
+	   NTILE(100) OVER(ORDER BY MONTH(StartDate)) AS percentile
+	FROM company
+	;
+```
+
+![](/post/2021-04-12-window-functions_files/p14p20.png)
+
+
+### 4.2.2 Aliases
+
+If you can remember we have under chapter PARTITION BY & ORDER BY Combined section with all kinds of aggregation functions we wrote a rather long SELECT statement:
 
 
 
