@@ -15,6 +15,53 @@ output:
 
 # 1 Introduction
 
+After I have reported in my last post about String Functions, we now come to a topic which I would call Advanced Functions. Among other things, this includes the Window Functions of SQL.
+
+For this post I used the dataset *company*. You can download it from my [GitHub Repository](https://github.com/MFuchs1989/Datasets-and-Miscellaneous/tree/main/datasets).
+
+
+
+# 2 Preparation
+
+For the following examples, I set up a new database.
+
+```{r, eval=F, echo=T}
+SET LANGUAGE ENGLISH
+
+
+CREATE DATABASE Window;
+
+USE Window;
+```
+
+I now import the record *company* into this database ('Window'). I have described how to do this [here](https://michael-fuchs-sql.netlify.app/2021/03/20/read-and-write-to-files/#via-ssms).
+
+
+
+```{r, eval=F, echo=T}
+SELECT * 
+	FROM company
+	;
+```
+
+![](/post/2021-04-12-window-functions_files/p14p1.png)
+
+
+
+
+
+```{r, eval=F, echo=T}
+
+```
+
+![](/post/2021-04-12-window-functions_files/p14p.png)
+
+
+
+
+
+
+
 
 
 
@@ -26,7 +73,7 @@ output:
 
 ```
 
-![](/post/2021-04-12-window-functions_files/p14p1.png)
+![](/post/2021-04-12-window-functions_files/p14p.png)
 
 
 
@@ -34,6 +81,225 @@ output:
 
 
 
+
+
+```{r, eval=F, echo=T}
+
+```
+
+![](/post/2021-04-12-window-functions_files/p14p.png)
+
+
+
+
+
+
+
+
+
+
+
+```{r, eval=F, echo=T}
+
+```
+
+![](/post/2021-04-12-window-functions_files/p14p.png)
+
+
+
+
+
+
+
+
+
+
+
+
+
+```{r, eval=F, echo=T}
+
+```
+
+![](/post/2021-04-12-window-functions_files/p14p.png)
+
+
+
+
+
+
+
+
+
+
+
+
+
+```{r, eval=F, echo=T}
+
+```
+
+![](/post/2021-04-12-window-functions_files/p14p.png)
+
+
+
+
+
+
+
+
+
+
+
+
+```{r, eval=F, echo=T}
+
+```
+
+![](/post/2021-04-12-window-functions_files/p14p.png)
+
+
+
+
+
+
+
+
+
+
+
+
+
+```{r, eval=F, echo=T}
+
+```
+
+![](/post/2021-04-12-window-functions_files/p14p.png)
+
+
+
+
+
+
+
+
+
+
+
+
+```{r, eval=F, echo=T}
+
+```
+
+![](/post/2021-04-12-window-functions_files/p14p.png)
+
+
+
+
+
+
+
+
+
+
+
+
+```{r, eval=F, echo=T}
+
+```
+
+![](/post/2021-04-12-window-functions_files/p14p.png)
+
+
+
+
+
+
+
+
+
+
+```{r, eval=F, echo=T}
+
+```
+
+![](/post/2021-04-12-window-functions_files/p14p.png)
+
+
+
+
+
+
+
+
+
+
+```{r, eval=F, echo=T}
+
+```
+
+![](/post/2021-04-12-window-functions_files/p14p.png)
+
+
+
+
+
+
+
+
+
+
+
+
+```{r, eval=F, echo=T}
+
+```
+
+![](/post/2021-04-12-window-functions_files/p14p.png)
+
+
+
+
+
+
+
+
+
+
+```{r, eval=F, echo=T}
+
+```
+
+![](/post/2021-04-12-window-functions_files/p14p.png)
+
+
+
+
+
+
+
+
+
+
+
+```{r, eval=F, echo=T}
+
+```
+
+![](/post/2021-04-12-window-functions_files/p14p.png)
+
+
+
+
+
+
+
+
+```{r, eval=F, echo=T}
+
+```
+
+![](/post/2021-04-12-window-functions_files/p14p.png)
 
 
 

@@ -18,10 +18,43 @@ output:
 <div id="TOC">
 <ul>
 <li><a href="#introduction">1 Introduction</a></li>
+<li><a href="#preparation">2 Preparation</a></li>
 </ul>
 </div>
 
 <div id="introduction" class="section level1">
 <h1>1 Introduction</h1>
+<p>After I have reported in my last post about String Functions, we now come to a topic which I would call Advanced Functions. Among other things, this includes the Window Functions of SQL.</p>
+<p>For this post I used the dataset <em>company</em>. You can download it from my <a href="https://github.com/MFuchs1989/Datasets-and-Miscellaneous/tree/main/datasets">GitHub Repository</a>.</p>
+</div>
+<div id="preparation" class="section level1">
+<h1>2 Preparation</h1>
+<p>For the following examples, I set up a new database.</p>
+<pre class="r"><code>SET LANGUAGE ENGLISH
+
+
+CREATE DATABASE Window;
+
+USE Window;</code></pre>
+<p>I now import the record <em>company</em> into this database (‘Window’). I have described how to do this <a href="https://michael-fuchs-sql.netlify.app/2021/03/20/read-and-write-to-files/#via-ssms">here</a>.</p>
+<pre class="r"><code>SELECT * 
+    FROM company
+    ;</code></pre>
 <p><img src="/post/2021-04-12-window-functions_files/p14p1.png" /></p>
+<p><img src="/post/2021-04-12-window-functions_files/p14p.png" /></p>
+<p><img src="/post/2021-04-12-window-functions_files/p14p.png" /></p>
+<p><img src="/post/2021-04-12-window-functions_files/p14p.png" /></p>
+<p><img src="/post/2021-04-12-window-functions_files/p14p.png" /></p>
+<p><img src="/post/2021-04-12-window-functions_files/p14p.png" /></p>
+<p><img src="/post/2021-04-12-window-functions_files/p14p.png" /></p>
+<p><img src="/post/2021-04-12-window-functions_files/p14p.png" /></p>
+<p><img src="/post/2021-04-12-window-functions_files/p14p.png" /></p>
+<p><img src="/post/2021-04-12-window-functions_files/p14p.png" /></p>
+<p><img src="/post/2021-04-12-window-functions_files/p14p.png" /></p>
+<p><img src="/post/2021-04-12-window-functions_files/p14p.png" /></p>
+<p><img src="/post/2021-04-12-window-functions_files/p14p.png" /></p>
+<p><img src="/post/2021-04-12-window-functions_files/p14p.png" /></p>
+<p><img src="/post/2021-04-12-window-functions_files/p14p.png" /></p>
+<p><img src="/post/2021-04-12-window-functions_files/p14p.png" /></p>
+<p><img src="/post/2021-04-12-window-functions_files/p14p.png" /></p>
 </div>
