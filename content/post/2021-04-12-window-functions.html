@@ -19,6 +19,8 @@ output:
 <ul>
 <li><a href="#introduction">1 Introduction</a></li>
 <li><a href="#preparation">2 Preparation</a></li>
+<li><a href="#simple-window-function">3 Simple Window Function</a></li>
+<li><a href="#partition-by-order-by">4 PARTITION BY &amp; ORDER BY</a></li>
 </ul>
 </div>
 
@@ -41,9 +43,81 @@ USE Window;</code></pre>
     FROM company
     ;</code></pre>
 <p><img src="/post/2021-04-12-window-functions_files/p14p1.png" /></p>
-<p><img src="/post/2021-04-12-window-functions_files/p14p.png" /></p>
-<p><img src="/post/2021-04-12-window-functions_files/p14p.png" /></p>
-<p><img src="/post/2021-04-12-window-functions_files/p14p.png" /></p>
+<p><strong>Get an Overview:</strong></p>
+<pre class="r"><code>SELECT MIN(StartDate) AS oldest_start_date,
+       MAX(StartDate) AS latest_start_date,
+       COUNT(*) AS total_num_employees 
+    FROM company
+    ;</code></pre>
+<p><img src="/post/2021-04-12-window-functions_files/p14p2.png" /></p>
+</div>
+<div id="simple-window-function" class="section level1">
+<h1>3 Simple Window Function</h1>
+<p>First of all, what is a Window Function?</p>
+<p>The term <a href="https://drill.apache.org/docs/sql-window-functions-introduction/">window</a> describes the set of rows on which the function operates. A <a href="https://mode.com/sql-tutorial/sql-window-functions/">window function</a> uses values from the rows in a window to calculate the returned values.</p>
+<p>So far, I have solved such tasks in this way:</p>
+<p>Here I want to view which people joined the company in <strong>January 2020</strong> and how many there were in total for the month.</p>
+<pre class="r"><code>SELECT Firstname, 
+       Lastname, 
+       DATENAME(month, StartDate) + &#39; &#39; + DATENAME(year, StartDate) AS Date_Started,
+       (SELECT COUNT(*) 
+            FROM company
+            WHERE MONTH(StartDate) = 1 AND YEAR(StartDate) = 2020) AS total_num_employees_for_january_2020
+    FROM company
+    WHERE MONTH(StartDate) = 1 AND YEAR(StartDate) = 2020
+    ORDER BY StartDate
+    ;</code></pre>
+<p><img src="/post/2021-04-12-window-functions_files/p14p3.png" /></p>
+<p>I use the subquery to calculate how many people were hired in January 2020 and get this information tailored to the same time period (second WHERE statement) for each person.</p>
+<p>This time with a window function:</p>
+<pre class="r"><code>SELECT Firstname, 
+       Lastname, 
+       DATENAME(month, StartDate) + &#39; &#39; + DATENAME(year, StartDate) AS Date_Started, 
+       COUNT(*) OVER() As total_num_employees_for_january_2020
+    FROM company
+    WHERE MONTH(StartDate) = 1 AND YEAR(StartDate) = 2020
+    ORDER BY StartDate
+    ;</code></pre>
+<p><img src="/post/2021-04-12-window-functions_files/p14p4.png" /></p>
+<p>Same output, less code!</p>
+<p>Now I no longer filter by january but have <strong>all employees</strong> who started between 2019 and 2020 output:</p>
+<pre class="r"><code>SELECT Firstname, 
+       Lastname, 
+       DATENAME(day, StartDate) + &#39; &#39; + 
+       DATENAME(month, StartDate) + &#39; &#39; + 
+       DATENAME(year, StartDate) AS Date_Started, 
+       COUNT(*) OVER() As total_num_employees
+    FROM company
+    ORDER BY StartDate
+    ;</code></pre>
+<p><img src="/post/2021-04-12-window-functions_files/p14p5.png" /></p>
+<p>Based on the output, we can see that Zula (first person in the table) was one of 1804 people hired in 2019-2020. For the used window functions all possible aggregate functions like SUM(), AVG(), MIN(), MAX() … can be used.</p>
+</div>
+<div id="partition-by-order-by" class="section level1">
+<h1>4 PARTITION BY &amp; ORDER BY</h1>
+<p>Partitions allow you to filter the window into sections by certain values. Each section is called the window frame. Partition by is the ‘group by’ equivalent in a window functions.</p>
+<pre class="r"><code>SELECT Firstname, 
+       Lastname, 
+       DATENAME(day, StartDate) + &#39; &#39; + 
+       DATENAME(month, StartDate) + &#39; &#39; + 
+       DATENAME(year, StartDate) AS Date_Started, 
+       COUNT(*) OVER(PARTITION BY StartDate) As total_num_employees
+    FROM company
+    ;</code></pre>
+<p><img src="/post/2021-04-12-window-functions_files/p14p6.png" /></p>
+<p>Here we see that Zula (line 1) was one of 7 people who started on 01/01/2019. In contrast, only one person started on 01/02/2019: Jennette (line 8).</p>
+<p>If we use only ORDER BY instead of PARTITION BY in the OVER statement we get an aggregation of the variable ‘total_num_employees’.</p>
+<pre class="r"><code>SELECT Firstname, 
+       Lastname, 
+       DATENAME(day, StartDate) + &#39; &#39; + 
+       DATENAME(month, StartDate) + &#39; &#39; + 
+       DATENAME(year, StartDate) AS Date_Started, 
+       COUNT(*) OVER(ORDER BY StartDate) As total_num_employees
+    FROM company
+    ;</code></pre>
+<p><img src="/post/2021-04-12-window-functions_files/p14p7.png" /></p>
+<p>Let’s notice again Zula in line one we see that she is still one of 7 people who started on 01.01.2019. But if we now look at Jennette (line 8) we see that the total number of employees has increased from 7 to 8 (7 persons on 01/01/2019 and 1 person on 02/01/2019). Jennette is therefore one of 8 people who joined the company before or with her.
+If we go one line further, it becomes even clearer. Two more people join on 01/03/2019. So far we have had 8 new hires before 01/03/2019, accordingly here the aggregation jumps to 10 (8 previous and 2 for 01/03/2019).</p>
 <p><img src="/post/2021-04-12-window-functions_files/p14p.png" /></p>
 <p><img src="/post/2021-04-12-window-functions_files/p14p.png" /></p>
 <p><img src="/post/2021-04-12-window-functions_files/p14p.png" /></p>

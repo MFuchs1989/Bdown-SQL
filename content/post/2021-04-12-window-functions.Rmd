@@ -46,57 +46,121 @@ SELECT *
 
 ![](/post/2021-04-12-window-functions_files/p14p1.png)
 
+**Get an Overview:**
+
+```{r, eval=F, echo=T}
+SELECT MIN(StartDate) AS oldest_start_date,
+	   MAX(StartDate) AS latest_start_date,
+	   COUNT(*) AS total_num_employees 
+	FROM company
+	;
+```
+
+![](/post/2021-04-12-window-functions_files/p14p2.png)
+
+# 3 Simple Window Function
+
+First of all, what is a Window Function?
+
+The term [window](https://drill.apache.org/docs/sql-window-functions-introduction/) describes the set of rows on which the function operates. A [window function](https://mode.com/sql-tutorial/sql-window-functions/) uses values from the rows in a window to calculate the returned values.
+
+So far, I have solved such tasks in this way:
+
+Here I want to view which people joined the company in **January 2020** and how many there were in total for the month. 
+
+```{r, eval=F, echo=T}
+SELECT Firstname, 
+	   Lastname, 
+	   DATENAME(month, StartDate) + ' ' + DATENAME(year, StartDate) AS Date_Started,
+	   (SELECT COUNT(*) 
+			FROM company
+			WHERE MONTH(StartDate) = 1 AND YEAR(StartDate) = 2020) AS total_num_employees_for_january_2020
+	FROM company
+	WHERE MONTH(StartDate) = 1 AND YEAR(StartDate) = 2020
+	ORDER BY StartDate
+	;
+```
+
+![](/post/2021-04-12-window-functions_files/p14p3.png)
+
+I use the subquery to calculate how many people were hired in January 2020 and get this information tailored to the same time period (second WHERE statement) for each person. 
+
+This time with a window function:
+
+```{r, eval=F, echo=T}
+SELECT Firstname, 
+	   Lastname, 
+	   DATENAME(month, StartDate) + ' ' + DATENAME(year, StartDate) AS Date_Started, 
+	   COUNT(*) OVER() As total_num_employees_for_january_2020
+	FROM company
+	WHERE MONTH(StartDate) = 1 AND YEAR(StartDate) = 2020
+	ORDER BY StartDate
+	;
+```
+
+![](/post/2021-04-12-window-functions_files/p14p4.png)
 
 
+Same output, less code!
+
+Now I no longer filter by january but have **all employees** who started between 2019 and 2020 output:
+
+```{r, eval=F, echo=T}
+SELECT Firstname, 
+	   Lastname, 
+	   DATENAME(day, StartDate) + ' ' + 
+	   DATENAME(month, StartDate) + ' ' + 
+	   DATENAME(year, StartDate) AS Date_Started, 
+	   COUNT(*) OVER() As total_num_employees
+	FROM company
+	ORDER BY StartDate
+	;
+```
+
+![](/post/2021-04-12-window-functions_files/p14p5.png)
+
+
+Based on the output, we can see that Zula (first person in the table) was one of 1804 people hired in 2019-2020. For the used window functions all possible aggregate functions like SUM(), AVG(), MIN(), MAX() ... can be used. 
+
+
+# 4 PARTITION BY & ORDER BY
+
+Partitions allow you to filter the window into sections by certain values. Each section is called the window frame. Partition by is the 'group by' equivalent in a window functions. 
 
 
 ```{r, eval=F, echo=T}
-
+SELECT Firstname, 
+	   Lastname, 
+	   DATENAME(day, StartDate) + ' ' + 
+	   DATENAME(month, StartDate) + ' ' + 
+	   DATENAME(year, StartDate) AS Date_Started, 
+	   COUNT(*) OVER(PARTITION BY StartDate) As total_num_employees
+	FROM company
+	;
 ```
 
-![](/post/2021-04-12-window-functions_files/p14p.png)
+![](/post/2021-04-12-window-functions_files/p14p6.png)
 
 
+Here we see that Zula (line 1) was one of 7 people who started on 01/01/2019. In contrast, only one person started on 01/02/2019: Jennette (line 8). 
 
-
-
-
-
-
-
-
-
-
-
+If we use only ORDER BY instead of PARTITION BY in the OVER statement we get an aggregation of the variable 'total_num_employees'. 
 
 ```{r, eval=F, echo=T}
-
+SELECT Firstname, 
+	   Lastname, 
+	   DATENAME(day, StartDate) + ' ' + 
+	   DATENAME(month, StartDate) + ' ' + 
+	   DATENAME(year, StartDate) AS Date_Started, 
+	   COUNT(*) OVER(ORDER BY StartDate) As total_num_employees
+	FROM company
+	;
 ```
 
-![](/post/2021-04-12-window-functions_files/p14p.png)
+![](/post/2021-04-12-window-functions_files/p14p7.png)
 
-
-
-
-
-
-
-
-
-```{r, eval=F, echo=T}
-
-```
-
-![](/post/2021-04-12-window-functions_files/p14p.png)
-
-
-
-
-
-
-
-
-
+Let's notice again Zula in line one we see that she is still one of 7 people who started on 01.01.2019. But if we now look at Jennette (line 8) we see that the total number of employees has increased from 7 to 8 (7 persons on 01/01/2019 and 1 person on 02/01/2019). Jennette is therefore one of 8 people who joined the company before or with her. 
+If we go one line further, it becomes even clearer. Two more people join on 01/03/2019. So far we have had 8 new hires before 01/03/2019, accordingly here the aggregation jumps to 10 (8 previous and 2 for 01/03/2019). 
 
 
 ```{r, eval=F, echo=T}
