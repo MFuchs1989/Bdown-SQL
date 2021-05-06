@@ -18,10 +18,300 @@ output:
 <div id="TOC">
 <ul>
 <li><a href="#introduction">1 Introduction</a></li>
+<li><a href="#preparation">2 Preparation</a></li>
+<li><a href="#types-of-joins">3 Types of Joins</a>
+<ul>
+<li><a href="#inner-join">3.1 Inner Join</a></li>
+<li><a href="#left-join">3.2 Left Join</a></li>
+<li><a href="#right-join">3.3 Right Join</a></li>
+<li><a href="#outer-join">3.4 Outer Join</a></li>
+<li><a href="#left-excluding-join">3.5 Left Excluding Join</a></li>
+<li><a href="#right-excluding-join">3.6 Right Excluding Join</a></li>
+<li><a href="#outer-excluding-join">3.7 Outer Excluding Join</a></li>
+</ul></li>
+<li><a href="#multiple-joins">4 Multiple Joins</a></li>
+<li><a href="#conclusion">5 Conclusion</a></li>
 </ul>
 </div>
 
 <div id="introduction" class="section level1">
 <h1>1 Introduction</h1>
-<p><img src="/post/2021-04-21-joins_files/p15p.png" /></p>
+<p><img src="/post/2021-04-21-joins_files/p15s1.png" /></p>
+<p>Source: <a href="https://www.codeproject.com/Articles/33052/Visual-Representation-of-SQL-Joins">C.L. Moffatt</a></p>
+<p>A topic which must not be missing in the course of SQL are Joins.
+In this article I will talk about the different types of joins and explain how they work and what differences they have to each other.</p>
+</div>
+<div id="preparation" class="section level1">
+<h1>2 Preparation</h1>
+<p>For the following examples, I set up a new database.</p>
+<pre class="r"><code>SET LANGUAGE ENGLISH
+
+
+CREATE DATABASE Joins;
+
+USE Joins;</code></pre>
+<p>Below I will create 4 example tables that we will continue to work with.</p>
+<pre class="r"><code>CREATE TABLE Countries_Main
+    (Country_ID INT NOT NULL IDENTITY(1,1) PRIMARY KEY,
+     Country_Name VARCHAR(100) NOT NULL)
+    ;
+
+INSERT INTO Countries_Main (Country_Name) VALUES (&#39;Egypt&#39;)
+INSERT INTO Countries_Main (Country_Name) VALUES (&#39;Brazil&#39;)
+INSERT INTO Countries_Main (Country_Name) VALUES (&#39;Germany&#39;)
+INSERT INTO Countries_Main (Country_Name) VALUES (&#39;Malta&#39;)
+
+SELECT * FROM Countries_Main</code></pre>
+<p><img src="/post/2021-04-21-joins_files/p15p1.png" /></p>
+<pre class="r"><code>CREATE TABLE Countries_Capital
+    (ID INT NOT NULL IDENTITY(1,1) PRIMARY KEY,
+     Country_ID INT NOT NULL FOREIGN KEY REFERENCES Countries_Main(Country_ID),
+     Capital_Name VARCHAR(100) NOT NULL)
+    ;
+
+INSERT INTO Countries_Capital (Country_ID, Capital_Name) VALUES (1, &#39;Cairo&#39;)
+INSERT INTO Countries_Capital (Country_ID, Capital_Name) VALUES (2, &#39;Brasilia&#39;)
+INSERT INTO Countries_Capital (Country_ID, Capital_Name) VALUES (3, &#39;Berlin&#39;)
+INSERT INTO Countries_Capital (Country_ID, Capital_Name) VALUES (4, &#39;Valletta&#39;)
+
+SELECT * FROM Countries_Capital</code></pre>
+<p><img src="/post/2021-04-21-joins_files/p15p2.png" /></p>
+<pre class="r"><code>CREATE TABLE Countries_Inhabitants
+    (ID INT NOT NULL IDENTITY(1,1) PRIMARY KEY,
+     Country_ID INT NOT NULL FOREIGN KEY REFERENCES Countries_Main(Country_ID),
+     Inhabitants FLOAT NOT NULL)
+    ;
+
+INSERT INTO Countries_Inhabitants (Country_ID, Inhabitants) VALUES (1, 93.4)
+INSERT INTO Countries_Inhabitants (Country_ID, Inhabitants) VALUES (2, 207.9)
+INSERT INTO Countries_Inhabitants (Country_ID, Inhabitants) VALUES (4, 0.44)
+
+SELECT * FROM Countries_Inhabitants</code></pre>
+<p><img src="/post/2021-04-21-joins_files/p15p3.png" /></p>
+<pre class="r"><code>CREATE TABLE Countries_Land_Area
+    (ID INT NOT NULL IDENTITY(1,1) PRIMARY KEY,
+     Country_ID INT NOT NULL FOREIGN KEY REFERENCES Countries_Main(Country_ID),
+     Land_Area FLOAT NOT NULL)
+    ;
+
+INSERT INTO Countries_Land_Area (Country_ID, Land_Area) VALUES (1, 1)
+INSERT INTO Countries_Land_Area (Country_ID, Land_Area) VALUES (2, 8.5)
+INSERT INTO Countries_Land_Area (Country_ID, Land_Area) VALUES (3, 0.36)
+
+SELECT * FROM Countries_Land_Area</code></pre>
+<p><img src="/post/2021-04-21-joins_files/p15p4.png" /></p>
+<p>Here again briefly an overview of all 4 created tables:</p>
+<pre class="r"><code>SELECT * FROM Countries_Main
+SELECT * FROM Countries_Capital
+SELECT * FROM Countries_Inhabitants
+SELECT * FROM Countries_Land_Area</code></pre>
+<p><img src="/post/2021-04-21-joins_files/p15p5.png" /></p>
+</div>
+<div id="types-of-joins" class="section level1">
+<h1>3 Types of Joins</h1>
+<p>Below I will walk through the different types of joins and explain how they work using the sample tables I have created.
+Furthermore I will always show at the beginning, with which tables exactly I will execute the following join.</p>
+<div id="inner-join" class="section level2">
+<h2>3.1 Inner Join</h2>
+<p><img src="/post/2021-04-21-joins_files/p15s2.png" /></p>
+<p>Source: <a href="https://www.codeproject.com/Articles/33052/Visual-Representation-of-SQL-Joins">C.L. Moffatt</a></p>
+<pre class="r"><code>SELECT * FROM Countries_Inhabitants
+SELECT * FROM Countries_Land_Area</code></pre>
+<p><img src="/post/2021-04-21-joins_files/p15p6.png" /></p>
+<p>This join will return all of the records in the left table (Countries_Inhabitants [t1]) that have a matching record in the right table (Countries_Land_Area [t2]).</p>
+<pre class="r"><code>SELECT t1.Country_ID, 
+       t1.Inhabitants, 
+       t2.Land_Area
+    FROM Countries_Inhabitants AS t1
+    INNER JOIN Countries_Land_Area AS t2
+        ON t1.Country_ID = t2.Country_ID
+    ;</code></pre>
+<p><img src="/post/2021-04-21-joins_files/p15p7.png" /></p>
+</div>
+<div id="left-join" class="section level2">
+<h2>3.2 Left Join</h2>
+<p><img src="/post/2021-04-21-joins_files/p15s3.png" /></p>
+<p>Source: <a href="https://www.codeproject.com/Articles/33052/Visual-Representation-of-SQL-Joins">C.L. Moffatt</a></p>
+<pre class="r"><code>SELECT * FROM Countries_Main
+SELECT * FROM Countries_Capital</code></pre>
+<p><img src="/post/2021-04-21-joins_files/p15p8.png" /></p>
+<p>This join will return all of the records in the left table (Countries_Main [t1]) regardless if any of those records have a match in the right table (Countries_Capital [t2]).</p>
+<pre class="r"><code>SELECT t1.Country_ID,
+       t1.Country_Name,
+       t2.Capital_Name
+    FROM Countries_Main AS t1
+    LEFT JOIN Countries_Capital AS t2
+        ON t1.Country_ID = t2.Country_ID
+    ;</code></pre>
+<p><img src="/post/2021-04-21-joins_files/p15p9.png" /></p>
+<p>But what would happen if a value in the second (right) table is not available?
+Have a look here:</p>
+<pre class="r"><code>SELECT * FROM Countries_Main
+SELECT * FROM Countries_Inhabitants</code></pre>
+<p><img src="/post/2021-04-21-joins_files/p15p10.png" /></p>
+<pre class="r"><code>SELECT t1.Country_ID,
+       t1.Country_Name,
+       t2.Inhabitants
+    FROM Countries_Main AS t1
+    LEFT JOIN Countries_Inhabitants AS t2
+        ON t1.Country_ID = t2.Country_ID
+    ;</code></pre>
+<p><img src="/post/2021-04-21-joins_files/p15p11.png" /></p>
+<p>The missing information is replaced with a NULL value.</p>
+</div>
+<div id="right-join" class="section level2">
+<h2>3.3 Right Join</h2>
+<p><img src="/post/2021-04-21-joins_files/p15s4.png" /></p>
+<p>Source: <a href="https://www.codeproject.com/Articles/33052/Visual-Representation-of-SQL-Joins">C.L. Moffatt</a></p>
+<pre class="r"><code>SELECT * FROM Countries_Main
+SELECT * FROM Countries_Inhabitants</code></pre>
+<p><img src="/post/2021-04-21-joins_files/p15p12.png" /></p>
+<p>This join will return all of the records in the right table (Countries_Inhabitants [t2]) regardless if any of those records have a match in the left table (Countries_Main [t1]).</p>
+<pre class="r"><code>SELECT t1.Country_ID,
+       t1.Country_Name,
+       t2.Inhabitants
+    FROM Countries_Main AS t1
+    RIGHT JOIN Countries_Inhabitants AS t2
+        ON t1.Country_ID = t2.Country_ID
+    ;</code></pre>
+<p><img src="/post/2021-04-21-joins_files/p15p13.png" /></p>
+<p>You can also generate this output with a Left JOIN by swapping the two table specifications in the FROM statement and LEFT JOIN statement.</p>
+<pre class="r"><code>SELECT t1.Country_ID,
+       t2.Country_Name,
+       t1.Inhabitants
+    FROM Countries_Inhabitants AS t1
+    LEFT JOIN Countries_Main AS t2
+        ON t1.Country_ID = t2.Country_ID
+    ;</code></pre>
+<p><img src="/post/2021-04-21-joins_files/p15p14.png" /></p>
+<p>For better readability I have adjusted the order of the returned columns.</p>
+<p>Here again for comparison the relevant section from the Left JOIN shown above.</p>
+<pre class="r"><code>...
+    FROM Countries_Main AS t1
+    LEFT JOIN Countries_Inhabitants AS t2
+...</code></pre>
+</div>
+<div id="outer-join" class="section level2">
+<h2>3.4 Outer Join</h2>
+<p><img src="/post/2021-04-21-joins_files/p15s5.png" /></p>
+<p>Source: <a href="https://www.codeproject.com/Articles/33052/Visual-Representation-of-SQL-Joins">C.L. Moffatt</a></p>
+<p>As known as FULL OUTER JOIN or FULL JOIN.</p>
+<pre class="r"><code>SELECT * FROM Countries_Inhabitants
+SELECT * FROM Countries_Land_Area</code></pre>
+<p><img src="/post/2021-04-21-joins_files/p15p15.png" /></p>
+<p>This join will return all of the records from both tables, joining records from the left table (Countries_Inhabitants [t1]) that match records from the right table (Countries_Land_Area [t2]).</p>
+<pre class="r"><code>SELECT t1.Country_ID AS Country_ID_t1,
+       t1.Inhabitants,
+       t2.Country_ID AS Country_ID_t2,
+       t2.Land_Area
+    FROM Countries_Inhabitants AS t1
+    FULL OUTER JOIN Countries_Land_Area AS t2
+        ON t1.Country_ID = t2.Country_ID
+    ;</code></pre>
+<p><img src="/post/2021-04-21-joins_files/p15p16.png" /></p>
+<p>Here again the output of the Inner JOIN for comparison:</p>
+<pre class="r"><code>SELECT t1.Country_ID, 
+       t1.Inhabitants, 
+       t2.Land_Area
+    FROM Countries_Inhabitants AS t1
+    INNER JOIN Countries_Land_Area AS t2
+        ON t1.Country_ID = t2.Country_ID
+    ;</code></pre>
+<p><img src="/post/2021-04-21-joins_files/p15p17.png" /></p>
+</div>
+<div id="left-excluding-join" class="section level2">
+<h2>3.5 Left Excluding Join</h2>
+<p><img src="/post/2021-04-21-joins_files/p15s6.png" /></p>
+<p>Source: <a href="https://www.codeproject.com/Articles/33052/Visual-Representation-of-SQL-Joins">C.L. Moffatt</a></p>
+<pre class="r"><code>SELECT * FROM Countries_Inhabitants
+SELECT * FROM Countries_Land_Area</code></pre>
+<p><img src="/post/2021-04-21-joins_files/p15p18.png" /></p>
+<p>This query will return all of the records in the left table (Countries_Inhabitants [t1]) that do not match any records in the right table (Countries_Land_Area [t2]).</p>
+<pre class="r"><code>SELECT t1.Country_ID AS Country_ID_t1,
+       t1.Inhabitants,
+       t2.Country_ID AS Country_ID_t2,
+       t2.Land_Area
+    FROM Countries_Inhabitants AS t1
+    LEFT JOIN Countries_Land_Area AS t2
+        ON t1.Country_ID = t2.Country_ID
+        WHERE t2.Country_ID IS NULL
+    ;</code></pre>
+<p><img src="/post/2021-04-21-joins_files/p15p19.png" /></p>
+</div>
+<div id="right-excluding-join" class="section level2">
+<h2>3.6 Right Excluding Join</h2>
+<p><img src="/post/2021-04-21-joins_files/p15s6.png" /></p>
+<p>Source: <a href="https://www.codeproject.com/Articles/33052/Visual-Representation-of-SQL-Joins">C.L. Moffatt</a></p>
+<pre class="r"><code>SELECT * FROM Countries_Inhabitants
+SELECT * FROM Countries_Land_Area</code></pre>
+<p><img src="/post/2021-04-21-joins_files/p15p20.png" /></p>
+<p>This join will return all of the records in the right table (Countries_Land_Area [t2]) that do not match any records in the left table (Countries_Inhabitants [t1]).</p>
+<pre class="r"><code>SELECT t1.Country_ID AS Country_ID_t1,
+       t1.Inhabitants,
+       t2.Country_ID AS Country_ID_t2,
+       t2.Land_Area
+    FROM Countries_Inhabitants AS t1
+    RIGHT JOIN Countries_Land_Area AS t2
+        ON t1.Country_ID = t2.Country_ID
+        WHERE t1.Country_ID IS NULL
+    ;</code></pre>
+<p><img src="/post/2021-04-21-joins_files/p15p21.png" /></p>
+</div>
+<div id="outer-excluding-join" class="section level2">
+<h2>3.7 Outer Excluding Join</h2>
+<p><img src="/post/2021-04-21-joins_files/p15s7.png" /></p>
+<p>Source: <a href="https://www.codeproject.com/Articles/33052/Visual-Representation-of-SQL-Joins">C.L. Moffatt</a></p>
+<pre class="r"><code>SELECT * FROM Countries_Inhabitants
+SELECT * FROM Countries_Land_Area</code></pre>
+<p><img src="/post/2021-04-21-joins_files/p15p22.png" /></p>
+<p>This join will return all of the records in the left table (Countries_Inhabitants [t1]) and all of the records in the right table (Countries_Land_Area [t2]) that do not match.</p>
+<pre class="r"><code>SELECT t1.Country_ID AS Country_ID_t1,
+       t1.Inhabitants,
+       t2.Country_ID AS Country_ID_t2,
+       t2.Land_Area
+    FROM Countries_Inhabitants AS t1
+    FULL OUTER JOIN Countries_Land_Area AS t2
+        ON t1.Country_ID = t2.Country_ID
+        WHERE t1.Country_ID IS NULL OR t2.Country_ID IS NULL
+    ;</code></pre>
+<p><img src="/post/2021-04-21-joins_files/p15p23.png" /></p>
+<p>Here again for comparison the result of the Outer JOIN / Full Outer JOIN:</p>
+<pre class="r"><code>SELECT t1.Country_ID AS Country_ID_t1,
+       t1.Inhabitants,
+       t2.Country_ID AS Country_ID_t2,
+       t2.Land_Area
+    FROM Countries_Inhabitants AS t1
+    FULL OUTER JOIN Countries_Land_Area AS t2
+        ON t1.Country_ID = t2.Country_ID
+    ;</code></pre>
+<p><img src="/post/2021-04-21-joins_files/p15p24.png" /></p>
+</div>
+</div>
+<div id="multiple-joins" class="section level1">
+<h1>4 Multiple Joins</h1>
+<p>Of course, you also have the possibility to combine several joins with each other.</p>
+<pre class="r"><code>SELECT * FROM Countries_Main
+SELECT * FROM Countries_Capital
+SELECT * FROM Countries_Inhabitants
+SELECT * FROM Countries_Land_Area</code></pre>
+<p><img src="/post/2021-04-21-joins_files/p15p25.png" /></p>
+<p>In each of the tables the primary key (‘Country_ID’) from the main table ‘Countries_Main’ is stored as the foreing key. After that we join all tables together:</p>
+<pre class="r"><code>SELECT t1.Country_ID,
+       t1.Country_Name,
+       t2.Capital_Name,
+       t3.Inhabitants,
+       t4.Land_Area
+    FROM Countries_Main AS t1
+    LEFT JOIN Countries_Capital AS t2
+        ON t1.Country_ID = t2.Country_ID
+    LEFT JOIN Countries_Inhabitants AS t3
+        ON t1.Country_ID = t3.Country_ID
+    LEFT JOIN Countries_Land_Area AS t4
+        ON t1.Country_ID = t4.Country_ID
+    ;</code></pre>
+<p><img src="/post/2021-04-21-joins_files/p15p26.png" /></p>
+</div>
+<div id="conclusion" class="section level1">
+<h1>5 Conclusion</h1>
+<p>In this post I have shown what different types of joins exist and how to use them.</p>
 </div>
