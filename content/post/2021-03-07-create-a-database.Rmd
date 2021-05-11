@@ -138,6 +138,13 @@ SELECT * FROM Customer
 
 ![](/post/2021-03-07-create-a-database_files/p3p7.png)
 
+**Tip!** You can also write the INSERT command like this:
+
+```{r, eval=F, echo=T}
+INSERT INTO Customer VALUES (1, 'Michael', 'Fuchs')
+```
+
+The column names can, but do not have to, be named. 
 
 
 ## 3.2 Create a Database for Data Manipulation
