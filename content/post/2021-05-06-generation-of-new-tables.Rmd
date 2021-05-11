@@ -213,44 +213,40 @@ SELECT * FROM Employees_Full_View;
 
 ![](/post/2021-05-06-generation-of-new-tables_files/p18p7.png)
 
-And now we generate a real table on this again with the same restrictions as in chapter 4.2.
+And now we generate a real table on this again with the same restrictions as in [chapter 4.2](https://michael-fuchs-sql.netlify.app/2021/05/06/generation-of-new-tables/#with-certain-selected-variables).
 
 
 ```{r, eval=F, echo=T}
-
+SELECT ID_empl, 
+	   First_Name, 
+	   Salary
+	INTO Employees_Reduced_from_View
+	FROM Employees_Full_View
+	WHERE Salary < 70000
+	ORDER BY Salary DESC
+	;
 ```
-
-![](/post/2021-05-06-generation-of-new-tables_files/p18p.png)
-
 
 
 ```{r, eval=F, echo=T}
-
+SELECT * FROM Employees_Reduced_from_View;
 ```
 
-![](/post/2021-05-06-generation-of-new-tables_files/p18p.png)
+![](/post/2021-05-06-generation-of-new-tables_files/p18p8.png)
 
 
 
-```{r, eval=F, echo=T}
+# 5 A look at the Object Explorer
 
-```
+Here is another quick look at the Object Explorer. All created tables and views are listed there.
 
-![](/post/2021-05-06-generation-of-new-tables_files/p18p.png)
-
-
-
-```{r, eval=F, echo=T}
-
-```
-
-![](/post/2021-05-06-generation-of-new-tables_files/p18p.png)
+![](/post/2021-05-06-generation-of-new-tables_files/p18p9.png)
 
 
 
+# 6 Conclusion
 
-
-
+In this post I showed how to save outputs of SELECT statements as real tables. 
 
 
 

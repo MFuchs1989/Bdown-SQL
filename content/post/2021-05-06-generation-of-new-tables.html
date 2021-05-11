@@ -26,6 +26,8 @@ output:
 <li><a href="#with-certain-selected-variables">4.2 with certain selected Variables</a></li>
 <li><a href="#from-a-generated-view">4.3 from a generated View</a></li>
 </ul></li>
+<li><a href="#a-look-at-the-object-explorer">5 A look at the Object Explorer</a></li>
+<li><a href="#conclusion">6 Conclusion</a></li>
 </ul>
 </div>
 
@@ -158,10 +160,25 @@ SELECT * FROM Employees_Metadata;</code></pre>
     ;</code></pre>
 <pre class="r"><code>SELECT * FROM Employees_Full_View;</code></pre>
 <p><img src="/post/2021-05-06-generation-of-new-tables_files/p18p7.png" /></p>
-<p>And now we generate a real table on this again with the same restrictions as in chapter 4.2.</p>
-<p><img src="/post/2021-05-06-generation-of-new-tables_files/p18p.png" /></p>
-<p><img src="/post/2021-05-06-generation-of-new-tables_files/p18p.png" /></p>
-<p><img src="/post/2021-05-06-generation-of-new-tables_files/p18p.png" /></p>
-<p><img src="/post/2021-05-06-generation-of-new-tables_files/p18p.png" /></p>
+<p>And now we generate a real table on this again with the same restrictions as in <a href="https://michael-fuchs-sql.netlify.app/2021/05/06/generation-of-new-tables/#with-certain-selected-variables">chapter 4.2</a>.</p>
+<pre class="r"><code>SELECT ID_empl, 
+       First_Name, 
+       Salary
+    INTO Employees_Reduced_from_View
+    FROM Employees_Full_View
+    WHERE Salary &lt; 70000
+    ORDER BY Salary DESC
+    ;</code></pre>
+<pre class="r"><code>SELECT * FROM Employees_Reduced_from_View;</code></pre>
+<p><img src="/post/2021-05-06-generation-of-new-tables_files/p18p8.png" /></p>
 </div>
+</div>
+<div id="a-look-at-the-object-explorer" class="section level1">
+<h1>5 A look at the Object Explorer</h1>
+<p>Here is another quick look at the Object Explorer. All created tables and views are listed there.</p>
+<p><img src="/post/2021-05-06-generation-of-new-tables_files/p18p9.png" /></p>
+</div>
+<div id="conclusion" class="section level1">
+<h1>6 Conclusion</h1>
+<p>In this post I showed how to save outputs of SELECT statements as real tables.</p>
 </div>
