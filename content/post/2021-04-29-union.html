@@ -23,7 +23,10 @@ output:
 <ul>
 <li><a href="#union">3.1 UNION</a></li>
 <li><a href="#union-all">3.2 UNION ALL</a></li>
+<li><a href="#union-with-where">3.3 UNION with WHERE</a></li>
+<li><a href="#union-with-group-by">3.4 UNION with GROUP BY</a></li>
 </ul></li>
+<li><a href="#difference-between-join-and-union">4 Difference between JOIN and UNION</a></li>
 </ul>
 </div>
 
@@ -144,9 +147,64 @@ SELECT Customer_Name, Visit_Date
     ORDER BY Visit_Date
     ;</code></pre>
 <p><img src="/post/2021-04-29-union_files/p16p8.png" /></p>
-<p><img src="/post/2021-04-29-union_files/p16p.png" /></p>
-<p><img src="/post/2021-04-29-union_files/p16p.png" /></p>
-<p><img src="/post/2021-04-29-union_files/p16p.png" /></p>
-<p><img src="/post/2021-04-29-union_files/p16p.png" /></p>
 </div>
+<div id="union-with-where" class="section level2">
+<h2>3.3 UNION with WHERE</h2>
+<p>Here I filter all visitors by visitor date greater than or equal to 2021/03/01.</p>
+<pre class="r"><code>SELECT Customer_Name, Visit_Date
+    FROM Office_1
+    WHERE Visit_Date &gt;= &#39;2021-03-01&#39;
+UNION
+SELECT Customer_Name, Visit_Date
+    FROM Office_2
+    WHERE Visit_Date &gt;= &#39;2021-03-01&#39;
+    ;</code></pre>
+<p><img src="/post/2021-04-29-union_files/p16p9.png" /></p>
+<p>Or a little more efficient that way:</p>
+<pre class="r"><code>SELECT Customer_Name, Visit_Date
+    FROM (SELECT Customer_Name, Visit_Date
+            FROM Office_1
+          UNION
+          SELECT Customer_Name, Visit_Date 
+            FROM Office_2) AS sub
+    WHERE MONTH(Visit_Date) &gt;= 3
+    ORDER BY Visit_Date
+    ;</code></pre>
+<p><img src="/post/2021-04-29-union_files/p16p10.png" /></p>
+</div>
+<div id="union-with-group-by" class="section level2">
+<h2>3.4 UNION with GROUP BY</h2>
+<pre class="r"><code> SELECT Customer_Name, Count(*) AS visit_count
+    FROM (SELECT Customer_Name, Visit_Date
+            FROM Office_1
+          UNION
+          SELECT Customer_Name, Visit_Date 
+            FROM Office_2) AS sub
+    GROUP BY Customer_Name
+    ORDER BY visit_count DESC
+    ;</code></pre>
+<p><img src="/post/2021-04-29-union_files/p16p11.png" /></p>
+</div>
+</div>
+<div id="difference-between-join-and-union" class="section level1">
+<h1>4 Difference between JOIN and UNION</h1>
+<p>In a nutshell, JOIN is used to bring data from multiple sources into a wide horizontal format, and UNION is used to bring data into a long deep format.</p>
+<pre class="r"><code>SELECT * FROM Office_1;
+SELECT * FROM Office_2;</code></pre>
+<p><img src="/post/2021-04-29-union_files/p16p12.png" /></p>
+<pre class="r"><code>SELECT t1.ID,
+       t1.Customer_Name,
+       t2.Customer_Name
+    FROM Office_1 AS t1
+    LEFT JOIN Office_2 AS t2
+        ON t1.ID = t2.ID
+    ;</code></pre>
+<p><img src="/post/2021-04-29-union_files/p16p13.png" /></p>
+<pre class="r"><code>SELECT Customer_Name
+    FROM Office_1
+UNION ALL
+SELECT Customer_Name
+    FROM Office_2
+    ;</code></pre>
+<p><img src="/post/2021-04-29-union_files/p16p14.png" /></p>
 </div>
