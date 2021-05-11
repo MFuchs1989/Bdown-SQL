@@ -24,7 +24,7 @@ output:
 <ul>
 <li><a href="#create-view">4.1 Create VIEW</a></li>
 <li><a href="#update-view">4.2 Update VIEW</a></li>
-<li><a href="#deop-view">4.3 Deop VIEW</a></li>
+<li><a href="#drop-a-view">4.3 Drop a View</a></li>
 <li><a href="#work-with-multiple-views">4.4 Work with multiple Views</a></li>
 </ul></li>
 <li><a href="#conclusion">5 Conclusion</a></li>
@@ -185,8 +185,8 @@ Here, for example, I exclude department number 3 from the query.</p>
 <pre class="r"><code>REPLACE VIEW Employees_Full AS
     SELECT ...</code></pre>
 </div>
-<div id="deop-view" class="section level2">
-<h2>4.3 Deop VIEW</h2>
+<div id="drop-a-view" class="section level2">
+<h2>4.3 Drop a View</h2>
 <p>Nevertheless, at some point you may want to completely delete a view you once created. This is done as follows:</p>
 <pre class="r"><code>DROP VIEW Employees_Full;</code></pre>
 <pre class="r"><code>SELECT * FROM Employees_Full;</code></pre>

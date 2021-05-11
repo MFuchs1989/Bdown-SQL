@@ -236,7 +236,7 @@ REPLACE VIEW Employees_Full AS
 ```
 
 
-## 4.3 Deop VIEW
+## 4.3 Drop a View
 
 Nevertheless, at some point you may want to completely delete a view you once created. This is done as follows:
 
