@@ -236,47 +236,127 @@ REPLACE VIEW Employees_Full AS
 ```
 
 
+## 4.3 Deop VIEW
 
+Nevertheless, at some point you may want to completely delete a view you once created. This is done as follows:
 
-
+```{r, eval=F, echo=T}
+DROP VIEW Employees_Full;
+```
 
 
 ```{r, eval=F, echo=T}
-
+SELECT * FROM Employees_Full;
 ```
 
-![](/post/2021-05-03-views_files/p17p.png)
+![](/post/2021-05-03-views_files/p17p10.png)
+
+We see the view is no longer available.
 
 
 
+## 4.4 Work with multiple Views
+
+Of course, you can continue to work with created views as you wish.
+
+Below I will create two example views (one with a filter on department 1 and one on department 2) which I will then edit further. 
 
 
 ```{r, eval=F, echo=T}
-
+CREATE VIEW View_Dep_1 AS
+	SELECT t1.ID_empl,
+		   t1.First_Name,
+		   t1.Last_Name,
+		   t2.Age,
+		   t2.Salary,
+		   t2.Department
+		FROM Employees AS t1
+		LEFT JOIN Employees_Metadata AS t2
+			ON t1.ID_empl = t2.ID_empl
+		WHERE Department = 'Dep_1' AND Salary < 100000
+	;
 ```
-
-![](/post/2021-05-03-views_files/p17p.png)
-
-
-
-
-
-
 
 
 ```{r, eval=F, echo=T}
-
+CREATE VIEW View_Dep_2 AS
+	SELECT t1.ID_empl,
+		   t1.First_Name,
+		   t1.Last_Name,
+		   t2.Age,
+		   t2.Salary,
+		   t2.Department
+		FROM Employees AS t1
+		LEFT JOIN Employees_Metadata AS t2
+			ON t1.ID_empl = t2.ID_empl
+		WHERE Department = 'Dep_2' AND Salary < 60000
+	;
 ```
 
-![](/post/2021-05-03-views_files/p17p.png)
+
+Here are our created views:
+
+```{r, eval=F, echo=T}
+SELECT * FROM View_Dep_1;
+SELECT * FROM View_Dep_2;
+```
+
+![](/post/2021-05-03-views_files/p17p11.png)
+
+These views can also be found in the Object Explorer:
+
+![](/post/2021-05-03-views_files/p17p12.png)
 
 
+Now let's try an [UNION](https://michael-fuchs-sql.netlify.app/2021/04/29/union/).
 
 
+```{r, eval=F, echo=T}
+SELECT First_Name, Last_Name, Salary, Department
+    FROM View_Dep_1
+UNION
+SELECT First_Name, Last_Name, Salary, Department
+    FROM View_Dep_2
+    ;
+```
+
+![](/post/2021-05-03-views_files/p17p13.png)
+
+Perfect! 
+Now we save this output again as a view:
 
 
+```{r, eval=F, echo=T}
+CREATE VIEW View_Dep_1_and_2 AS
+	SELECT First_Name, Last_Name, Salary, Department
+		FROM View_Dep_1
+	UNION
+	SELECT First_Name, Last_Name, Salary, Department
+		FROM View_Dep_2
+		;
+```
 
 
+This view can also be found again in the Object Explorer:
+
+![](/post/2021-05-03-views_files/p17p14.png)
+
+Now we can run queries on it again:
+
+
+```{r, eval=F, echo=T}
+SELECT * 
+	FROM View_Dep_1_and_2
+	ORDER BY Salary DESC
+	;
+```
+
+![](/post/2021-05-03-views_files/p17p15.png)
+
+
+# 5 Conclusion
+
+In this post I showed how to create views and the advantages of creating a virtual table like this. 
 
 
 

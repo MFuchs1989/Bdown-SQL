@@ -24,7 +24,10 @@ output:
 <ul>
 <li><a href="#create-view">4.1 Create VIEW</a></li>
 <li><a href="#update-view">4.2 Update VIEW</a></li>
+<li><a href="#deop-view">4.3 Deop VIEW</a></li>
+<li><a href="#work-with-multiple-views">4.4 Work with multiple Views</a></li>
 </ul></li>
+<li><a href="#conclusion">5 Conclusion</a></li>
 </ul>
 </div>
 
@@ -181,8 +184,77 @@ Here, for example, I exclude department number 3 from the query.</p>
 <p>In other SQL languages this can also be called as follows:</p>
 <pre class="r"><code>REPLACE VIEW Employees_Full AS
     SELECT ...</code></pre>
-<p><img src="/post/2021-05-03-views_files/p17p.png" /></p>
-<p><img src="/post/2021-05-03-views_files/p17p.png" /></p>
-<p><img src="/post/2021-05-03-views_files/p17p.png" /></p>
 </div>
+<div id="deop-view" class="section level2">
+<h2>4.3 Deop VIEW</h2>
+<p>Nevertheless, at some point you may want to completely delete a view you once created. This is done as follows:</p>
+<pre class="r"><code>DROP VIEW Employees_Full;</code></pre>
+<pre class="r"><code>SELECT * FROM Employees_Full;</code></pre>
+<p><img src="/post/2021-05-03-views_files/p17p10.png" /></p>
+<p>We see the view is no longer available.</p>
+</div>
+<div id="work-with-multiple-views" class="section level2">
+<h2>4.4 Work with multiple Views</h2>
+<p>Of course, you can continue to work with created views as you wish.</p>
+<p>Below I will create two example views (one with a filter on department 1 and one on department 2) which I will then edit further.</p>
+<pre class="r"><code>CREATE VIEW View_Dep_1 AS
+    SELECT t1.ID_empl,
+           t1.First_Name,
+           t1.Last_Name,
+           t2.Age,
+           t2.Salary,
+           t2.Department
+        FROM Employees AS t1
+        LEFT JOIN Employees_Metadata AS t2
+            ON t1.ID_empl = t2.ID_empl
+        WHERE Department = &#39;Dep_1&#39; AND Salary &lt; 100000
+    ;</code></pre>
+<pre class="r"><code>CREATE VIEW View_Dep_2 AS
+    SELECT t1.ID_empl,
+           t1.First_Name,
+           t1.Last_Name,
+           t2.Age,
+           t2.Salary,
+           t2.Department
+        FROM Employees AS t1
+        LEFT JOIN Employees_Metadata AS t2
+            ON t1.ID_empl = t2.ID_empl
+        WHERE Department = &#39;Dep_2&#39; AND Salary &lt; 60000
+    ;</code></pre>
+<p>Here are our created views:</p>
+<pre class="r"><code>SELECT * FROM View_Dep_1;
+SELECT * FROM View_Dep_2;</code></pre>
+<p><img src="/post/2021-05-03-views_files/p17p11.png" /></p>
+<p>These views can also be found in the Object Explorer:</p>
+<p><img src="/post/2021-05-03-views_files/p17p12.png" /></p>
+<p>Now let’s try an <a href="https://michael-fuchs-sql.netlify.app/2021/04/29/union/">UNION</a>.</p>
+<pre class="r"><code>SELECT First_Name, Last_Name, Salary, Department
+    FROM View_Dep_1
+UNION
+SELECT First_Name, Last_Name, Salary, Department
+    FROM View_Dep_2
+    ;</code></pre>
+<p><img src="/post/2021-05-03-views_files/p17p13.png" /></p>
+<p>Perfect!
+Now we save this output again as a view:</p>
+<pre class="r"><code>CREATE VIEW View_Dep_1_and_2 AS
+    SELECT First_Name, Last_Name, Salary, Department
+        FROM View_Dep_1
+    UNION
+    SELECT First_Name, Last_Name, Salary, Department
+        FROM View_Dep_2
+        ;</code></pre>
+<p>This view can also be found again in the Object Explorer:</p>
+<p><img src="/post/2021-05-03-views_files/p17p14.png" /></p>
+<p>Now we can run queries on it again:</p>
+<pre class="r"><code>SELECT * 
+    FROM View_Dep_1_and_2
+    ORDER BY Salary DESC
+    ;</code></pre>
+<p><img src="/post/2021-05-03-views_files/p17p15.png" /></p>
+</div>
+</div>
+<div id="conclusion" class="section level1">
+<h1>5 Conclusion</h1>
+<p>In this post I showed how to create views and the advantages of creating a virtual table like this.</p>
 </div>
