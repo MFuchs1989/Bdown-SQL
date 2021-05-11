@@ -5,10 +5,148 @@ date: '2021-04-29'
 slug: union
 categories: []
 tags: []
+output:
+  blogdown::html_page:
+    toc: true
+    toc_depth: 5
 ---
 
 <script src="/rmarkdown-libs/header-attrs/header-attrs.js"></script>
 <link href="/rmarkdown-libs/anchor-sections/anchor-sections.css" rel="stylesheet" />
 <script src="/rmarkdown-libs/anchor-sections/anchor-sections.js"></script>
 
+<div id="TOC">
+<ul>
+<li><a href="#introduction">1 Introduction</a></li>
+<li><a href="#preparation">2 Preparation</a></li>
+<li><a href="#the-sql-union-operator">3 The SQL UNION Operator</a>
+<ul>
+<li><a href="#union">3.1 UNION</a></li>
+<li><a href="#union-all">3.2 UNION ALL</a></li>
+</ul></li>
+</ul>
+</div>
 
+<div id="introduction" class="section level1">
+<h1>1 Introduction</h1>
+<p>After the topic of joins, I now come to another very useful operator: Union</p>
+<p>With the UNION command you have the possibility to connect several select statements with each other.</p>
+</div>
+<div id="preparation" class="section level1">
+<h1>2 Preparation</h1>
+<p>For the following examples, I set up a new database.</p>
+<pre class="r"><code>SET LANGUAGE ENGLISH
+
+
+CREATE DATABASE UNION_DB;
+
+USE UNION_DB;</code></pre>
+<p>Below I will create 2 example tables that we will continue to work with.</p>
+<p>Table 1:</p>
+<pre class="r"><code>CREATE TABLE Office_1
+    (ID INT NOT NULL,
+     Customer_Name VARCHAR(100) NOT NULL,
+     Visit_Date DATE NOT NULL,
+     Gender VARCHAR(50) NOT NULL)
+    ;
+
+INSERT INTO Office_1 VALUES (1, &#39;Mike&#39;, &#39;2021-03-01&#39;, &#39;male&#39;)
+INSERT INTO Office_1 VALUES (2, &#39;Sven&#39;, &#39;2021-02-25&#39;, &#39;male&#39;)
+INSERT INTO Office_1 VALUES (3, &#39;Tom&#39;, &#39;2021-05-16&#39;, &#39;male&#39;)
+INSERT INTO Office_1 VALUES (4, &#39;Sarah&#39;, &#39;2021-04-03&#39;, &#39;female&#39;)
+INSERT INTO Office_1 VALUES (5, &#39;Alexander&#39;, &#39;2021-01-18&#39;, &#39;male&#39;)</code></pre>
+<p>Table 2:</p>
+<pre class="r"><code>CREATE TABLE Office_2
+    (ID INT NOT NULL,
+     Customer_Name VARCHAR(100) NOT NULL,
+     Visit_Date DATE NOT NULL,
+     Gender VARCHAR(50) NOT NULL)
+    ;
+
+INSERT INTO Office_2 VALUES (1, &#39;Jonny&#39;, &#39;2021-05-05&#39;, &#39;male&#39;)
+INSERT INTO Office_2 VALUES (2, &#39;Miriam&#39;, &#39;2021-03-17&#39;, &#39;female&#39;)
+INSERT INTO Office_2 VALUES (3, &#39;Mike&#39;, &#39;2021-03-02&#39;, &#39;male&#39;)
+INSERT INTO Office_2 VALUES (4, &#39;Alex&#39;, &#39;2021-01-22&#39;, &#39;female&#39;)
+INSERT INTO Office_2 VALUES (5, &#39;Max&#39;, &#39;2021-02-27&#39;, &#39;male&#39;)</code></pre>
+<p>Let’s have a look at the created tables:</p>
+<pre class="r"><code>SELECT * FROM Office_1;
+SELECT * FROM Office_2;</code></pre>
+<p><img src="/post/2021-04-29-union_files/p16p1.png" /></p>
+<p>Here we have two sample data sets about customer visits from two different stores.</p>
+</div>
+<div id="the-sql-union-operator" class="section level1">
+<h1>3 The SQL UNION Operator</h1>
+<div id="union" class="section level2">
+<h2>3.1 UNION</h2>
+<p>As mentioned at the beginning, with UNION we have the opportunity to combine two Select Statements. Here is a simple example:</p>
+<pre class="r"><code>SELECT *
+    FROM Office_1
+UNION
+SELECT * 
+    FROM Office_2
+    ;</code></pre>
+<p><img src="/post/2021-04-29-union_files/p16p2.png" /></p>
+<p>The condition for this is that both SELECTS have the same number of columns.</p>
+<p>To get the output ordered (for example, by visitor date), we need to put the two SELECTS with the UNION into a subquery.</p>
+<pre class="r"><code>SELECT *
+    FROM (SELECT *
+            FROM Office_1
+          UNION
+          SELECT * 
+            FROM Office_2) AS sub
+    ORDER BY Visit_Date
+    ;</code></pre>
+<p><img src="/post/2021-04-29-union_files/p16p3.png" /></p>
+</div>
+<div id="union-all" class="section level2">
+<h2>3.2 UNION ALL</h2>
+<p>So far we have used UNION only with the SELECT ALL (SELECT *). Of course we also have the possibility to select specific columns.</p>
+<p>Here again briefly shown the two original tables:</p>
+<pre class="r"><code>SELECT * FROM Office_1;
+SELECT * FROM Office_2;</code></pre>
+<p><img src="/post/2021-04-29-union_files/p16p4.png" /></p>
+<p>Now we use UNION in combination with a specific SELECT (here Customer_Name).</p>
+<pre class="r"><code>SELECT Customer_Name
+    FROM Office_1
+UNION
+SELECT Customer_Name
+    FROM Office_2
+    ;</code></pre>
+<p><img src="/post/2021-04-29-union_files/p16p5.png" /></p>
+<p>OK what happened?</p>
+<p>The two original tables contained 5 observations each. However, the output with UNION shows only 9 …</p>
+<p>The answer is that <strong>UNION by default excludes duplicate values</strong>. Since Mike occurs in both tables, it was taken over only once.</p>
+<p>If you do not want this you need <strong>UNION ALL</strong>.</p>
+<pre class="r"><code>SELECT Customer_Name
+    FROM Office_1
+UNION ALL
+SELECT Customer_Name
+    FROM Office_2
+    ;</code></pre>
+<p><img src="/post/2021-04-29-union_files/p16p6.png" /></p>
+<p>Now we have all our observations again.</p>
+<p>Let’s try this time with the selection of two columns:</p>
+<pre class="r"><code>SELECT Customer_Name, Visit_Date
+    FROM Office_1
+UNION
+SELECT Customer_Name, Visit_Date
+    FROM Office_2
+    ;</code></pre>
+<p><img src="/post/2021-04-29-union_files/p16p7.png" /></p>
+<p>Again we get 10 observations although we only used the UNION (not UNION ALL). The reason is that the Visit_Date is different for Max, which occurs twice.</p>
+<p>And now again the output nicely sorted by date via a subquery:</p>
+<pre class="r"><code>SELECT Customer_Name, Visit_Date
+    FROM (SELECT *
+            FROM Office_1
+          UNION
+          SELECT * 
+            FROM Office_2) AS sub
+    ORDER BY Visit_Date
+    ;</code></pre>
+<p><img src="/post/2021-04-29-union_files/p16p8.png" /></p>
+<p><img src="/post/2021-04-29-union_files/p16p.png" /></p>
+<p><img src="/post/2021-04-29-union_files/p16p.png" /></p>
+<p><img src="/post/2021-04-29-union_files/p16p.png" /></p>
+<p><img src="/post/2021-04-29-union_files/p16p.png" /></p>
+</div>
+</div>

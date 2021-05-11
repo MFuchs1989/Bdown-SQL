@@ -5,4 +5,253 @@ date: '2021-04-29'
 slug: union
 categories: []
 tags: []
+output:
+  blogdown::html_page:
+    toc: true
+    toc_depth: 5
 ---
+
+
+
+# 1 Introduction
+
+After the topic of joins, I now come to another very useful operator: Union
+
+With the UNION command you have the possibility to connect several select statements with each other. 
+
+
+# 2 Preparation
+
+For the following examples, I set up a new database.
+
+
+```{r, eval=F, echo=T}
+SET LANGUAGE ENGLISH
+
+
+CREATE DATABASE UNION_DB;
+
+USE UNION_DB;
+```
+
+
+Below I will create 2 example tables that we will continue to work with.
+
+Table 1:
+
+```{r, eval=F, echo=T}
+CREATE TABLE Office_1
+    (ID INT NOT NULL,
+     Customer_Name VARCHAR(100) NOT NULL,
+	 Visit_Date DATE NOT NULL,
+	 Gender VARCHAR(50) NOT NULL)
+    ;
+
+INSERT INTO Office_1 VALUES (1, 'Mike', '2021-03-01', 'male')
+INSERT INTO Office_1 VALUES (2, 'Sven', '2021-02-25', 'male')
+INSERT INTO Office_1 VALUES (3, 'Tom', '2021-05-16', 'male')
+INSERT INTO Office_1 VALUES (4, 'Sarah', '2021-04-03', 'female')
+INSERT INTO Office_1 VALUES (5, 'Alexander', '2021-01-18', 'male')
+```
+
+
+Table 2:
+
+```{r, eval=F, echo=T}
+CREATE TABLE Office_2
+    (ID INT NOT NULL,
+     Customer_Name VARCHAR(100) NOT NULL,
+	 Visit_Date DATE NOT NULL,
+	 Gender VARCHAR(50) NOT NULL)
+    ;
+
+INSERT INTO Office_2 VALUES (1, 'Jonny', '2021-05-05', 'male')
+INSERT INTO Office_2 VALUES (2, 'Miriam', '2021-03-17', 'female')
+INSERT INTO Office_2 VALUES (3, 'Mike', '2021-03-02', 'male')
+INSERT INTO Office_2 VALUES (4, 'Alex', '2021-01-22', 'female')
+INSERT INTO Office_2 VALUES (5, 'Max', '2021-02-27', 'male')
+```
+
+
+Let's have a look at the created tables:
+
+```{r, eval=F, echo=T}
+SELECT * FROM Office_1;
+SELECT * FROM Office_2;
+```
+
+![](/post/2021-04-29-union_files/p16p1.png)
+
+Here we have two sample data sets about customer visits from two different stores.
+
+
+# 3 The SQL UNION Operator
+
+## 3.1 UNION
+
+As mentioned at the beginning, with UNION we have the opportunity to combine two Select Statements. Here is a simple example:
+
+```{r, eval=F, echo=T}
+SELECT *
+	FROM Office_1
+UNION
+SELECT * 
+	FROM Office_2
+	;
+```
+
+![](/post/2021-04-29-union_files/p16p2.png)
+
+The condition for this is that both SELECTS have the same number of columns.
+
+To get the output ordered (for example, by visitor date), we need to put the two SELECTS with the UNION into a subquery. 
+
+
+```{r, eval=F, echo=T}
+SELECT *
+	FROM (SELECT *
+			FROM Office_1
+		  UNION
+		  SELECT * 
+			FROM Office_2) AS sub
+	ORDER BY Visit_Date
+	;
+```
+
+![](/post/2021-04-29-union_files/p16p3.png)
+
+
+## 3.2 UNION ALL
+
+So far we have used UNION only with the SELECT ALL (SELECT *). Of course we also have the possibility to select specific columns. 
+
+Here again briefly shown the two original tables:
+
+
+```{r, eval=F, echo=T}
+SELECT * FROM Office_1;
+SELECT * FROM Office_2;
+```
+
+![](/post/2021-04-29-union_files/p16p4.png)
+
+Now we use UNION in combination with a specific SELECT (here Customer_Name).
+
+
+```{r, eval=F, echo=T}
+SELECT Customer_Name
+	FROM Office_1
+UNION
+SELECT Customer_Name
+	FROM Office_2
+	;
+```
+
+![](/post/2021-04-29-union_files/p16p5.png)
+
+
+OK what happened?
+
+The two original tables contained 5 observations each. However, the output with UNION shows only 9 ...
+
+The answer is that **UNION by default excludes duplicate values**. Since Mike occurs in both tables, it was taken over only once. 
+
+
+If you do not want this you need **UNION ALL**.
+
+
+```{r, eval=F, echo=T}
+SELECT Customer_Name
+	FROM Office_1
+UNION ALL
+SELECT Customer_Name
+	FROM Office_2
+	;
+```
+
+![](/post/2021-04-29-union_files/p16p6.png)
+
+Now we have all our observations again.
+
+Let's try this time with the selection of two columns:
+
+
+```{r, eval=F, echo=T}
+SELECT Customer_Name, Visit_Date
+	FROM Office_1
+UNION
+SELECT Customer_Name, Visit_Date
+	FROM Office_2
+	;
+```
+
+![](/post/2021-04-29-union_files/p16p7.png)
+
+Again we get 10 observations although we only used the UNION (not UNION ALL). The reason is that the Visit_Date is different for Max, which occurs twice. 
+
+And now again the output nicely sorted by date via a subquery:
+
+```{r, eval=F, echo=T}
+SELECT Customer_Name, Visit_Date
+	FROM (SELECT *
+			FROM Office_1
+		  UNION
+		  SELECT * 
+			FROM Office_2) AS sub
+	ORDER BY Visit_Date
+	;
+```
+
+![](/post/2021-04-29-union_files/p16p8.png)
+
+
+
+
+
+
+```{r, eval=F, echo=T}
+
+```
+
+![](/post/2021-04-29-union_files/p16p.png)
+
+
+```{r, eval=F, echo=T}
+
+```
+
+![](/post/2021-04-29-union_files/p16p.png)
+
+
+
+```{r, eval=F, echo=T}
+
+```
+
+![](/post/2021-04-29-union_files/p16p.png)
+
+
+
+
+
+
+
+```{r, eval=F, echo=T}
+
+```
+
+![](/post/2021-04-29-union_files/p16p.png)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
