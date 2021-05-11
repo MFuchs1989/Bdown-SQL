@@ -15,15 +15,11 @@ output:
 
 # 1 Introduction
 
+In my last post ([Views](https://michael-fuchs-sql.netlify.app/2021/05/03/views/)) I showed how to save the output of a SELECT statement as a view and how to continue working with created views. 
 
+As we know from this post, views are virtual tables. Now we want to create real tables using SELECT statements. 
 
-
-
-
-
-
-
-
+For this I use the same original tables as I used in my post about [Views](https://michael-fuchs-sql.netlify.app/2021/05/03/views/). 
 
 
 # 2 Preparation
@@ -31,13 +27,226 @@ output:
 For the following examples, I set up a new database.
 
 
+```{r, eval=F, echo=T}
+SET LANGUAGE ENGLISH
+
+
+CREATE DATABASE Tables_DB;
+
+USE Tables_DB;
+```
+
+
+Below I will create 2 example tables that we will continue to work with.
+
+Table 1:
+
+```{r, eval=F, echo=T}
+CREATE TABLE Employees
+    (ID_empl INT NOT NULL IDENTITY(1,1) PRIMARY KEY,
+    First_Name VARCHAR(100) NOT NULL,
+    Last_Name VARCHAR(100) NOT NULL)
+    ;
+
+
+INSERT INTO Employees VALUES ('Klara', 'Brown')
+INSERT INTO Employees VALUES ('Jessy', 'Williams')
+INSERT INTO Employees VALUES ('Emily', 'Taylor')
+INSERT INTO Employees VALUES ('Max', 'Steel')
+INSERT INTO Employees VALUES ('Alex', 'Smith')
+INSERT INTO Employees VALUES ('Marc', 'Pike')
+INSERT INTO Employees VALUES ('Tom', 'Hope')
+INSERT INTO Employees VALUES ('Sven', 'Evergreen')
+INSERT INTO Employees VALUES ('Mike', 'Owen')
+INSERT INTO Employees VALUES ('Sarah', 'Pike')
+```
+
+
+```{r, eval=F, echo=T}
+SELECT * FROM Employees;
+```
+
+![](/post/2021-05-06-generation-of-new-tables_files/p18p1.png)
+
+
+
+Table 2:
+
+```{r, eval=F, echo=T}
+CREATE TABLE Employees_Metadata
+    (ID_meta INT NOT NULL IDENTITY(1,1) PRIMARY KEY,
+    ID_empl INT NOT NULL FOREIGN KEY REFERENCES Employees(ID_empl),
+    Age INT NOT NULL,
+    Salary INT NOT NULL,
+    Department VARCHAR(100) NOT NULL)
+    ;
+
+
+INSERT INTO Employees_Metadata VALUES (1, 27, 65000, 'Dep_2')
+INSERT INTO Employees_Metadata VALUES (2, 40, 55000, 'Dep_3')
+INSERT INTO Employees_Metadata VALUES (3, 35, 70555, 'Dep_1')
+INSERT INTO Employees_Metadata VALUES (4, 32, 65000, 'Dep_2')
+INSERT INTO Employees_Metadata VALUES (5, 40, 90000, 'Dep_2')
+INSERT INTO Employees_Metadata VALUES (6, 19, 45000, 'Dep_2')
+INSERT INTO Employees_Metadata VALUES (7, 35, 75000, 'Dep_1')
+INSERT INTO Employees_Metadata VALUES (8, 55, 110000, 'Dep_1')
+INSERT INTO Employees_Metadata VALUES (9, 22, 55000, 'Dep_2')
+INSERT INTO Employees_Metadata VALUES (10, 18, 35000, 'Dep_3')
+```
+
+
+```{r, eval=F, echo=T}
+SELECT * FROM Employees_Metadata;
+```
+
+![](/post/2021-05-06-generation-of-new-tables_files/p18p2.png)
+
+
+# 3 Join the tables
+
+```{r, eval=F, echo=T}
+SELECT * FROM Employees;
+SELECT * FROM Employees_Metadata;
+```
+
+![](/post/2021-05-06-generation-of-new-tables_files/p18p3.png)
+
+Again I write a SQL query at the beginning and want to save the output as a separate table.
+
+
+
+```{r, eval=F, echo=T}
+SELECT t1.ID_empl,
+       t1.First_Name,
+       t1.Last_Name,
+       t2.Age,
+       t2.Salary,
+       t2.Department
+    FROM Employees AS t1
+    LEFT JOIN Employees_Metadata AS t2
+        ON t1.ID_empl = t2.ID_empl
+    ;
+```
+
+![](/post/2021-05-06-generation-of-new-tables_files/p18p4.png)
+
+
+# 4 Generation of new Tables
+
+## 4.1 via SELECT * INTO ... FROM ...
+
+The command to save an output of a SELECT statement as a new table is: `SELECT * INTO new_table FROM old_table`
+
+Here is the command based on the practical example:
+
+
+```{r, eval=F, echo=T}
+SELECT * INTO Employees_Full
+	FROM(
+	SELECT t1.ID_empl,
+		   t1.First_Name,
+		   t1.Last_Name,
+		   t2.Age,
+		   t2.Salary,
+		   t2.Department
+		FROM Employees AS t1
+		LEFT JOIN Employees_Metadata AS t2
+			ON t1.ID_empl = t2.ID_empl) AS sub
+		;
+```
+
+
+```{r, eval=F, echo=T}
+SELECT * FROM Employees_Full;
+```
+
+![](/post/2021-05-06-generation-of-new-tables_files/p18p5.png)
+
+
+## 4.2 with certain selected Variables
+
+The created table behaves exactly like any other table in the database. So you can create other tables on this basis as you like:
+
+
+```{r, eval=F, echo=T}
+SELECT ID_empl, 
+	   First_Name, 
+	   Salary
+	INTO Employees_Reduced
+	FROM Employees_Full
+	WHERE Salary < 70000
+	ORDER BY Salary DESC
+	;
+```
+
+
+```{r, eval=F, echo=T}
+SELECT * FROM Employees_Reduced;
+```
+
+![](/post/2021-05-06-generation-of-new-tables_files/p18p6.png)
+
+## 4.3 from a generated View
+
+Real tables can also be created from previously created views (virtual tables).
+
+Here I create an example view:
+
+```{r, eval=F, echo=T}
+CREATE VIEW Employees_Full_View AS
+    SELECT t1.ID_empl,
+           t1.First_Name,
+           t1.Last_Name,
+           t2.Age,
+           t2.Salary,
+           t2.Department
+        FROM Employees AS t1
+        LEFT JOIN Employees_Metadata AS t2
+            ON t1.ID_empl = t2.ID_empl
+    ;
+```
+
+
+```{r, eval=F, echo=T}
+SELECT * FROM Employees_Full_View;
+```
+
+![](/post/2021-05-06-generation-of-new-tables_files/p18p7.png)
+
+And now we generate a real table on this again with the same restrictions as in chapter 4.2.
 
 
 ```{r, eval=F, echo=T}
 
 ```
 
-![](/post/2021-05-06-generation-of-new-tables_files/p18p1.png)
+![](/post/2021-05-06-generation-of-new-tables_files/p18p.png)
+
+
+
+```{r, eval=F, echo=T}
+
+```
+
+![](/post/2021-05-06-generation-of-new-tables_files/p18p.png)
+
+
+
+```{r, eval=F, echo=T}
+
+```
+
+![](/post/2021-05-06-generation-of-new-tables_files/p18p.png)
+
+
+
+```{r, eval=F, echo=T}
+
+```
+
+![](/post/2021-05-06-generation-of-new-tables_files/p18p.png)
+
+
 
 
 
