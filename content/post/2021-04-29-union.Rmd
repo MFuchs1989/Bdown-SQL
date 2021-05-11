@@ -296,3 +296,11 @@ SELECT Customer_Name
 
 ![](/post/2021-04-29-union_files/p16p14.png)
 
+
+# 5 Conclusion
+
+In this post I showed how to use the UNION operator to bring data from multiple sources into one long format. Furthermore I went into the specifications of the UNION command.
+
+
+
+
