@@ -1,0 +1,51 @@
+---
+title: Generation of new Tables
+author: Michael Fuchs
+date: '2021-05-06'
+slug: generation-of-new-tables
+categories: []
+tags: []
+output:
+  blogdown::html_page:
+    toc: true
+    toc_depth: 5
+---
+
+
+
+# 1 Introduction
+
+
+
+
+
+
+
+
+
+
+
+
+# 2 Preparation
+
+For the following examples, I set up a new database.
+
+
+
+
+```{r, eval=F, echo=T}
+
+```
+
+![](/post/2021-05-06-generation-of-new-tables_files/p18p1.png)
+
+
+
+
+
+
+
+
+
+
+
