@@ -18,18 +18,171 @@ output:
 <div id="TOC">
 <ul>
 <li><a href="#introduction">1 Introduction</a></li>
+<li><a href="#preparation">2 Preparation</a></li>
+<li><a href="#join-the-tables">3 Join the tables</a></li>
+<li><a href="#views">4 Views</a>
+<ul>
+<li><a href="#create-view">4.1 Create VIEW</a></li>
+<li><a href="#update-view">4.2 Update VIEW</a></li>
+</ul></li>
 </ul>
 </div>
 
 <div id="introduction" class="section level1">
 <h1>1 Introduction</h1>
+<p>The SQL VIEW is a virtual table that does not physically exist. Rather, it is based on the result set of an SQL statement.
+The advantage of a view is that it can join data from several tables thus creating a new view of it.
+Instead of sending the complex query to the database all the time, you can save the query as a view and then SELECT * FROM view.</p>
+</div>
+<div id="preparation" class="section level1">
+<h1>2 Preparation</h1>
+<p>For the following examples, I set up a new database.</p>
+<pre class="r"><code>SET LANGUAGE ENGLISH
+
+
+CREATE DATABASE Views_db;
+
+USE Views_db;</code></pre>
+<p>Below I will create 2 example tables that we will continue to work with.</p>
+<p>Table 1:</p>
+<pre class="r"><code>CREATE TABLE Employees
+    (ID_empl INT NOT NULL IDENTITY(1,1) PRIMARY KEY,
+    First_Name VARCHAR(100) NOT NULL,
+    Last_Name VARCHAR(100) NOT NULL)
+    ;
+
+
+INSERT INTO Employees VALUES (&#39;Klara&#39;, &#39;Brown&#39;)
+INSERT INTO Employees VALUES (&#39;Jessy&#39;, &#39;Williams&#39;)
+INSERT INTO Employees VALUES (&#39;Emily&#39;, &#39;Taylor&#39;)
+INSERT INTO Employees VALUES (&#39;Max&#39;, &#39;Steel&#39;)
+INSERT INTO Employees VALUES (&#39;Alex&#39;, &#39;Smith&#39;)
+INSERT INTO Employees VALUES (&#39;Marc&#39;, &#39;Pike&#39;)
+INSERT INTO Employees VALUES (&#39;Tom&#39;, &#39;Hope&#39;)
+INSERT INTO Employees VALUES (&#39;Sven&#39;, &#39;Evergreen&#39;)
+INSERT INTO Employees VALUES (&#39;Mike&#39;, &#39;Owen&#39;)
+INSERT INTO Employees VALUES (&#39;Sarah&#39;, &#39;Pike&#39;)
+
+
+SELECT * FROM Employees;</code></pre>
 <p><img src="/post/2021-05-03-views_files/p17p1.png" /></p>
+<p>Table 2:</p>
+<pre class="r"><code>CREATE TABLE Employees_Metadata
+    (ID_meta INT NOT NULL IDENTITY(1,1) PRIMARY KEY,
+    ID_empl INT NOT NULL FOREIGN KEY REFERENCES Employees(ID_empl),
+    Age INT NOT NULL,
+    Salary INT NOT NULL,
+    Department VARCHAR(100) NOT NULL)
+    ;
+
+
+INSERT INTO Employees_Metadata VALUES (1, 27, 65000, &#39;Dep_2&#39;)
+INSERT INTO Employees_Metadata VALUES (2, 40, 55000, &#39;Dep_3&#39;)
+INSERT INTO Employees_Metadata VALUES (3, 35, 70555, &#39;Dep_1&#39;)
+INSERT INTO Employees_Metadata VALUES (4, 32, 65000, &#39;Dep_2&#39;)
+INSERT INTO Employees_Metadata VALUES (5, 40, 90000, &#39;Dep_2&#39;)
+INSERT INTO Employees_Metadata VALUES (6, 19, 45000, &#39;Dep_2&#39;)
+INSERT INTO Employees_Metadata VALUES (7, 35, 75000, &#39;Dep_1&#39;)
+INSERT INTO Employees_Metadata VALUES (8, 55, 110000, &#39;Dep_1&#39;)
+INSERT INTO Employees_Metadata VALUES (9, 22, 55000, &#39;Dep_2&#39;)
+INSERT INTO Employees_Metadata VALUES (10, 18, 35000, &#39;Dep_3&#39;)
+
+
+SELECT * FROM Employees_Metadata;</code></pre>
+<p><img src="/post/2021-05-03-views_files/p17p2.png" /></p>
+</div>
+<div id="join-the-tables" class="section level1">
+<h1>3 Join the tables</h1>
+<pre class="r"><code>SELECT * FROM Employees;
+SELECT * FROM Employees_Metadata;</code></pre>
+<p><img src="/post/2021-05-03-views_files/p17p3.png" /></p>
+<p>Now we want to join these two tables together to generate insights.
+How to do that I have described in this post: <a href="https://michael-fuchs-sql.netlify.app/2021/04/21/joins/#left-join">Left Join</a></p>
+<pre class="r"><code>SELECT t1.ID_empl,
+       t1.First_Name,
+       t1.Last_Name,
+       t2.Age,
+       t2.Salary,
+       t2.Department
+    FROM Employees AS t1
+    LEFT JOIN Employees_Metadata AS t2
+        ON t1.ID_empl = t2.ID_empl
+    ;</code></pre>
+<p><img src="/post/2021-05-03-views_files/p17p4.png" /></p>
+<p>On this basis, I now have the opportunity to generate valuable insights. But for this I always have to use the join as a subquery.</p>
+<pre class="r"><code>SELECT Department,
+       Count(*) AS count_employees,
+       AVG(Salary) AS avg_salary,
+       AVG(Age) AS avg_age
+    FROM (SELECT t1.ID_empl,
+                 t1.First_Name,
+                 t1.Last_Name,
+                 t2.Age,
+                 t2.Salary,
+                 t2.Department
+             FROM Employees AS t1
+             LEFT JOIN Employees_Metadata AS t2
+                ON t1.ID_empl = t2.ID_empl) AS sub
+    GROUP BY Department
+    ORDER BY avg_salary DESC
+    ;</code></pre>
+<p><img src="/post/2021-05-03-views_files/p17p5.png" /></p>
+</div>
+<div id="views" class="section level1">
+<h1>4 Views</h1>
+<p>So far, this was just a simple example where we connected two tables quite simply and made queries on them.
+If the generation of the database becomes more complex, you need a simpler method to make your targeted queries. And this is where views come into play.</p>
+<div id="create-view" class="section level2">
+<h2>4.1 Create VIEW</h2>
+<p>We can use the output from the join shown earlier to generate a view. This can be used to start further queries quite easily.</p>
+<pre class="r"><code>CREATE VIEW Employees_Full AS
+    SELECT t1.ID_empl,
+           t1.First_Name,
+           t1.Last_Name,
+           t2.Age,
+           t2.Salary,
+           t2.Department
+        FROM Employees AS t1
+        LEFT JOIN Employees_Metadata AS t2
+            ON t1.ID_empl = t2.ID_empl
+    ;</code></pre>
+<pre class="r"><code>SELECT * FROM Employees_Full;</code></pre>
+<p><img src="/post/2021-05-03-views_files/p17p6.png" /></p>
+<p>This view is now also stored in the Object Explorer:</p>
+<p><img src="/post/2021-05-03-views_files/p17p7.png" /></p>
+<p>Now we execute our further queries on this view.</p>
+<pre class="r"><code>SELECT Department,
+       Count(*) AS count_employees,
+       AVG(Salary) AS avg_salary,
+       AVG(Age) AS avg_age
+    FROM Employees_Full
+    GROUP BY Department
+    ORDER BY avg_salary DESC</code></pre>
+<p><img src="/post/2021-05-03-views_files/p17p8.png" /></p>
+</div>
+<div id="update-view" class="section level2">
+<h2>4.2 Update VIEW</h2>
+<p>Of course, an existing view can be modified without having to delete and recreate it.
+Here, for example, I exclude department number 3 from the query.</p>
+<pre class="r"><code>ALTER VIEW Employees_Full AS
+    SELECT t1.ID_empl,
+           t1.First_Name,
+           t1.Last_Name,
+           t2.Age,
+           t2.Salary,
+           t2.Department
+        FROM Employees AS t1
+        LEFT JOIN Employees_Metadata AS t2
+            ON t1.ID_empl = t2.ID_empl
+        WHERE Department != &#39;Dep_3&#39;
+    ;</code></pre>
+<pre class="r"><code>SELECT * FROM Employees_Full;</code></pre>
+<p><img src="/post/2021-05-03-views_files/p17p9.png" /></p>
+<p>In other SQL languages this can also be called as follows:</p>
+<pre class="r"><code>REPLACE VIEW Employees_Full AS
+    SELECT ...</code></pre>
 <p><img src="/post/2021-05-03-views_files/p17p.png" /></p>
 <p><img src="/post/2021-05-03-views_files/p17p.png" /></p>
 <p><img src="/post/2021-05-03-views_files/p17p.png" /></p>
-<p><img src="/post/2021-05-03-views_files/p17p.png" /></p>
-<p><img src="/post/2021-05-03-views_files/p17p.png" /></p>
-<p><img src="/post/2021-05-03-views_files/p17p.png" /></p>
-<p><img src="/post/2021-05-03-views_files/p17p.png" /></p>
-<p><img src="/post/2021-05-03-views_files/p17p.png" /></p>
+</div>
 </div>
