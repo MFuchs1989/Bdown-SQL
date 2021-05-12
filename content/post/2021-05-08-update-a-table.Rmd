@@ -106,7 +106,7 @@ SELECT * FROM Employees;
 
 **ALTER**
 
-An ALTER SQL query is a DDL (Data Definition Language) statement and is used to update the structure of the table in the database. This can be, for example, adding, deleting or changing columns.
+An ALTER SQL query is a DDL (Data Definition Language) statement and is used to update the structure of the table in the database. This can be, for example, [adding](https://michael-fuchs-sql.netlify.app/2021/03/07/create-a-database/#add-new-columns), [deleting](https://michael-fuchs-sql.netlify.app/2021/03/07/create-a-database/#delete-specific-columns) or [changing](https://michael-fuchs-sql.netlify.app/2021/03/07/create-a-database/#delete-the-table-contents) columns.
 
 
 **UPDATE**
