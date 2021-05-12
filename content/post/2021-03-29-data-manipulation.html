@@ -28,7 +28,14 @@ output:
 <ul>
 <li><a href="#replace-null-values-isnull">4.1 Replace NULL Values (ISNULL)</a></li>
 <li><a href="#replace-values-with-null-nullif">4.2 Replace Values with NULL (NULLIF)</a></li>
-<li><a href="#if-else-statemtents-in-sql-case">4.3 IF Else Statemtents in SQL (CASE)</a></li>
+<li><a href="#if-else-statemtents-in-sql-case">4.3 IF Else Statemtents in SQL (CASE)</a>
+<ul>
+<li><a href="#case-with-null-values">4.3.1 Case with NULL Values</a></li>
+<li><a href="#case-with-other-values">4.3.2 Case with other Values</a></li>
+<li><a href="#case-with-lists">4.3.3 Case with Lists</a></li>
+<li><a href="#case-with-a-range">4.3.4 Case with a Range</a></li>
+<li><a href="#case-with-multiple-conditions-and-or">4.3.5 Case with Multiple Conditions (AND &amp; OR)</a></li>
+</ul></li>
 <li><a href="#if-statemtents-in-sql-iif">4.4 IF Statemtents in SQL (IIF)</a></li>
 <li><a href="#coalesce">4.5 COALESCE</a>
 <ul>
@@ -219,6 +226,8 @@ Works fine!</p>
 </div>
 <div id="if-else-statemtents-in-sql-case" class="section level2">
 <h2>4.3 IF Else Statemtents in SQL (CASE)</h2>
+<div id="case-with-null-values" class="section level3">
+<h3>4.3.1 Case with NULL Values</h3>
 <p>Let’s give this a try:</p>
 <pre class="r"><code>SELECT ID,
         CASE 
@@ -230,7 +239,9 @@ Works fine!</p>
     FROM example_Table
     ;</code></pre>
 <p><img src="/post/2021-03-29-data-manipulation_files/p11p13.png" /></p>
-<p>ELSE is optional here, if nothing is defined a NULL value would be returned</p>
+</div>
+<div id="case-with-other-values" class="section level3">
+<h3>4.3.2 Case with other Values</h3>
 <p>As already mentioned, you can not only set values to ZERO with NULL, but also pass other values. See the following example:</p>
 <pre class="r"><code>SELECT ID, Title
     FROM example_Table
@@ -247,8 +258,59 @@ Works fine!</p>
     FROM example_Table
     ;</code></pre>
 <p><img src="/post/2021-03-29-data-manipulation_files/p11p15.png" /></p>
+</div>
+<div id="case-with-lists" class="section level3">
+<h3>4.3.3 Case with Lists</h3>
+<p>The problem shown before can be solved even easier:</p>
+<pre class="r"><code>SELECT ID, Title,
+        CASE 
+            WHEN Title IN (&#39;Mrs&#39;, &#39;Miss&#39;,&#39;Ms&#39;) THEN &#39;Female&#39;
+            ELSE &#39;Male&#39;
+        END AS Gender
+    FROM example_Table
+    ;</code></pre>
+<p><img src="/post/2021-03-29-data-manipulation_files/p11z3.png" /></p>
+</div>
+<div id="case-with-a-range" class="section level3">
+<h3>4.3.4 Case with a Range</h3>
+<p>Have a look at this part of the dataset:</p>
+<pre class="r"><code>SELECT First_Name, Age
+    FROM example_Table
+    WHERE Age IS NOT NULL
+    ;</code></pre>
+<p><img src="/post/2021-03-29-data-manipulation_files/p11z4.png" /></p>
+<p>And now the CASE Statement with a range:</p>
+<pre class="r"><code>SELECT First_Name, Age,
+        CASE 
+            WHEN Age BETWEEN 0 AND 35 THEN &#39;young&#39; 
+            WHEN Age BETWEEN 36 AND 99 THEN &#39;old&#39;  
+        END AS Age_State
+    FROM example_Table
+    WHERE Age IS NOT NULL
+    ;</code></pre>
+<p><img src="/post/2021-03-29-data-manipulation_files/p11z5.png" /></p>
+</div>
+<div id="case-with-multiple-conditions-and-or" class="section level3">
+<h3>4.3.5 Case with Multiple Conditions (AND &amp; OR)</h3>
+<p>Have a look at this part of the dataset:</p>
+<pre class="r"><code>SELECT First_Name, Age, Cat1
+    FROM example_Table
+    WHERE Age IS NOT NULL
+    ;</code></pre>
+<p><img src="/post/2021-03-29-data-manipulation_files/p11z6.png" /></p>
+<p>And now the CASE Statement with multiple conditions:</p>
+<pre class="r"><code>SELECT First_Name, Age, Cat1,
+        CASE 
+            WHEN Age &lt; 30 AND Cat1 = &#39;A&#39; THEN &#39;Young_Professional&#39; 
+            WHEN Age &lt; 40 OR Cat1 = &#39;B&#39; THEN &#39;Expert&#39;
+            ELSE &#39;Normal_Employee&#39;
+        END AS Expertise
+    FROM example_Table
+    ;</code></pre>
+<p><img src="/post/2021-03-29-data-manipulation_files/p11z7.png" /></p>
 <p>CASE is a very useful function but it also requires a lot of typing.
 If the situation allows it, you can also use a simple If statement.</p>
+</div>
 </div>
 <div id="if-statemtents-in-sql-iif" class="section level2">
 <h2>4.4 IF Statemtents in SQL (IIF)</h2>

@@ -263,6 +263,8 @@ If we want to set several values to NULL or replace several values with new ones
 
 ## 4.3 IF Else Statemtents in SQL (CASE)
 
+### 4.3.1 Case with NULL Values
+
 Let's give this a try:
 
 ```{r, eval=F, echo=T}
@@ -279,7 +281,9 @@ SELECT ID,
 
 ![](/post/2021-03-29-data-manipulation_files/p11p13.png)
 
-ELSE is optional here, if nothing is defined a NULL value would be returned 
+
+### 4.3.2 Case with other Values
+
 
 As already mentioned, you can not only set values to ZERO with NULL, but also pass other values. See the following example:
 
@@ -305,6 +309,87 @@ SELECT ID, Title,
 ```
 
 ![](/post/2021-03-29-data-manipulation_files/p11p15.png)
+
+
+### 4.3.3 Case with Lists
+
+The problem shown before can be solved even easier:
+
+
+```{r, eval=F, echo=T}
+SELECT ID, Title,
+		CASE 
+			WHEN Title IN ('Mrs', 'Miss','Ms') THEN 'Female'
+			ELSE 'Male'
+		END AS Gender
+	FROM example_Table
+	;
+```
+
+![](/post/2021-03-29-data-manipulation_files/p11z3.png)
+
+
+### 4.3.4 Case with a Range
+
+Have a look at this part of the dataset:
+
+```{r, eval=F, echo=T}
+SELECT First_Name, Age
+	FROM example_Table
+	WHERE Age IS NOT NULL
+	;
+```
+
+![](/post/2021-03-29-data-manipulation_files/p11z4.png)
+
+
+And now the CASE Statement with a range:
+
+
+```{r, eval=F, echo=T}
+SELECT First_Name, Age,
+        CASE 
+            WHEN Age BETWEEN 0 AND 35 THEN 'young' 
+            WHEN Age BETWEEN 36 AND 99 THEN 'old'  
+        END AS Age_State
+    FROM example_Table
+	WHERE Age IS NOT NULL
+    ;
+```
+
+![](/post/2021-03-29-data-manipulation_files/p11z5.png)
+
+
+
+### 4.3.5 Case with Multiple Conditions (AND & OR)
+
+Have a look at this part of the dataset:
+
+```{r, eval=F, echo=T}
+SELECT First_Name, Age, Cat1
+	FROM example_Table
+	WHERE Age IS NOT NULL
+	;
+```
+
+![](/post/2021-03-29-data-manipulation_files/p11z6.png)
+
+And now the CASE Statement with multiple conditions:
+
+
+```{r, eval=F, echo=T}
+SELECT First_Name, Age, Cat1,
+        CASE 
+            WHEN Age < 30 AND Cat1 = 'A' THEN 'Young_Professional' 
+            WHEN Age < 40 OR Cat1 = 'B' THEN 'Expert'
+			ELSE 'Normal_Employee'
+        END AS Expertise
+    FROM example_Table
+    ;
+```
+
+![](/post/2021-03-29-data-manipulation_files/p11z7.png)
+
 
 CASE is a very useful function but it also requires a lot of typing.
 If the situation allows it, you can also use a simple If statement.
