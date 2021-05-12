@@ -5,4 +5,91 @@ date: '2021-05-08'
 slug: update-a-table
 categories: []
 tags: []
+output:
+  blogdown::html_page:
+    toc: true
+    toc_depth: 5
 ---
+
+
+
+# 1 Introduction
+
+Now that we know how to create new tables using SQL statements, I would like to show you how to modify them. 
+
+
+
+# 2 Preparation
+
+For the following examples, I set up a new database.
+
+```{r, eval=F, echo=T}
+SET LANGUAGE ENGLISH
+
+
+CREATE DATABASE Update_DB;
+
+USE Update_DB;
+```
+
+
+Now I will quickly create a simple example data set:
+
+```{r, eval=F, echo=T}
+CREATE TABLE Employees
+    (ID_meta INT NOT NULL IDENTITY(1,1) PRIMARY KEY,
+	Name VARCHAR(100) NOT NULL,
+    Age INT NOT NULL,
+    Salary INT NOT NULL,
+    Department VARCHAR(100) NOT NULL)
+    ;
+
+INSERT INTO Employees VALUES ('Klara', 27, 45000, 'Dep_1')
+INSERT INTO Employees VALUES ('Emily', 35, 80000, 'Dep_2')
+INSERT INTO Employees VALUES ('Jessy', 44, 65000, 'Dep_2')
+INSERT INTO Employees VALUES ('Max', 22, 40000, 'Dep_1')
+INSERT INTO Employees VALUES ('Alex', 50, 75000, 'Dep_2')
+```
+
+
+```{r, eval=F, echo=T}
+SELECT * FROM Employees;
+```
+
+![](/post/2021-05-08-update-a-table_files/p19p1.png)
+
+
+# 3 The SQL UPDATE Statement
+
+## 3.1 UPDATE Command
+
+With the help of the update UPDATE we have the possibility to change the content of whole columns of a table. 
+See the following example where I set the Age column to 99. 
+
+```{r, eval=F, echo=T}
+UPDATE Employees
+	SET Age = 99
+	;
+```
+
+
+```{r, eval=F, echo=T}
+SELECT * FROM Employees;
+```
+
+![](/post/2021-05-08-update-a-table_files/p19p2.png)
+
+
+
+
+
+
+```{r, eval=F, echo=T}
+
+```
+
+![](/post/2021-05-08-update-a-table_files/p19p.png)
+
+
+
+
