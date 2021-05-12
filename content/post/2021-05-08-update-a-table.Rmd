@@ -1,0 +1,8 @@
+---
+title: Update a Table
+author: Michael Fuchs
+date: '2021-05-08'
+slug: update-a-table
+categories: []
+tags: []
+---
