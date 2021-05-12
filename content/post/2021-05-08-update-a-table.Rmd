@@ -80,16 +80,43 @@ SELECT * FROM Employees;
 ![](/post/2021-05-08-update-a-table_files/p19p2.png)
 
 
+## 3.2 UPDATE with WHERE
 
+The WHERE clause determines how many records will be updated. If you omit the WHERE clause, all records in the table will be updated (see the example above).
 
+Below I will set the salary column values to 99999 if the person works in department 2.
+
+```{r, eval=F, echo=T}
+UPDATE Employees
+	SET Salary = 99999
+	WHERE Department = 'Dep_2'
+	;
+```
 
 
 ```{r, eval=F, echo=T}
-
+SELECT * FROM Employees;
 ```
 
-![](/post/2021-05-08-update-a-table_files/p19p.png)
+![](/post/2021-05-08-update-a-table_files/p19p3.png)
 
+
+# 4 Difference between ALTER and UPDATE Command
+
+
+**ALTER**
+
+An ALTER SQL query is a DDL (Data Definition Language) statement and is used to update the structure of the table in the database. This can be, for example, adding, deleting or changing columns.
+
+
+**UPDATE**
+
+An UPDATE SQL query is a DML (Data manipulation Language) statement which is used to manipulate the data of any existing column. However, the definition of the table cannot be changed.
+
+
+# 5 Conclusion
+
+In this short post I showed how to modify tables using the UPDATE command. 
 
 
 

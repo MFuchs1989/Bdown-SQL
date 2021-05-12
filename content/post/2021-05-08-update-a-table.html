@@ -22,7 +22,10 @@ output:
 <li><a href="#the-sql-update-statement">3 The SQL UPDATE Statement</a>
 <ul>
 <li><a href="#update-command">3.1 UPDATE Command</a></li>
+<li><a href="#update-with-where">3.2 UPDATE with WHERE</a></li>
 </ul></li>
+<li><a href="#difference-between-alter-and-update-command">4 Difference between ALTER and UPDATE Command</a></li>
+<li><a href="#conclusion">5 Conclusion</a></li>
 </ul>
 </div>
 
@@ -67,6 +70,27 @@ See the following example where I set the Age column to 99.</p>
     ;</code></pre>
 <pre class="r"><code>SELECT * FROM Employees;</code></pre>
 <p><img src="/post/2021-05-08-update-a-table_files/p19p2.png" /></p>
-<p><img src="/post/2021-05-08-update-a-table_files/p19p.png" /></p>
 </div>
+<div id="update-with-where" class="section level2">
+<h2>3.2 UPDATE with WHERE</h2>
+<p>The WHERE clause determines how many records will be updated. If you omit the WHERE clause, all records in the table will be updated (see the example above).</p>
+<p>Below I will set the salary column values to 99999 if the person works in department 2.</p>
+<pre class="r"><code>UPDATE Employees
+    SET Salary = 99999
+    WHERE Department = &#39;Dep_2&#39;
+    ;</code></pre>
+<pre class="r"><code>SELECT * FROM Employees;</code></pre>
+<p><img src="/post/2021-05-08-update-a-table_files/p19p3.png" /></p>
+</div>
+</div>
+<div id="difference-between-alter-and-update-command" class="section level1">
+<h1>4 Difference between ALTER and UPDATE Command</h1>
+<p><strong>ALTER</strong></p>
+<p>An ALTER SQL query is a DDL (Data Definition Language) statement and is used to update the structure of the table in the database. This can be, for example, adding, deleting or changing columns.</p>
+<p><strong>UPDATE</strong></p>
+<p>An UPDATE SQL query is a DML (Data manipulation Language) statement which is used to manipulate the data of any existing column. However, the definition of the table cannot be changed.</p>
+</div>
+<div id="conclusion" class="section level1">
+<h1>5 Conclusion</h1>
+<p>In this short post I showed how to modify tables using the UPDATE command.</p>
 </div>
