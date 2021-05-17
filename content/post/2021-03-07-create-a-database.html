@@ -117,7 +117,7 @@ But it is logically still completely empty. So we will first fill it with a tabl
 <h2>3.2 Create a Database for Data Manipulation</h2>
 <p>Now I want to create another database with two tables, which I want to delete afterwards.
 Tip: Execute the command <code>USE DB_to_Delete</code> separately, otherwise the two tables will be written to the database ‘MyDB’.</p>
-<pre class="r"><code>REATE DATABASE DB_to_Delete;
+<pre class="r"><code>CREATE DATABASE DB_to_Delete;
 
 
 USE DB_to_Delete;
@@ -148,6 +148,8 @@ SELECT * FROM Table_2</code></pre>
 <pre class="r"><code>ALTER TABLE Table_1 DROP COLUMN ID;
 
 ALTER TABLE Table_2 DROP COLUMN First_Name, Last_Name;</code></pre>
+<pre class="r"><code>SELECT * FROM Table_1
+SELECT * FROM Table_2</code></pre>
 <p><img src="/post/2021-03-07-create-a-database_files/p3p11.png" /></p>
 <p>We can see that in Table_1 the column ‘ID’ is missing and in Table_2 the columns ‘First_Name’ and ‘Last_Name’.</p>
 </div>
@@ -159,10 +161,11 @@ ALTER TABLE Table_2 DROP COLUMN First_Name, Last_Name;</code></pre>
 </div>
 <div id="delete-the-table-contents" class="section level3">
 <h3>3.2.3 Delete the table contents</h3>
-<p>Now the next step is to fill the modified table with a new row.</p>
+<p>Now the next step is to fill the modified table with new rows.</p>
 <pre class="r"><code>INSERT INTO Table_1 (First_Name, Last_Name, Further_Column) VALUES (&#39;Michael&#39;, &#39;Fuchs&#39;, &#39;some_text&#39;)
-
-SELECT * FROM Table_1</code></pre>
+INSERT INTO Table_1 (First_Name, Last_Name, Further_Column) VALUES (&#39;Alex&#39;, &#39;Smith&#39;, &#39;some_text&#39;)
+INSERT INTO Table_1 (First_Name, Last_Name, Further_Column) VALUES (&#39;John&#39;, &#39;Green&#39;, &#39;row_to_delete&#39;)</code></pre>
+<pre class="r"><code>SELECT * FROM Table_1</code></pre>
 <p><img src="/post/2021-03-07-create-a-database_files/p3p18.png" /></p>
 <p>With the command TRUNCATE we can delete the contents of a table, but keep the table in and of itself.</p>
 <pre class="r"><code>TRUNCATE TABLE Table_1;
