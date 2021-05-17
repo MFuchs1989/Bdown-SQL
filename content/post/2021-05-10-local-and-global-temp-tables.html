@@ -27,7 +27,16 @@ output:
 <ul>
 <li><a href="#creation-of-a-local-temporary-table">3.1 Creation of a Local Temporary Table</a></li>
 <li><a href="#accessibility-of-the-local-temporary-table">3.2 Accessibility of the Local Temporary Table</a></li>
+<li><a href="#accessibility-of-the-tables-via-another-database">3.2 Accessibility of the Tables via Another Database</a></li>
 </ul></li>
+<li><a href="#global-temporary-tables">4 Global Temporary Tables</a>
+<ul>
+<li><a href="#creation-of-a-global-temporary-table">4.1 Creation of a Global Temporary Table</a></li>
+<li><a href="#accessibility-of-the-global-temporary-table">4.2 Accessibility of the Global Temporary Table</a></li>
+<li><a href="#accessibility-of-the-tables-via-another-session">4.3 Accessibility of the Tables via Another Session</a></li>
+</ul></li>
+<li><a href="#recap">5 Recap</a></li>
+<li><a href="#conclusion">6 Conclusion</a></li>
 </ul>
 </div>
 
@@ -95,9 +104,77 @@ INSERT INTO #local_temp_Customer VALUES (&#39;Mike&#39;, 28)</code></pre>
 <p>The local temporary table can be called like any other ordinary table:</p>
 <pre class="r"><code>SELECT * FROM #local_temp_Customer;</code></pre>
 <p><img src="/post/2021-05-10-local-and-global-temp-tables_files/p20p4.png" /></p>
-<p><img src="/post/2021-05-10-local-and-global-temp-tables_files/p20p.png" /></p>
-<p><img src="/post/2021-05-10-local-and-global-temp-tables_files/p20p.png" /></p>
-<p><img src="/post/2021-05-10-local-and-global-temp-tables_files/p20p.png" /></p>
-<p><img src="/post/2021-05-10-local-and-global-temp-tables_files/p20p.png" /></p>
+<p>Let’s see if it can be done this way as well:</p>
+<pre class="r"><code>SELECT *
+    FROM SYSOBJECTS
+    WHERE xtype = &#39;U&#39;;</code></pre>
+<p><img src="/post/2021-05-10-local-and-global-temp-tables_files/p20p5.png" /></p>
+<p>No here, of course, it does not appear.
+But we can find them in the Object Manager:</p>
+<p><img src="/post/2021-05-10-local-and-global-temp-tables_files/p20p6.png" /></p>
 </div>
+<div id="accessibility-of-the-tables-via-another-database" class="section level2">
+<h2>3.2 Accessibility of the Tables via Another Database</h2>
+<p>For this example, I create and use another sample database and try to access the tables created so far from there.</p>
+<pre class="r"><code>CREATE DATABASE Temp_Tables2;
+
+USE Temp_Tables2;</code></pre>
+<p>Now we try to retrieve data from the customer table:</p>
+<pre class="r"><code>SELECT * FROM Customer;</code></pre>
+<p><img src="/post/2021-05-10-local-and-global-temp-tables_files/p20p7.png" /></p>
+<p>As we can see, from the new database we cannot reach the normal table, because it is stored on another database.</p>
+<p>But data from the local temporary table we can retrieve:</p>
+<pre class="r"><code>SELECT * FROM #local_temp_Customer;</code></pre>
+<p><img src="/post/2021-05-10-local-and-global-temp-tables_files/p20p8.png" /></p>
+</div>
+</div>
+<div id="global-temporary-tables" class="section level1">
+<h1>4 Global Temporary Tables</h1>
+<p>Now in SQL Server we also have the possibility to create Global Temporary Tables. Compared to Local Temporary Tables, in SQL Server the Global Temporary Tables are visible to all sessions.</p>
+<p>The difference becomes immediately clear when you look at the accessibility part. First, however, let’s create an example Global Temporary Table.</p>
+<p>For this example, I’ll switch back to the first database I created.</p>
+<pre class="r"><code>USE Temp_Tables;</code></pre>
+<div id="creation-of-a-global-temporary-table" class="section level2">
+<h2>4.1 Creation of a Global Temporary Table</h2>
+<p>The name of Global Temporary Tables are prefixed with ## characters:</p>
+<pre class="r"><code>CREATE TABLE ##global_temp_Customer
+    (Name VARCHAR(100) NOT NULL,
+     Age INT NOT NULL)
+    ;</code></pre>
+<p>Likewise, we include a sample observation:</p>
+<pre class="r"><code>INSERT INTO ##global_temp_Customer VALUES (&#39;John&#39;, 38)</code></pre>
+</div>
+<div id="accessibility-of-the-global-temporary-table" class="section level2">
+<h2>4.2 Accessibility of the Global Temporary Table</h2>
+<pre class="r"><code>SELECT * FROM Customer;
+SELECT * FROM #local_temp_Customer;
+SELECT * FROM ##global_temp_Customer;</code></pre>
+<p><img src="/post/2021-05-10-local-and-global-temp-tables_files/p20p9.png" /></p>
+<p>As expected, from this point we can reach all three tables.</p>
+</div>
+<div id="accessibility-of-the-tables-via-another-session" class="section level2">
+<h2>4.3 Accessibility of the Tables via Another Session</h2>
+<p>At this point the difference between a Local Temporary Table and a Global Temporary Table becomes clear.</p>
+<p>Here I open a new session:</p>
+<p><img src="/post/2021-05-10-local-and-global-temp-tables_files/p20p10.png" /></p>
+<p>Now I am trying to execute a query on the Local Temporary Table:</p>
+<pre class="r"><code>SELECT * FROM #local_temp_Customer;</code></pre>
+<p><img src="/post/2021-05-10-local-and-global-temp-tables_files/p20p11.png" /></p>
+<p>And now a query on the Global Temporary Table:</p>
+<pre class="r"><code>SELECT * FROM ##global_temp_Customer;</code></pre>
+<p><img src="/post/2021-05-10-local-and-global-temp-tables_files/p20p12.png" /></p>
+</div>
+</div>
+<div id="recap" class="section level1">
+<h1>5 Recap</h1>
+<ul>
+<li>Normal tables in SQL Server can be accessed from any session as soon as you reference the database (with <code>USE table_name</code>).</li>
+<li>Local Temporary Tables can be accessed from within a session, regardless of which database is being referenced.</li>
+<li>Global Temporary Tables can be accessed regardless of the session and database being referenced.</li>
+</ul>
+<p>Both Local and Global Temporary Tables are automatically deleted again when they are no longer used. This is the case, for example, when the SQL Server is shut down.</p>
+</div>
+<div id="conclusion" class="section level1">
+<h1>6 Conclusion</h1>
+<p>In this post I have explained what is the difference between Local Temporary Tables and Global Temporary Tables and how to use them respectively what advantages they have over the other types of tables.</p>
 </div>
