@@ -157,7 +157,7 @@ USE Temp_Tables2;
 
 
 
-Now we try to retrieve data from the customer table:
+Now we try to **retrieve data from the Customer table**:
 
 ```{r, eval=F, echo=T}
 SELECT * FROM Customer;
@@ -167,7 +167,7 @@ SELECT * FROM Customer;
 
 As we can see, from the new database we cannot reach the normal table, because it is stored on another database. 
 
-But data from the local temporary table we can retrieve:
+But **data from the Local Temporary Table** we can retrieve:
 
 ```{r, eval=F, echo=T}
 SELECT * FROM #local_temp_Customer;

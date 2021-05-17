@@ -119,11 +119,11 @@ But we can find them in the Object Manager:</p>
 <pre class="r"><code>CREATE DATABASE Temp_Tables2;
 
 USE Temp_Tables2;</code></pre>
-<p>Now we try to retrieve data from the customer table:</p>
+<p>Now we try to <strong>retrieve data from the Customer table</strong>:</p>
 <pre class="r"><code>SELECT * FROM Customer;</code></pre>
 <p><img src="/post/2021-05-10-local-and-global-temp-tables_files/p20p7.png" /></p>
 <p>As we can see, from the new database we cannot reach the normal table, because it is stored on another database.</p>
-<p>But data from the local temporary table we can retrieve:</p>
+<p>But <strong>data from the Local Temporary Table</strong> we can retrieve:</p>
 <pre class="r"><code>SELECT * FROM #local_temp_Customer;</code></pre>
 <p><img src="/post/2021-05-10-local-and-global-temp-tables_files/p20p8.png" /></p>
 </div>
