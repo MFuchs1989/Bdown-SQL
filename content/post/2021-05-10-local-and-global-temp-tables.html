@@ -90,7 +90,7 @@ INSERT INTO Customer VALUES (&#39;Tom&#39;, 22)</code></pre>
 <p>Local Temporary Tables are, as the name suggests, tables that can be created that are only temporarily available. They are automatically deleted as soon as they are no longer used.</p>
 <div id="creation-of-a-local-temporary-table" class="section level2">
 <h2>3.1 Creation of a Local Temporary Table</h2>
-<p>The name of Local Temporary Tables are prefixed with the # character:</p>
+<p>The name of Local Temporary Tables are prefixed with the <strong># character</strong>:</p>
 <pre class="r"><code>CREATE TABLE #local_temp_Customer
     (Name VARCHAR(100) NOT NULL,
      Age INT NOT NULL)
@@ -136,7 +136,7 @@ USE Temp_Tables2;</code></pre>
 <pre class="r"><code>USE Temp_Tables;</code></pre>
 <div id="creation-of-a-global-temporary-table" class="section level2">
 <h2>4.1 Creation of a Global Temporary Table</h2>
-<p>The name of Global Temporary Tables are prefixed with ## characters:</p>
+<p>The name of Global Temporary Tables are prefixed with <strong>## characters</strong>:</p>
 <pre class="r"><code>CREATE TABLE ##global_temp_Customer
     (Name VARCHAR(100) NOT NULL,
      Age INT NOT NULL)
@@ -157,10 +157,10 @@ SELECT * FROM ##global_temp_Customer;</code></pre>
 <p>At this point the difference between a Local Temporary Table and a Global Temporary Table becomes clear.</p>
 <p>Here I open a new session:</p>
 <p><img src="/post/2021-05-10-local-and-global-temp-tables_files/p20p10.png" /></p>
-<p>Now I am trying to execute a query on the Local Temporary Table:</p>
+<p>Now I am trying to execute a <strong>query on the Local Temporary Table</strong>:</p>
 <pre class="r"><code>SELECT * FROM #local_temp_Customer;</code></pre>
 <p><img src="/post/2021-05-10-local-and-global-temp-tables_files/p20p11.png" /></p>
-<p>And now a query on the Global Temporary Table:</p>
+<p>And now a <strong>query on the Global Temporary Table</strong>:</p>
 <pre class="r"><code>SELECT * FROM ##global_temp_Customer;</code></pre>
 <p><img src="/post/2021-05-10-local-and-global-temp-tables_files/p20p12.png" /></p>
 </div>
@@ -168,9 +168,9 @@ SELECT * FROM ##global_temp_Customer;</code></pre>
 <div id="recap" class="section level1">
 <h1>5 Recap</h1>
 <ul>
-<li>Normal tables in SQL Server can be accessed from any session as soon as you reference the database (with <code>USE table_name</code>).</li>
-<li>Local Temporary Tables can be accessed from within a session, regardless of which database is being referenced.</li>
-<li>Global Temporary Tables can be accessed regardless of the session and database being referenced.</li>
+<li>Normal tables in SQL Server can be accessed <strong>from any session</strong> as soon as you <strong>reference</strong> the database (with <code>USE table_name</code>).</li>
+<li>Local Temporary Tables can be accessed from <strong>within a session</strong>, regardless of which database is being referenced.</li>
+<li>Global Temporary Tables can be accessed <strong>regardless of the session</strong> and database being referenced.</li>
 </ul>
 <p>Both Local and Global Temporary Tables are automatically deleted again when they are no longer used. This is the case, for example, when the SQL Server is shut down.</p>
 </div>

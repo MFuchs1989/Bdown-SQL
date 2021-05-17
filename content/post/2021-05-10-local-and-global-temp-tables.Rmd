@@ -101,7 +101,7 @@ Local Temporary Tables are, as the name suggests, tables that can be created tha
 
 ## 3.1 Creation of a Local Temporary Table
 
-The name of Local Temporary Tables are prefixed with the # character:
+The name of Local Temporary Tables are prefixed with the **# character**:
 
 
 ```{r, eval=F, echo=T}
@@ -191,7 +191,7 @@ USE Temp_Tables;
 
 ## 4.1 Creation of a Global Temporary Table
 
-The name of Global Temporary Tables are prefixed with ## characters:
+The name of Global Temporary Tables are prefixed with **## characters**:
 
 
 ```{r, eval=F, echo=T}
@@ -232,7 +232,7 @@ Here I open a new session:
 
 ![](/post/2021-05-10-local-and-global-temp-tables_files/p20p10.png)
 
-Now I am trying to execute a query on the Local Temporary Table:
+Now I am trying to execute a **query on the Local Temporary Table**:
 
 ```{r, eval=F, echo=T}
 SELECT * FROM #local_temp_Customer;
@@ -240,7 +240,7 @@ SELECT * FROM #local_temp_Customer;
 
 ![](/post/2021-05-10-local-and-global-temp-tables_files/p20p11.png)
 
-And now a query on the Global Temporary Table:
+And now a **query on the Global Temporary Table**:
 
 ```{r, eval=F, echo=T}
 SELECT * FROM ##global_temp_Customer;
@@ -251,9 +251,9 @@ SELECT * FROM ##global_temp_Customer;
 
 # 5 Recap
 
-+ Normal tables in SQL Server can be accessed from any session as soon as you reference the database (with `USE table_name`).
-+ Local Temporary Tables can be accessed from within a session, regardless of which database is being referenced. 
-+ Global Temporary Tables can be accessed regardless of the session and database being referenced. 
++ Normal tables in SQL Server can be accessed **from any session** as soon as you **reference** the database (with `USE table_name`).
++ Local Temporary Tables can be accessed from **within a session**, regardless of which database is being referenced. 
++ Global Temporary Tables can be accessed **regardless of the session** and database being referenced. 
 
 Both Local and Global Temporary Tables are automatically deleted again when they are no longer used. This is the case, for example, when the SQL Server is shut down. 
 
