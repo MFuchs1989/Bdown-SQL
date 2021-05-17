@@ -5,10 +5,99 @@ date: '2021-05-10'
 slug: local-and-global-temp-tables
 categories: []
 tags: []
+output:
+  blogdown::html_page:
+    toc: true
+    toc_depth: 5
 ---
 
 <script src="/rmarkdown-libs/header-attrs/header-attrs.js"></script>
 <link href="/rmarkdown-libs/anchor-sections/anchor-sections.css" rel="stylesheet" />
 <script src="/rmarkdown-libs/anchor-sections/anchor-sections.js"></script>
 
+<div id="TOC">
+<ul>
+<li><a href="#introduction">1 Introduction</a></li>
+<li><a href="#common-sql-tables">2 Common SQL Tables</a>
+<ul>
+<li><a href="#creation-of-a-normal-table">2.1 Creation of a Normal Table</a></li>
+<li><a href="#accessibility-of-the-table">2.2 Accessibility of the Table</a></li>
+</ul></li>
+<li><a href="#local-temporary-tables">3 Local Temporary Tables</a>
+<ul>
+<li><a href="#creation-of-a-local-temporary-table">3.1 Creation of a Local Temporary Table</a></li>
+<li><a href="#accessibility-of-the-local-temporary-table">3.2 Accessibility of the Local Temporary Table</a></li>
+</ul></li>
+</ul>
+</div>
 
+<div id="introduction" class="section level1">
+<h1>1 Introduction</h1>
+<p>In this post I would like to explain the use of local and global temporary tables within SQL Server.</p>
+</div>
+<div id="common-sql-tables" class="section level1">
+<h1>2 Common SQL Tables</h1>
+<p>As always, I will start by creating my own database in which I will then create a sample table.</p>
+<pre class="r"><code>SET LANGUAGE ENGLISH
+
+
+CREATE DATABASE Temp_Tables;
+
+USE Temp_Tables;</code></pre>
+<p>As we can see, there is no table stored in the database yet:</p>
+<pre class="r"><code>SELECT *
+    FROM SYSOBJECTS
+    WHERE xtype = &#39;U&#39;;</code></pre>
+<p><img src="/post/2021-05-10-local-and-global-temp-tables_files/p20p1.png" /></p>
+<div id="creation-of-a-normal-table" class="section level2">
+<h2>2.1 Creation of a Normal Table</h2>
+<p>Below I will create a table as usual and include some sample data:</p>
+<pre class="r"><code>CREATE TABLE Customer
+    (Name VARCHAR(100) NOT NULL,
+     Age INT NOT NULL)
+    ;
+
+INSERT INTO Customer VALUES (&#39;Klara&#39;, 35)
+INSERT INTO Customer VALUES (&#39;Emily&#39;, 44)
+INSERT INTO Customer VALUES (&#39;Jessy&#39;, 22)
+INSERT INTO Customer VALUES (&#39;Max&#39;, 50)
+INSERT INTO Customer VALUES (&#39;Tom&#39;, 22)</code></pre>
+</div>
+<div id="accessibility-of-the-table" class="section level2">
+<h2>2.2 Accessibility of the Table</h2>
+<p>The generated sample table can be called (as usual) as follows:</p>
+<pre class="r"><code>SELECT * FROM Customer;</code></pre>
+<p><img src="/post/2021-05-10-local-and-global-temp-tables_files/p20p2.png" /></p>
+<p>We can also see them in this way now:</p>
+<pre class="r"><code>SELECT *
+    FROM SYSOBJECTS
+    WHERE xtype = &#39;U&#39;;</code></pre>
+<p><img src="/post/2021-05-10-local-and-global-temp-tables_files/p20p3.png" /></p>
+</div>
+</div>
+<div id="local-temporary-tables" class="section level1">
+<h1>3 Local Temporary Tables</h1>
+<p>So far, nothing new has come up that I haven’t already described in one of my previous posts. Now let’s get to the actual topic for which reason I wrote this post.</p>
+<p>Local Temporary Tables are, as the name suggests, tables that can be created that are only temporarily available. They are automatically deleted as soon as they are no longer used.</p>
+<div id="creation-of-a-local-temporary-table" class="section level2">
+<h2>3.1 Creation of a Local Temporary Table</h2>
+<p>The name of Local Temporary Tables are prefixed with the # character:</p>
+<pre class="r"><code>CREATE TABLE #local_temp_Customer
+    (Name VARCHAR(100) NOT NULL,
+     Age INT NOT NULL)
+    ;</code></pre>
+<p>Now let’s add some sample data here:</p>
+<pre class="r"><code>INSERT INTO #local_temp_Customer VALUES (&#39;Sven&#39;, 35)
+INSERT INTO #local_temp_Customer VALUES (&#39;Mike&#39;, 28)</code></pre>
+</div>
+<div id="accessibility-of-the-local-temporary-table" class="section level2">
+<h2>3.2 Accessibility of the Local Temporary Table</h2>
+<p>The local temporary table can be called like any other ordinary table:</p>
+<pre class="r"><code>SELECT * FROM #local_temp_Customer;</code></pre>
+<p><img src="/post/2021-05-10-local-and-global-temp-tables_files/p20p4.png" /></p>
+<p><img src="/post/2021-05-10-local-and-global-temp-tables_files/p20p.png" /></p>
+<p><img src="/post/2021-05-10-local-and-global-temp-tables_files/p20p.png" /></p>
+<p><img src="/post/2021-05-10-local-and-global-temp-tables_files/p20p.png" /></p>
+<p><img src="/post/2021-05-10-local-and-global-temp-tables_files/p20p.png" /></p>
+</div>
+</div>

@@ -5,4 +5,176 @@ date: '2021-05-10'
 slug: local-and-global-temp-tables
 categories: []
 tags: []
+output:
+  blogdown::html_page:
+    toc: true
+    toc_depth: 5
 ---
+
+
+
+# 1 Introduction
+
+In this post I would like to explain the use of local and global temporary tables within SQL Server. 
+
+
+
+# 2 Common SQL Tables
+
+As always, I will start by creating my own database in which I will then create a sample table. 
+
+
+```{r, eval=F, echo=T}
+SET LANGUAGE ENGLISH
+
+
+CREATE DATABASE Temp_Tables;
+
+USE Temp_Tables;
+```
+
+
+As we can see, there is no table stored in the database yet:
+
+
+```{r, eval=F, echo=T}
+SELECT *
+    FROM SYSOBJECTS
+    WHERE xtype = 'U';
+```
+
+![](/post/2021-05-10-local-and-global-temp-tables_files/p20p1.png)
+
+
+## 2.1 Creation of a Normal Table
+
+
+Below I will create a table as usual and include some sample data:
+
+```{r, eval=F, echo=T}
+CREATE TABLE Customer
+    (Name VARCHAR(100) NOT NULL,
+     Age INT NOT NULL)
+    ;
+
+INSERT INTO Customer VALUES ('Klara', 35)
+INSERT INTO Customer VALUES ('Emily', 44)
+INSERT INTO Customer VALUES ('Jessy', 22)
+INSERT INTO Customer VALUES ('Max', 50)
+INSERT INTO Customer VALUES ('Tom', 22)
+```
+
+
+
+## 2.2 Accessibility of the Table
+
+The generated sample table can be called (as usual) as follows:
+
+
+```{r, eval=F, echo=T}
+SELECT * FROM Customer;
+```
+
+![](/post/2021-05-10-local-and-global-temp-tables_files/p20p2.png)
+
+
+We can also see them in this way now:
+
+
+```{r, eval=F, echo=T}
+SELECT *
+    FROM SYSOBJECTS
+    WHERE xtype = 'U';
+```
+
+![](/post/2021-05-10-local-and-global-temp-tables_files/p20p3.png)
+
+
+
+# 3 Local Temporary Tables
+
+So far, nothing new has come up that I haven't already described in one of my previous posts. Now let's get to the actual topic for which reason I wrote this post. 
+
+Local Temporary Tables are, as the name suggests, tables that can be created that are only temporarily available. They are automatically deleted as soon as they are no longer used. 
+
+
+
+## 3.1 Creation of a Local Temporary Table
+
+The name of Local Temporary Tables are prefixed with the # character:
+
+
+```{r, eval=F, echo=T}
+CREATE TABLE #local_temp_Customer
+    (Name VARCHAR(100) NOT NULL,
+     Age INT NOT NULL)
+    ;
+```
+
+Now let's add some sample data here:
+
+```{r, eval=F, echo=T}
+INSERT INTO #local_temp_Customer VALUES ('Sven', 35)
+INSERT INTO #local_temp_Customer VALUES ('Mike', 28)
+```
+
+
+## 3.2 Accessibility of the Local Temporary Table
+
+The local temporary table can be called like any other ordinary table:
+
+```{r, eval=F, echo=T}
+SELECT * FROM #local_temp_Customer;
+```
+
+![](/post/2021-05-10-local-and-global-temp-tables_files/p20p4.png)
+
+
+
+
+
+
+
+```{r, eval=F, echo=T}
+
+```
+
+![](/post/2021-05-10-local-and-global-temp-tables_files/p20p.png)
+
+
+
+
+
+```{r, eval=F, echo=T}
+
+```
+
+![](/post/2021-05-10-local-and-global-temp-tables_files/p20p.png)
+
+
+
+
+
+```{r, eval=F, echo=T}
+
+```
+
+![](/post/2021-05-10-local-and-global-temp-tables_files/p20p.png)
+
+
+
+
+
+
+
+
+
+```{r, eval=F, echo=T}
+
+```
+
+![](/post/2021-05-10-local-and-global-temp-tables_files/p20p.png)
+
+
+
+
