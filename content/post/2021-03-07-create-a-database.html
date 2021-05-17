@@ -31,7 +31,11 @@ output:
 <ul>
 <li><a href="#delete-specific-columns">3.2.1 Delete specific Columns</a></li>
 <li><a href="#add-new-columns">3.2.2 Add new Columns</a></li>
-<li><a href="#delete-the-table-contents">3.2.3 Delete the table contents</a></li>
+<li><a href="#delete-the-table-contents">3.2.3 Delete the table contents</a>
+<ul>
+<li><a href="#delete-specific-rows">3.2.3.1 Delete specific rows</a></li>
+<li><a href="#delete-the-entire-content">3.2.3.2 Delete the entire content</a></li>
+</ul></li>
 <li><a href="#delete-the-whole-table">3.2.4 Delete the whole Table</a></li>
 <li><a href="#delete-the-whole-database">3.2.5 Delete the whole Database</a></li>
 </ul></li>
@@ -167,11 +171,23 @@ INSERT INTO Table_1 (First_Name, Last_Name, Further_Column) VALUES (&#39;Alex&#3
 INSERT INTO Table_1 (First_Name, Last_Name, Further_Column) VALUES (&#39;John&#39;, &#39;Green&#39;, &#39;row_to_delete&#39;)</code></pre>
 <pre class="r"><code>SELECT * FROM Table_1</code></pre>
 <p><img src="/post/2021-03-07-create-a-database_files/p3p18.png" /></p>
+<div id="delete-specific-rows" class="section level4">
+<h4>3.2.3.1 Delete specific rows</h4>
+<p>With the following command we have the possibility to delete certain rows from your table:</p>
+<pre class="r"><code>DELETE FROM Table_1
+    WHERE Further_Column = &#39;row_to_delete&#39;
+    ;</code></pre>
+<p>Let’s take another look at the table:</p>
+<pre class="r"><code>SELECT * FROM Table_1</code></pre>
+<p><img src="/post/2021-03-07-create-a-database_files/p3p20.png" /></p>
+</div>
+<div id="delete-the-entire-content" class="section level4">
+<h4>3.2.3.2 Delete the entire content</h4>
 <p>With the command TRUNCATE we can delete the contents of a table, but keep the table in and of itself.</p>
-<pre class="r"><code>TRUNCATE TABLE Table_1;
-
-SELECT * FROM Table_1</code></pre>
+<pre class="r"><code>TRUNCATE TABLE Table_1;</code></pre>
+<pre class="r"><code>SELECT * FROM Table_1</code></pre>
 <p><img src="/post/2021-03-07-create-a-database_files/p3p19.png" /></p>
+</div>
 </div>
 <div id="delete-the-whole-table" class="section level3">
 <h3>3.2.4 Delete the whole Table</h3>

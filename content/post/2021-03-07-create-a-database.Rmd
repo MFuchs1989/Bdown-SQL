@@ -248,22 +248,38 @@ SELECT * FROM Table_1
 ![](/post/2021-03-07-create-a-database_files/p3p18.png)
 
 
+#### 3.2.3.1 Delete specific rows
+
+With the following command we have the possibility to delete certain rows from your table:
 
 
 
+```{r, eval=F, echo=T}
+DELETE FROM Table_1
+	WHERE Further_Column = 'row_to_delete'
+	;
+```
+
+Let's take another look at the table:
+
+```{r, eval=F, echo=T}
+SELECT * FROM Table_1
+```
+
+![](/post/2021-03-07-create-a-database_files/p3p20.png)
 
 
 
-
-
-
+#### 3.2.3.2 Delete the entire content
 
 
 With the command TRUNCATE we can delete the contents of a table, but keep the table in and of itself. 
 
 ```{r, eval=F, echo=T}
 TRUNCATE TABLE Table_1;
+```
 
+```{r, eval=F, echo=T}
 SELECT * FROM Table_1
 ```
 
