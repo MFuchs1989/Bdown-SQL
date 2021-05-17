@@ -15,7 +15,7 @@ output:
 
 # 1 Introduction
 
-In this post I would like to explain the use of local and global temporary tables within SQL Server. 
+In this post I would like to explain the use of Local and Global Temporary Tables within SQL Server. 
 
 
 
