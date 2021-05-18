@@ -156,9 +156,9 @@ SELECT * FROM Employees;
 
 ![](/post/2021-05-13-types-of-sql-commands_files/p21p2.png)
 
-Oops. Now I have accidentally changed the content of the column for all persons. With such an error I can destroy the complete table. 
+Oops. Now I have accidentally changed the content of the column for all persons. **With such an error I can destroy the complete table.** 
 
-Therefore, I will have to set it up again.
+Therefore, I will have to **set it up again**.
 
 
 
@@ -175,7 +175,7 @@ SELECT * FROM Employees;
 
 ![](/post/2021-05-13-types-of-sql-commands_files/p21p3.png)
 
-I can initiate a transcation with the following command. At the same time I use ROLLBACK so that it is not executed. 
+I can initiate a transcation with the following command. At the same time **I use ROLLBACK so that it is not executed**. 
 
 ```{r, eval=F, echo=T}
 BEGIN TRANSACTION Change_Title  
@@ -190,7 +190,7 @@ ROLLBACK TRANSACTION Change_Title
 
 I see here in the output that 5 lines would be affected. At this point I would notice that something is wrong with my command. 
 
-I forgot to use a WHERE statement to narrow down the group of people. 
+I **forgot to use a WHERE statement** to narrow down the group of people. 
 
 ```{r, eval=F, echo=T}
 BEGIN TRANSACTION Change_Title  
@@ -203,7 +203,7 @@ ROLLBACK TRANSACTION Change_Title
 
 ![](/post/2021-05-13-types-of-sql-commands_files/p21p5.png)
 
-Perfect. This statement is now correct. 
+Perfect. This statement is now **correct**. 
 
 But so far my table has not changed, see here:
 

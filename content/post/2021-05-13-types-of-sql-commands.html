@@ -144,8 +144,8 @@ INSERT INTO Employees VALUES (5, &#39;Consultant&#39;, &#39;Tom&#39;, 18)</code>
     ;</code></pre>
 <pre class="r"><code>SELECT * FROM Employees;</code></pre>
 <p><img src="/post/2021-05-13-types-of-sql-commands_files/p21p2.png" /></p>
-<p>Oops. Now I have accidentally changed the content of the column for all persons. With such an error I can destroy the complete table.</p>
-<p>Therefore, I will have to set it up again.</p>
+<p>Oops. Now I have accidentally changed the content of the column for all persons. <strong>With such an error I can destroy the complete table.</strong></p>
+<p>Therefore, I will have to <strong>set it up again</strong>.</p>
 </div>
 <div id="transactions" class="section level3">
 <h3>2.5.3 TRANSACTIONS</h3>
@@ -153,7 +153,7 @@ INSERT INTO Employees VALUES (5, &#39;Consultant&#39;, &#39;Tom&#39;, 18)</code>
 <p>Here again the original table that I restored:</p>
 <pre class="r"><code>SELECT * FROM Employees;</code></pre>
 <p><img src="/post/2021-05-13-types-of-sql-commands_files/p21p3.png" /></p>
-<p>I can initiate a transcation with the following command. At the same time I use ROLLBACK so that it is not executed.</p>
+<p>I can initiate a transcation with the following command. At the same time <strong>I use ROLLBACK so that it is not executed</strong>.</p>
 <pre class="r"><code>BEGIN TRANSACTION Change_Title  
     UPDATE Employees
         SET Job_Titel = &#39;Senior Consultant&#39;
@@ -161,7 +161,7 @@ ROLLBACK TRANSACTION Change_Title
 ;</code></pre>
 <p><img src="/post/2021-05-13-types-of-sql-commands_files/p21p4.png" /></p>
 <p>I see here in the output that 5 lines would be affected. At this point I would notice that something is wrong with my command.</p>
-<p>I forgot to use a WHERE statement to narrow down the group of people.</p>
+<p>I <strong>forgot to use a WHERE statement</strong> to narrow down the group of people.</p>
 <pre class="r"><code>BEGIN TRANSACTION Change_Title  
     UPDATE Employees
         SET Job_Titel = &#39;Senior Consultant&#39;
@@ -169,7 +169,7 @@ ROLLBACK TRANSACTION Change_Title
 ROLLBACK TRANSACTION Change_Title  
 ;</code></pre>
 <p><img src="/post/2021-05-13-types-of-sql-commands_files/p21p5.png" /></p>
-<p>Perfect. This statement is now correct.</p>
+<p>Perfect. This statement is now <strong>correct</strong>.</p>
 <p>But so far my table has not changed, see here:</p>
 <pre class="r"><code>SELECT * FROM Employees;</code></pre>
 <p><img src="/post/2021-05-13-types-of-sql-commands_files/p21p6.png" /></p>
