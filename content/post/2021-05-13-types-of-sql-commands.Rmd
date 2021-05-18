@@ -268,7 +268,7 @@ BEGIN TRANSACTION Change_Title_2
 
 
 Here I have instructed a transaction with the desired changes but have not yet used a COMMIT. 
-But the changes are already visible in the table:
+But the changes are **already visible** in the table:
 
 
 ```{r, eval=F, echo=T}
@@ -277,7 +277,7 @@ SELECT * FROM Employees;
 
 ![](/post/2021-05-13-types-of-sql-commands_files/p21p8.png)
 
-If I realize at this point that I have made a mistake, I can reverse the transaction:
+If I realize at this point that I have made a mistake, I **can reverse the transaction**:
 
 
 ```{r, eval=F, echo=T}
@@ -291,9 +291,9 @@ SELECT * FROM Employees;
 
 ![](/post/2021-05-13-types-of-sql-commands_files/p21p9.png)
 
-We see, I get my old table back. 
+We see, I **get my old table back**. 
 
-I now run the same transaction again and then use the COMMIT command:
+I now run **the same transaction** again and then use the COMMIT command:
 
 ```{r, eval=F, echo=T}
 BEGIN TRANSACTION Change_Title_2 
@@ -335,7 +335,7 @@ SELECT * FROM Employees;
 
 ![](/post/2021-05-13-types-of-sql-commands_files/p21p10.png)
 
-Even if I tried a ROLLBACK now, it would fail:
+**Even if I tried a ROLLBACK now, it would fail:**
 
 
 ```{r, eval=F, echo=T}
@@ -348,9 +348,9 @@ ROLLBACK TRANSACTION Change_Title_2;
 
 #### 2.5.3.3 SAVEPOINTS
 
-A topic that I will not present now as an example but I also did not want to withhold from you are SAVEPOINTS.
+A topic that I will not present now as an example but I also did not want to withhold from you are **SAVEPOINTS**.
 
-These can be set at different places within the grouped tasks of a transaction to which one can jump back with the help of a ROLLBACK. In this way one avoids that the complete transaction has to be executed again, but prevents in the same step that erroneous task packages are taken over. 
+These can be set at different places within the grouped tasks of a transaction to which one can jump back **with the help of a ROLLBACK**. In this way one avoids that the complete transaction has to be executed again, but prevents in the same step that erroneous task packages are taken over. 
 
 
 

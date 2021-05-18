@@ -208,15 +208,15 @@ This time I use the following commands:</p>
   END CATCH  
   ;</code></pre>
 <p>Here I have instructed a transaction with the desired changes but have not yet used a COMMIT.
-But the changes are already visible in the table:</p>
+But the changes are <strong>already visible</strong> in the table:</p>
 <pre class="r"><code>SELECT * FROM Employees;</code></pre>
 <p><img src="/post/2021-05-13-types-of-sql-commands_files/p21p8.png" /></p>
-<p>If I realize at this point that I have made a mistake, I can reverse the transaction:</p>
+<p>If I realize at this point that I have made a mistake, I <strong>can reverse the transaction</strong>:</p>
 <pre class="r"><code>ROLLBACK TRANSACTION Change_Title_2;</code></pre>
 <pre class="r"><code>SELECT * FROM Employees;</code></pre>
 <p><img src="/post/2021-05-13-types-of-sql-commands_files/p21p9.png" /></p>
-<p>We see, I get my old table back.</p>
-<p>I now run the same transaction again and then use the COMMIT command:</p>
+<p>We see, I <strong>get my old table back</strong>.</p>
+<p>I now run <strong>the same transaction</strong> again and then use the COMMIT command:</p>
 <pre class="r"><code>BEGIN TRANSACTION Change_Title_2 
 
   BEGIN TRY
@@ -241,14 +241,14 @@ And this time i use COMMIT:</p>
 <p>Now the transaction is through and cannot be changed:</p>
 <pre class="r"><code>SELECT * FROM Employees;</code></pre>
 <p><img src="/post/2021-05-13-types-of-sql-commands_files/p21p10.png" /></p>
-<p>Even if I tried a ROLLBACK now, it would fail:</p>
+<p><strong>Even if I tried a ROLLBACK now, it would fail:</strong></p>
 <pre class="r"><code>ROLLBACK TRANSACTION Change_Title_2;</code></pre>
 <p><img src="/post/2021-05-13-types-of-sql-commands_files/p21p11.png" /></p>
 </div>
 <div id="savepoints" class="section level4">
 <h4>2.5.3.3 SAVEPOINTS</h4>
-<p>A topic that I will not present now as an example but I also did not want to withhold from you are SAVEPOINTS.</p>
-<p>These can be set at different places within the grouped tasks of a transaction to which one can jump back with the help of a ROLLBACK. In this way one avoids that the complete transaction has to be executed again, but prevents in the same step that erroneous task packages are taken over.</p>
+<p>A topic that I will not present now as an example but I also did not want to withhold from you are <strong>SAVEPOINTS</strong>.</p>
+<p>These can be set at different places within the grouped tasks of a transaction to which one can jump back <strong>with the help of a ROLLBACK</strong>. In this way one avoids that the complete transaction has to be executed again, but prevents in the same step that erroneous task packages are taken over.</p>
 </div>
 </div>
 </div>
