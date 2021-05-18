@@ -41,6 +41,8 @@ Examples of DDL commands:
 + [TRUNCATE](https://michael-fuchs-sql.netlify.app/2021/03/07/create-a-database/#delete-the-entire-content) - remove all records from a table
 
 
+check 
+
 
 
 + []()
