@@ -66,20 +66,61 @@ Examples of DML commands:
 
 ## 2.4 Data Control Language (DCL)
 
+DCL commands mainly deal with the permissions and other controls of the database system. 
+
+Examples of DCL commands:
+
++ [GRANT](https://docs.microsoft.com/en-us/sql/t-sql/statements/grant-transact-sql?view=sql-server-ver15) - allows users read and write access to the database
++ [REVOKE](https://docs.microsoft.com/en-us/sql/t-sql/statements/revoke-object-permissions-transact-sql?view=sql-server-ver15) - withdraw users read and write access to the database
 
 
-+ []()
+
+## 2.5 Transaction Control Language (TCL)
+
+I want to go into a little more detail on this section, since I haven't covered it in any other post of mine. 
+
+In a nutshell: TCL commands deal with transactions within the database.
 
 
+### 2.5.1 Preparation
+
+For the following examples, I set up a new database.
+
+```{r, eval=F, echo=T}
+SET LANGUAGE ENGLISH
 
 
+CREATE DATABASE SQL_Types;
+
+
+USE SQL_Types;
+```
+
+
+Now I will quickly create a simple example data set:
+
+```{r, eval=F, echo=T}
+CREATE TABLE Employees
+    (Employee_ID INT NOT NULL PRIMARY KEY,
+	 Job_Titel VARCHAR(100),
+	 Name VARCHAR(100) NOT NULL,
+     Age INT NOT NULL)
+    ;
+
+
+INSERT INTO Employees VALUES (1, 'Consultant', 'Klara', 35)
+INSERT INTO Employees VALUES (2, 'Consultant', 'Emily', 44)
+INSERT INTO Employees VALUES (3, 'Consultant', 'Jessy', 22)
+INSERT INTO Employees VALUES (4, 'Consultant', 'Max', 50)
+INSERT INTO Employees VALUES (5, 'Consultant', 'Tom', 18)
+```
 
 
 ```{r, eval=F, echo=T}
-
+SELECT * FROM Employees;
 ```
 
-![](/post/2021-05-13-types-of-sql-commands_files/p21p.png)
+![](/post/2021-05-13-types-of-sql-commands_files/p21p1.png)
 
 
 

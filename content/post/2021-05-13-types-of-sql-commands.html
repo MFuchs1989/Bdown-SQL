@@ -24,6 +24,10 @@ output:
 <li><a href="#data-query-language-dql">2.2 Data Query Language (DQL)</a></li>
 <li><a href="#data-manipulation-language-dml">2.3 Data Manipulation Language (DML)</a></li>
 <li><a href="#data-control-language-dcl">2.4 Data Control Language (DCL)</a></li>
+<li><a href="#transaction-control-language-tcl">2.5 Transaction Control Language (TCL)</a>
+<ul>
+<li><a href="#preparation">2.5.1 Preparation</a></li>
+</ul></li>
 </ul></li>
 </ul>
 </div>
@@ -73,15 +77,49 @@ output:
 </div>
 <div id="data-control-language-dcl" class="section level2">
 <h2>2.4 Data Control Language (DCL)</h2>
+<p>DCL commands mainly deal with the permissions and other controls of the database system.</p>
+<p>Examples of DCL commands:</p>
 <ul>
-<li><a href=""></a></li>
+<li><a href="https://docs.microsoft.com/en-us/sql/t-sql/statements/grant-transact-sql?view=sql-server-ver15">GRANT</a> - allows users read and write access to the database</li>
+<li><a href="https://docs.microsoft.com/en-us/sql/t-sql/statements/revoke-object-permissions-transact-sql?view=sql-server-ver15">REVOKE</a> - withdraw users read and write access to the database</li>
 </ul>
+</div>
+<div id="transaction-control-language-tcl" class="section level2">
+<h2>2.5 Transaction Control Language (TCL)</h2>
+<p>I want to go into a little more detail on this section, since I haven’t covered it in any other post of mine.</p>
+<p>In a nutshell: TCL commands deal with transactions within the database.</p>
+<div id="preparation" class="section level3">
+<h3>2.5.1 Preparation</h3>
+<p>For the following examples, I set up a new database.</p>
+<pre class="r"><code>SET LANGUAGE ENGLISH
+
+
+CREATE DATABASE SQL_Types;
+
+
+USE SQL_Types;</code></pre>
+<p>Now I will quickly create a simple example data set:</p>
+<pre class="r"><code>CREATE TABLE Employees
+    (Employee_ID INT NOT NULL PRIMARY KEY,
+     Job_Titel VARCHAR(100),
+     Name VARCHAR(100) NOT NULL,
+     Age INT NOT NULL)
+    ;
+
+
+INSERT INTO Employees VALUES (1, &#39;Consultant&#39;, &#39;Klara&#39;, 35)
+INSERT INTO Employees VALUES (2, &#39;Consultant&#39;, &#39;Emily&#39;, 44)
+INSERT INTO Employees VALUES (3, &#39;Consultant&#39;, &#39;Jessy&#39;, 22)
+INSERT INTO Employees VALUES (4, &#39;Consultant&#39;, &#39;Max&#39;, 50)
+INSERT INTO Employees VALUES (5, &#39;Consultant&#39;, &#39;Tom&#39;, 18)</code></pre>
+<pre class="r"><code>SELECT * FROM Employees;</code></pre>
+<p><img src="/post/2021-05-13-types-of-sql-commands_files/p21p1.png" /></p>
 <p><img src="/post/2021-05-13-types-of-sql-commands_files/p21p.png" /></p>
 <p><img src="/post/2021-05-13-types-of-sql-commands_files/p21p.png" /></p>
 <p><img src="/post/2021-05-13-types-of-sql-commands_files/p21p.png" /></p>
 <p><img src="/post/2021-05-13-types-of-sql-commands_files/p21p.png" /></p>
 <p><img src="/post/2021-05-13-types-of-sql-commands_files/p21p.png" /></p>
 <p><img src="/post/2021-05-13-types-of-sql-commands_files/p21p.png" /></p>
-<p><img src="/post/2021-05-13-types-of-sql-commands_files/p21p.png" /></p>
+</div>
 </div>
 </div>
