@@ -5,4 +5,134 @@ date: '2021-05-13'
 slug: types-of-sql-commands
 categories: []
 tags: []
+output:
+  blogdown::html_page:
+    toc: true
+    toc_depth: 5
 ---
+
+
+
+# 1 Introduction
+
+After I have already written some posts about different SQL functions I would like to write a structure-bringing publication at this point again. 
+
+In the following I will explain the different SQL command types:
+
++ Data Definition Language (DDL)
++ Data Query Language (DQL) 
++ Data Manipulation Language (DML)
++ Data Control Language(DCL)
++ Transaction Control Language(TCL)
+
+
+# 2 Types of SQL Commands
+
+
+## 2.1 Data Definition Language (DDL)
+
+DDL describes the SQL commands that can be used to define a database schema. They are mostly used for creating and changing the structure of database objects in the database. 
+
+Examples of DDL commands:
+
+
+
+
+
+
+
+
+
+
+
+
+```{r, eval=F, echo=T}
+
+```
+
+![](/post/2021-05-13-types-of-sql-commands_files/p21p.png)
+
+
+
+```{r, eval=F, echo=T}
+
+```
+
+![](/post/2021-05-13-types-of-sql-commands_files/p21p.png)
+
+
+
+
+```{r, eval=F, echo=T}
+
+```
+
+![](/post/2021-05-13-types-of-sql-commands_files/p21p.png)
+
+
+
+
+```{r, eval=F, echo=T}
+
+```
+
+![](/post/2021-05-13-types-of-sql-commands_files/p21p.png)
+
+
+
+
+```{r, eval=F, echo=T}
+
+```
+
+![](/post/2021-05-13-types-of-sql-commands_files/p21p.png)
+
+
+
+
+```{r, eval=F, echo=T}
+
+```
+
+![](/post/2021-05-13-types-of-sql-commands_files/p21p.png)
+
+
+
+
+
+
+
+
+
+
+
+
+```{r, eval=F, echo=T}
+
+```
+
+![](/post/2021-05-13-types-of-sql-commands_files/p21p.png)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
