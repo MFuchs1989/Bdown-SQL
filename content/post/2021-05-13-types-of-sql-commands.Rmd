@@ -175,82 +175,194 @@ SELECT * FROM Employees;
 
 ![](/post/2021-05-13-types-of-sql-commands_files/p21p3.png)
 
+I can initiate a transcation with the following command. At the same time I use ROLLBACK so that it is not executed. 
+
+```{r, eval=F, echo=T}
+BEGIN TRANSACTION Change_Title  
+	UPDATE Employees
+		SET Job_Titel = 'Senior Consultant'
+ROLLBACK TRANSACTION Change_Title  
+;
+```
+
+![](/post/2021-05-13-types-of-sql-commands_files/p21p4.png)
 
 
+I see here in the output that 5 lines would be affected. At this point I would notice that something is wrong with my command. 
+
+I forgot to use a WHERE statement to narrow down the group of people. 
+
+```{r, eval=F, echo=T}
+BEGIN TRANSACTION Change_Title  
+	UPDATE Employees
+		SET Job_Titel = 'Senior Consultant'
+		WHERE Age > 40
+ROLLBACK TRANSACTION Change_Title  
+;
+```
+
+![](/post/2021-05-13-types-of-sql-commands_files/p21p5.png)
+
+Perfect. This statement is now correct. 
+
+But so far my table has not changed, see here:
+
+```{r, eval=F, echo=T}
+SELECT * FROM Employees;
+```
+
+![](/post/2021-05-13-types-of-sql-commands_files/p21p6.png)
 
 
+#### 2.5.3.1 COMMIT TRANSACTION
 
-
-
-
-
+Now that I have validated that my statement is correct using the Transaction commands shown earlier, I can perform the transaction. This can be done with the COMMIT command.
 
 
 ```{r, eval=F, echo=T}
-
+BEGIN TRANSACTION Change_Title  
+	UPDATE Employees
+		SET Job_Titel = 'Senior Consultant'
+		WHERE Age > 40
+COMMIT TRANSACTION Change_Title 
+;
 ```
-
-![](/post/2021-05-13-types-of-sql-commands_files/p21p.png)
-
-
 
 
 ```{r, eval=F, echo=T}
-
+SELECT * FROM Employees;
 ```
 
-![](/post/2021-05-13-types-of-sql-commands_files/p21p.png)
+![](/post/2021-05-13-types-of-sql-commands_files/p21p7.png)
+
+Now the title of the correct group of people has been changed.
 
 
+#### 2.5.3.2 ROLLBACKS
+
+However, TCL offers other useful functions to be able to validate a transaction. The so-called ROLLBACKS. With this I have the possibility to reset the previously made transaction if I notice that it was not quite correct. 
+
+
+This becomes clear in the following example. I would like to change the title of certain persons again. 
+This time I use the following commands:
 
 
 ```{r, eval=F, echo=T}
+BEGIN TRANSACTION Change_Title_2 
 
+  BEGIN TRY
+
+	UPDATE Employees
+		SET Job_Titel = 'Junior Consultant'
+		WHERE Age < 25
+
+  END TRY
+
+  BEGIN CATCH
+
+      ROLLBACK TRANSACTION Change_Title_2
+
+  END CATCH  
+  ;
 ```
 
-![](/post/2021-05-13-types-of-sql-commands_files/p21p.png)
 
-
+Here I have instructed a transaction with the desired changes but have not yet used a COMMIT. 
+But the changes are already visible in the table:
 
 
 ```{r, eval=F, echo=T}
-
+SELECT * FROM Employees;
 ```
 
-![](/post/2021-05-13-types-of-sql-commands_files/p21p.png)
+![](/post/2021-05-13-types-of-sql-commands_files/p21p8.png)
 
-
-
-
-
-
-
-
-
-
+If I realize at this point that I have made a mistake, I can reverse the transaction:
 
 
 ```{r, eval=F, echo=T}
-
+ROLLBACK TRANSACTION Change_Title_2;
 ```
 
-![](/post/2021-05-13-types-of-sql-commands_files/p21p.png)
+
+```{r, eval=F, echo=T}
+SELECT * FROM Employees;
+```
+
+![](/post/2021-05-13-types-of-sql-commands_files/p21p9.png)
+
+We see, I get my old table back. 
+
+I now run the same transaction again and then use the COMMIT command:
+
+```{r, eval=F, echo=T}
+BEGIN TRANSACTION Change_Title_2 
+
+  BEGIN TRY
+
+	UPDATE Employees
+		SET Job_Titel = 'Junior Consultant'
+		WHERE Age < 25
+
+  END TRY
+
+  BEGIN CATCH
+
+      ROLLBACK TRANSACTION Change_Title_2
+
+  END CATCH  
+  ;
+```
+
+```{r, eval=F, echo=T}
+SELECT * FROM Employees;
+```
+
+![](/post/2021-05-13-types-of-sql-commands_files/p21p10.png)
+
+We see the table has changed again as before. 
+And this time i use COMMIT:
+
+```{r, eval=F, echo=T}
+COMMIT TRANSACTION Change_Title_2;
+```
+
+Now the transaction is through and cannot be changed:
+
+```{r, eval=F, echo=T}
+SELECT * FROM Employees;
+```
+
+![](/post/2021-05-13-types-of-sql-commands_files/p21p10.png)
+
+Even if I tried a ROLLBACK now, it would fail:
+
+
+```{r, eval=F, echo=T}
+ROLLBACK TRANSACTION Change_Title_2;
+```
+
+![](/post/2021-05-13-types-of-sql-commands_files/p21p11.png)
 
 
 
+#### 2.5.3.3 SAVEPOINTS
+
+A topic that I will not present now as an example but I also did not want to withhold from you are SAVEPOINTS.
+
+These can be set at different places within the grouped tasks of a transaction to which one can jump back with the help of a ROLLBACK. In this way one avoids that the complete transaction has to be executed again, but prevents in the same step that erroneous task packages are taken over. 
 
 
 
+# 3 Conclusion
 
+In this post, I went into detail about the different categories of SQL language. These were:
 
-
-
-
-
-
-
-
-
++ Data Definition Language (DDL)
++ Data Query Language (DQL) 
++ Data Manipulation Language (DML)
++ Data Control Language (DCL)
++ Transaction Control Language (TCL)
 
 
 

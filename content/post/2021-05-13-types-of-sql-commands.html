@@ -28,9 +28,15 @@ output:
 <ul>
 <li><a href="#preparation">2.5.1 Preparation</a></li>
 <li><a href="#update-a-table">2.5.2 Update a Table</a></li>
-<li><a href="#transactions">2.5.3 TRANSACTIONS</a></li>
+<li><a href="#transactions">2.5.3 TRANSACTIONS</a>
+<ul>
+<li><a href="#commit-transaction">2.5.3.1 COMMIT TRANSACTION</a></li>
+<li><a href="#rollbacks">2.5.3.2 ROLLBACKS</a></li>
+<li><a href="#savepoints">2.5.3.3 SAVEPOINTS</a></li>
 </ul></li>
 </ul></li>
+</ul></li>
+<li><a href="#conclusion">3 Conclusion</a></li>
 </ul>
 </div>
 
@@ -147,11 +153,114 @@ INSERT INTO Employees VALUES (5, &#39;Consultant&#39;, &#39;Tom&#39;, 18)</code>
 <p>Here again the original table that I restored:</p>
 <pre class="r"><code>SELECT * FROM Employees;</code></pre>
 <p><img src="/post/2021-05-13-types-of-sql-commands_files/p21p3.png" /></p>
-<p><img src="/post/2021-05-13-types-of-sql-commands_files/p21p.png" /></p>
-<p><img src="/post/2021-05-13-types-of-sql-commands_files/p21p.png" /></p>
-<p><img src="/post/2021-05-13-types-of-sql-commands_files/p21p.png" /></p>
-<p><img src="/post/2021-05-13-types-of-sql-commands_files/p21p.png" /></p>
-<p><img src="/post/2021-05-13-types-of-sql-commands_files/p21p.png" /></p>
+<p>I can initiate a transcation with the following command. At the same time I use ROLLBACK so that it is not executed.</p>
+<pre class="r"><code>BEGIN TRANSACTION Change_Title  
+    UPDATE Employees
+        SET Job_Titel = &#39;Senior Consultant&#39;
+ROLLBACK TRANSACTION Change_Title  
+;</code></pre>
+<p><img src="/post/2021-05-13-types-of-sql-commands_files/p21p4.png" /></p>
+<p>I see here in the output that 5 lines would be affected. At this point I would notice that something is wrong with my command.</p>
+<p>I forgot to use a WHERE statement to narrow down the group of people.</p>
+<pre class="r"><code>BEGIN TRANSACTION Change_Title  
+    UPDATE Employees
+        SET Job_Titel = &#39;Senior Consultant&#39;
+        WHERE Age &gt; 40
+ROLLBACK TRANSACTION Change_Title  
+;</code></pre>
+<p><img src="/post/2021-05-13-types-of-sql-commands_files/p21p5.png" /></p>
+<p>Perfect. This statement is now correct.</p>
+<p>But so far my table has not changed, see here:</p>
+<pre class="r"><code>SELECT * FROM Employees;</code></pre>
+<p><img src="/post/2021-05-13-types-of-sql-commands_files/p21p6.png" /></p>
+<div id="commit-transaction" class="section level4">
+<h4>2.5.3.1 COMMIT TRANSACTION</h4>
+<p>Now that I have validated that my statement is correct using the Transaction commands shown earlier, I can perform the transaction. This can be done with the COMMIT command.</p>
+<pre class="r"><code>BEGIN TRANSACTION Change_Title  
+    UPDATE Employees
+        SET Job_Titel = &#39;Senior Consultant&#39;
+        WHERE Age &gt; 40
+COMMIT TRANSACTION Change_Title 
+;</code></pre>
+<pre class="r"><code>SELECT * FROM Employees;</code></pre>
+<p><img src="/post/2021-05-13-types-of-sql-commands_files/p21p7.png" /></p>
+<p>Now the title of the correct group of people has been changed.</p>
+</div>
+<div id="rollbacks" class="section level4">
+<h4>2.5.3.2 ROLLBACKS</h4>
+<p>However, TCL offers other useful functions to be able to validate a transaction. The so-called ROLLBACKS. With this I have the possibility to reset the previously made transaction if I notice that it was not quite correct.</p>
+<p>This becomes clear in the following example. I would like to change the title of certain persons again.
+This time I use the following commands:</p>
+<pre class="r"><code>BEGIN TRANSACTION Change_Title_2 
+
+  BEGIN TRY
+
+    UPDATE Employees
+        SET Job_Titel = &#39;Junior Consultant&#39;
+        WHERE Age &lt; 25
+
+  END TRY
+
+  BEGIN CATCH
+
+      ROLLBACK TRANSACTION Change_Title_2
+
+  END CATCH  
+  ;</code></pre>
+<p>Here I have instructed a transaction with the desired changes but have not yet used a COMMIT.
+But the changes are already visible in the table:</p>
+<pre class="r"><code>SELECT * FROM Employees;</code></pre>
+<p><img src="/post/2021-05-13-types-of-sql-commands_files/p21p8.png" /></p>
+<p>If I realize at this point that I have made a mistake, I can reverse the transaction:</p>
+<pre class="r"><code>ROLLBACK TRANSACTION Change_Title_2;</code></pre>
+<pre class="r"><code>SELECT * FROM Employees;</code></pre>
+<p><img src="/post/2021-05-13-types-of-sql-commands_files/p21p9.png" /></p>
+<p>We see, I get my old table back.</p>
+<p>I now run the same transaction again and then use the COMMIT command:</p>
+<pre class="r"><code>BEGIN TRANSACTION Change_Title_2 
+
+  BEGIN TRY
+
+    UPDATE Employees
+        SET Job_Titel = &#39;Junior Consultant&#39;
+        WHERE Age &lt; 25
+
+  END TRY
+
+  BEGIN CATCH
+
+      ROLLBACK TRANSACTION Change_Title_2
+
+  END CATCH  
+  ;</code></pre>
+<pre class="r"><code>SELECT * FROM Employees;</code></pre>
+<p><img src="/post/2021-05-13-types-of-sql-commands_files/p21p10.png" /></p>
+<p>We see the table has changed again as before.
+And this time i use COMMIT:</p>
+<pre class="r"><code>COMMIT TRANSACTION Change_Title_2;</code></pre>
+<p>Now the transaction is through and cannot be changed:</p>
+<pre class="r"><code>SELECT * FROM Employees;</code></pre>
+<p><img src="/post/2021-05-13-types-of-sql-commands_files/p21p10.png" /></p>
+<p>Even if I tried a ROLLBACK now, it would fail:</p>
+<pre class="r"><code>ROLLBACK TRANSACTION Change_Title_2;</code></pre>
+<p><img src="/post/2021-05-13-types-of-sql-commands_files/p21p11.png" /></p>
+</div>
+<div id="savepoints" class="section level4">
+<h4>2.5.3.3 SAVEPOINTS</h4>
+<p>A topic that I will not present now as an example but I also did not want to withhold from you are SAVEPOINTS.</p>
+<p>These can be set at different places within the grouped tasks of a transaction to which one can jump back with the help of a ROLLBACK. In this way one avoids that the complete transaction has to be executed again, but prevents in the same step that erroneous task packages are taken over.</p>
 </div>
 </div>
+</div>
+</div>
+<div id="conclusion" class="section level1">
+<h1>3 Conclusion</h1>
+<p>In this post, I went into detail about the different categories of SQL language. These were:</p>
+<ul>
+<li>Data Definition Language (DDL)</li>
+<li>Data Query Language (DQL)</li>
+<li>Data Manipulation Language (DML)</li>
+<li>Data Control Language (DCL)</li>
+<li>Transaction Control Language (TCL)</li>
+</ul>
 </div>
