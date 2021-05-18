@@ -35,9 +35,15 @@ DDL describes the SQL commands that can be used to define a database schema. The
 
 Examples of DDL commands:
 
++ [CREATE](https://michael-fuchs-sql.netlify.app/2021/03/07/create-a-database/#create-a-new-table) - create the database or its objects
++ [DROP](https://michael-fuchs-sql.netlify.app/2021/03/07/create-a-database/#delete-the-whole-table) - delete objects 
++ [ALTER](https://michael-fuchs-sql.netlify.app/2021/03/10/create-a-1-1-relationship/#connecting-the-two-tables) - alter the structure of objects
++ [TRUNCATE](https://michael-fuchs-sql.netlify.app/2021/03/07/create-a-database/#delete-the-entire-content) - remove all records from a table
 
 
 
+
++ []()
 
 
 
