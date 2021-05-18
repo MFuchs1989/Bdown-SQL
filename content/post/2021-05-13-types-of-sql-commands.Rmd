@@ -1,0 +1,8 @@
+---
+title: Types of SQL Commands
+author: Michael Fuchs
+date: '2021-05-13'
+slug: types-of-sql-commands
+categories: []
+tags: []
+---
