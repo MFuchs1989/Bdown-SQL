@@ -27,6 +27,8 @@ output:
 <li><a href="#transaction-control-language-tcl">2.5 Transaction Control Language (TCL)</a>
 <ul>
 <li><a href="#preparation">2.5.1 Preparation</a></li>
+<li><a href="#update-a-table">2.5.2 Update a Table</a></li>
+<li><a href="#transactions">2.5.3 TRANSACTIONS</a></li>
 </ul></li>
 </ul></li>
 </ul>
@@ -87,7 +89,20 @@ output:
 <div id="transaction-control-language-tcl" class="section level2">
 <h2>2.5 Transaction Control Language (TCL)</h2>
 <p>I want to go into a little more detail on this section, since I haven’t covered it in any other post of mine.</p>
-<p>In a nutshell: TCL commands deal with transactions within the database.</p>
+<p>Transactions bundles a group of tasks together into a single unit of execution. Each transaction starts with a specific task and ends when all tasks in the group complete successfully. If any of the tasks fail, the transaction fails. Therefore, a transaction has only two outcomes: Success or failure.</p>
+<p><a href="https://www.ibm.com/docs/en/cics-ts/5.4?topic=processing-acid-properties-transactions">Transactions have the following four standard properties, usually referred to by the acronym ACID.</a></p>
+<ul>
+<li><a href="https://www.geeksforgeeks.org/acid-properties-in-dbms/">Atomicity</a> − ensures that all operations within the work unit are completed successfully. Otherwise, the transaction is aborted at the point of failure and all the previous operations are rolled back to their former state.</li>
+<li><a href="https://www.geeksforgeeks.org/acid-properties-in-dbms/">Consistency</a> − ensures that the database properly changes states upon a successfully committed transaction.</li>
+<li><a href="https://www.geeksforgeeks.org/acid-properties-in-dbms/">Isolation</a> − enables transactions to operate independently of and transparent to each other.</li>
+<li><a href="https://www.geeksforgeeks.org/acid-properties-in-dbms/">Durability</a> − ensures that the result or effect of a committed transaction persists in case of a system failure</li>
+</ul>
+<p><strong>Transaction Control</strong></p>
+<p>I will use the following commands to control transactions:</p>
+<ul>
+<li>COMMIT − to save the changes</li>
+<li>ROLLBACK − to roll back the changes</li>
+</ul>
 <div id="preparation" class="section level3">
 <h3>2.5.1 Preparation</h3>
 <p>For the following examples, I set up a new database.</p>
@@ -114,7 +129,24 @@ INSERT INTO Employees VALUES (4, &#39;Consultant&#39;, &#39;Max&#39;, 50)
 INSERT INTO Employees VALUES (5, &#39;Consultant&#39;, &#39;Tom&#39;, 18)</code></pre>
 <pre class="r"><code>SELECT * FROM Employees;</code></pre>
 <p><img src="/post/2021-05-13-types-of-sql-commands_files/p21p1.png" /></p>
-<p><img src="/post/2021-05-13-types-of-sql-commands_files/p21p.png" /></p>
+</div>
+<div id="update-a-table" class="section level3">
+<h3>2.5.2 Update a Table</h3>
+<p>Let’s say I want to change the contents of a table for certain people, for example the job title. We can do that as follows:</p>
+<pre class="r"><code>UPDATE Employees
+    SET Job_Titel = &#39;Senior Consultant&#39;
+    ;</code></pre>
+<pre class="r"><code>SELECT * FROM Employees;</code></pre>
+<p><img src="/post/2021-05-13-types-of-sql-commands_files/p21p2.png" /></p>
+<p>Oops. Now I have accidentally changed the content of the column for all persons. With such an error I can destroy the complete table.</p>
+<p>Therefore, I will have to set it up again.</p>
+</div>
+<div id="transactions" class="section level3">
+<h3>2.5.3 TRANSACTIONS</h3>
+<p>To prevent such an error, I can use Transactions.</p>
+<p>Here again the original table that I restored:</p>
+<pre class="r"><code>SELECT * FROM Employees;</code></pre>
+<p><img src="/post/2021-05-13-types-of-sql-commands_files/p21p3.png" /></p>
 <p><img src="/post/2021-05-13-types-of-sql-commands_files/p21p.png" /></p>
 <p><img src="/post/2021-05-13-types-of-sql-commands_files/p21p.png" /></p>
 <p><img src="/post/2021-05-13-types-of-sql-commands_files/p21p.png" /></p>
