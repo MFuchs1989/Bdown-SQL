@@ -22,8 +22,8 @@ In the following I will explain the different SQL command types:
 + Data Definition Language (DDL)
 + Data Query Language (DQL) 
 + Data Manipulation Language (DML)
-+ Data Control Language(DCL)
-+ Transaction Control Language(TCL)
++ Data Control Language (DCL)
++ Transaction Control Language (TCL)
 
 
 # 2 Types of SQL Commands
@@ -44,11 +44,31 @@ Examples of DDL commands:
 
 ## 2.2 Data Query Language (DQL)
 
+DQL statements are used to query data within schema objects. 
+
+An example of this would be:
+
++ [SELECT](https://michael-fuchs-sql.netlify.app/2021/03/07/create-a-database/#a-glimpse-at-the-new-table) - retrieve data from the database
+
+
+
+## 2.3 Data Manipulation Language (DML)
+
+The commands from this category deal with the manipulation of the data inside the database. 
+
+Examples of DML commands:
+
+
++ [INSERT](https://michael-fuchs-sql.netlify.app/2021/03/07/create-a-database/#inserting-values-into-the-table) - insert data into a table
++ [UPDATE](https://michael-fuchs-sql.netlify.app/2021/05/08/update-a-table/#update-command) - update existing data within a table
++ [DELETE](https://michael-fuchs-sql.netlify.app/2021/03/07/create-a-database/#delete-specific-rows) - delete records from a database table
+
+
+## 2.4 Data Control Language (DCL)
+
 
 
 + []()
-
-
 
 
 
