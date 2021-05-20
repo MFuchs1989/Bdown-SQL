@@ -1,0 +1,194 @@
+---
+title: Normalization of Databases
+author: Michael Fuchs
+date: '2021-05-16'
+slug: normalization-of-databases
+categories: []
+tags: []
+output:
+  blogdown::html_page:
+    toc: true
+    toc_depth: 5
+---
+
+
+
+# 1 Introduction
+
+
+
+```{r, eval=F, echo=T}
+
+```
+
+![](/post/2021-05-16-normalization-of-databases_files/p22p.png)
+
+
+
+
+
+
+```{r, eval=F, echo=T}
+
+```
+
+![](/post/2021-05-16-normalization-of-databases_files/p22p.png)
+
+
+
+
+
+
+
+
+
+
+
+
+```{r, eval=F, echo=T}
+
+```
+
+![](/post/2021-05-16-normalization-of-databases_files/p22p.png)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+```{r, eval=F, echo=T}
+
+```
+
+![](/post/2021-05-16-normalization-of-databases_files/p22p.png)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+```{r, eval=F, echo=T}
+
+```
+
+![](/post/2021-05-16-normalization-of-databases_files/p22p.png)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+```{r, eval=F, echo=T}
+
+```
+
+![](/post/2021-05-16-normalization-of-databases_files/p22p.png)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+```{r, eval=F, echo=T}
+
+```
+
+![](/post/2021-05-16-normalization-of-databases_files/p22p.png)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+```{r, eval=F, echo=T}
+
+```
+
+![](/post/2021-05-16-normalization-of-databases_files/p22p.png)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
