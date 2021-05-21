@@ -294,6 +294,11 @@ We need to add a futher table to normalize this data:
 
 
 
+Now we have created three tables in this chapter, using foreign keys to link the tables together.
+
++ The Address table’s foreign key Customer_ID links an address to a customer in the Customer_Info table.
++ The Customer_Info table’s foreign key Nationality_ID links a customer to a nationality in the Nationality table. 
++ The Nationality table has no foreign key because it has no need to link to another table in this design. 
 
 
 
