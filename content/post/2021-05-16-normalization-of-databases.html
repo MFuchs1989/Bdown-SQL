@@ -18,9 +18,17 @@ output:
 <div id="TOC">
 <ul>
 <li><a href="#introduction">1 Introduction</a></li>
-<li><a href="#what-is-normalization-in-a-database">2 What is Normalization in a Database?</a></li>
-<li><a href="#database-normalisation">3 Database Normalisation</a></li>
+<li><a href="#theoretical-background">2 Theoretical Background</a>
+<ul>
+<li><a href="#what-is-normalization-in-a-database">2.1 What is Normalization in a Database?</a></li>
+<li><a href="#problems-without-normalization">2.2 Problems without Normalization</a></li>
+<li><a href="#normalization-forms">2.3 Normalization Forms</a></li>
+<li><a href="#rules-for-data-normalization">2.4 Rules for Data Normalization</a></li>
+</ul></li>
+<li><a href="#database-normalisation">3 Database Normalisation</a>
+<ul>
 <li><a href="#first-normal-form-1st-nf">3.1 First Normal Form (1st NF)</a></li>
+</ul></li>
 </ul>
 </div>
 
@@ -29,22 +37,33 @@ output:
 <p>After I have already reported on <a href="https://michael-fuchs-sql.netlify.app/2021/03/07/create-a-database/">how to set up databases</a>, we now come to a very important topic that is related to this: What should I consider when setting up the data structure?</p>
 <p>So in this post, I want to cover <strong>Database Normalization</strong>.</p>
 </div>
-<div id="what-is-normalization-in-a-database" class="section level1">
-<h1>2 What is Normalization in a Database?</h1>
+<div id="theoretical-background" class="section level1">
+<h1>2 Theoretical Background</h1>
+<div id="what-is-normalization-in-a-database" class="section level2">
+<h2>2.1 What is Normalization in a Database?</h2>
 <p>Normalization is the process of reducing redundancy of data in the table and also improving data integrity.
 Normalization split a large table into smaller tables and define relationships between them to increases the clarity in organizing data.</p>
-<p>This is necessary because <strong>without normalization</strong> in SQL <strong>many problems can occur</strong>. These can be, for example:</p>
+</div>
+<div id="problems-without-normalization" class="section level2">
+<h2>2.2 Problems without Normalization</h2>
+<p>Normalization is necessary because without normalization in SQL many problems can occur. These can be, for example:</p>
 <ul>
 <li><strong>Insertion Anomaly</strong>: It occurs when we cannot insert data into the table without another attribute being present.</li>
 <li><strong>Update Anomaly</strong>: It is a data inconsistency that occurs due to data redundancy and partial update of data.</li>
 <li><strong>Deletion Anomaly</strong>: It occurs when certain attributes are lost due to deletion of other attributes.</li>
 </ul>
-<p>There are <strong>three main forms</strong>:</p>
+</div>
+<div id="normalization-forms" class="section level2">
+<h2>2.3 Normalization Forms</h2>
+<p>There are three main forms for Data Normalization:</p>
 <ul>
 <li>First Normal Form (1st NF)</li>
 <li>Second Normal Form (2nd NF)</li>
 <li>and Third Normal Form (3rd NF)</li>
 </ul>
+</div>
+<div id="rules-for-data-normalization" class="section level2">
+<h2>2.4 Rules for Data Normalization</h2>
 <p>Normalization was developed by <a href="https://history-computer.com/edgar-codd-creator-of-the-relational-database/">IBM researcher E.F. Codd</a> in the 1970s. In doing so, he established some rules for satisfying the normal forms.</p>
 <p><strong>First Normal Form (1st NF)</strong></p>
 <ul>
@@ -64,12 +83,12 @@ Normalization split a large table into smaller tables and define relationships b
 <li>The table should also not contain Transitive Dependencies.</li>
 </ul>
 </div>
+</div>
 <div id="database-normalisation" class="section level1">
 <h1>3 Database Normalisation</h1>
-<p>In the following I will give examples that show how to bring unnormalized data into the next normal form.</p>
-</div>
-<div id="first-normal-form-1st-nf" class="section level1">
-<h1>3.1 First Normal Form (1st NF)</h1>
+<p>In the following I will give examples that show how to bring unnormalized data into the next Normal Form.</p>
+<div id="first-normal-form-1st-nf" class="section level2">
+<h2>3.1 First Normal Form (1st NF)</h2>
 <p><strong>Same Data Type in a Column.</strong></p>
 <p><img src="/post/2021-05-16-normalization-of-databases_files/p22p1.png" /></p>
 <p><strong>There are only Single Valued Attributes.</strong></p>
@@ -83,4 +102,5 @@ Normalization split a large table into smaller tables and define relationships b
 <p><img src="/post/2021-05-16-normalization-of-databases_files/p22p.png" /></p>
 <p><img src="/post/2021-05-16-normalization-of-databases_files/p22p.png" /></p>
 <p><img src="/post/2021-05-16-normalization-of-databases_files/p22p.png" /></p>
+</div>
 </div>

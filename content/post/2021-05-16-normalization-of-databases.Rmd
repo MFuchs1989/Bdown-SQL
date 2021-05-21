@@ -20,26 +20,33 @@ After I have already reported on [how to set up databases](https://michael-fuchs
 So in this post, I want to cover **Database Normalization**.
 
 
-# 2 What is Normalization in a Database?
+# 2 Theoretical Background
 
+## 2.1 What is Normalization in a Database?
 
 Normalization is the process of reducing redundancy of data in the table and also improving data integrity. 
 Normalization split a large table into smaller tables and define relationships between them to increases the clarity in organizing data.
 
 
-This is necessary because **without normalization** in SQL **many problems can occur**. These can be, for example:
+## 2.2 Problems without Normalization
+
+Normalization is necessary because without normalization in SQL many problems can occur. These can be, for example:
 
 + **Insertion Anomaly**: It occurs when we cannot insert data into the table without another attribute being present.
 + **Update Anomaly**: It is a data inconsistency that occurs due to data redundancy and partial update of data.
 + **Deletion Anomaly**: It occurs when certain attributes are lost due to deletion of other attributes.
 
 
-There are **three main forms**: 
+## 2.3 Normalization Forms
+
+There are three main forms for Data Normalization: 
 
 + First Normal Form (1st NF)
 + Second Normal Form (2nd NF)
 + and Third Normal Form (3rd NF)
 
+
+## 2.4 Rules for Data Normalization
 
 Normalization was developed by [IBM researcher E.F. Codd](https://history-computer.com/edgar-codd-creator-of-the-relational-database/) in the 1970s. In doing so, he established some rules for satisfying the normal forms.
 
@@ -68,10 +75,10 @@ Normalization was developed by [IBM researcher E.F. Codd](https://history-comput
 
 # 3 Database Normalisation
 
-In the following I will give examples that show how to bring unnormalized data into the next normal form. 
+In the following I will give examples that show how to bring unnormalized data into the next Normal Form. 
 
 
-# 3.1 First Normal Form (1st NF)
+## 3.1 First Normal Form (1st NF)
 
 
 **Same Data Type in a Column.**
