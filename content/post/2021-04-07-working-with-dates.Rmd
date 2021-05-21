@@ -15,7 +15,7 @@ output:
 
 # 1 Introduction
 
-
+Following on from my post about string functions, I would like to take this opportunity to discuss how to use the Dates data type.
 
 
 
