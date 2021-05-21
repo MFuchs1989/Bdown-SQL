@@ -180,7 +180,7 @@ This may look like the following:
 
 ### 3.2.5 Partial Dependencies
 
-As we know from the rules for normalizing data the table **should not contain partial dependencies**.
+As we know from the [rules for normalizing](https://michael-fuchs-sql.netlify.app/2021/05/16/normalization-of-databases/#rules-for-data-normalization) data the table **should not contain partial dependencies**.
 Partial dependency means that a non-key attribute is functionally dependent on part of a composite key. 
 
 Let's take a closer look at the Sales table that was created:
@@ -188,7 +188,7 @@ Let's take a closer look at the Sales table that was created:
 ![](/post/2021-05-16-normalization-of-databases_files/p22p9.png)
 
 
-Customer_ID and Product_ID again result in a composite primary key. The non-key attributes are Product_Name and Price.
+Customer_ID and Product_ID again **result in a composite primary key**. The non-key attributes are Product_Name and Price.
 
 
 In this case, Product_Name and Price only depends on Product_ID, which is **only part of the primary key**. Therefore, **this table does not satisfy the second Normal Form**.
@@ -205,10 +205,11 @@ For a complete view, I have included the Customer_Info_Table in the previously s
 
 
 
+## 3.3 Third Normal Form (3rd NF)
 
+Our two tables Sales_Table and Product_Table are now in the targeted normal form. Now let's take a look at the current Customer_Info_Table. 
 
-
-
+![](/post/2021-05-16-normalization-of-databases_files/p22p11.png)
 
 
 

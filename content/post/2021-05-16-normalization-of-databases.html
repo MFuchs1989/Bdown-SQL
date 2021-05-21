@@ -42,6 +42,7 @@ output:
 <li><a href="#split-the-table">3.2.4 Split the Table</a></li>
 <li><a href="#partial-dependencies">3.2.5 Partial Dependencies</a></li>
 </ul></li>
+<li><a href="#third-normal-form-3rd-nf">3.3 Third Normal Form (3rd NF)</a></li>
 </ul></li>
 </ul>
 </div>
@@ -161,17 +162,22 @@ This may look like the following:</p>
 </div>
 <div id="partial-dependencies" class="section level3">
 <h3>3.2.5 Partial Dependencies</h3>
-<p>As we know from the rules for normalizing data the table <strong>should not contain partial dependencies</strong>.
+<p>As we know from the <a href="https://michael-fuchs-sql.netlify.app/2021/05/16/normalization-of-databases/#rules-for-data-normalization">rules for normalizing</a> data the table <strong>should not contain partial dependencies</strong>.
 Partial dependency means that a non-key attribute is functionally dependent on part of a composite key.</p>
 <p>Let’s take a closer look at the Sales table that was created:</p>
 <p><img src="/post/2021-05-16-normalization-of-databases_files/p22p9.png" /></p>
-<p>Customer_ID and Product_ID again result in a composite primary key. The non-key attributes are Product_Name and Price.</p>
+<p>Customer_ID and Product_ID again <strong>result in a composite primary key</strong>. The non-key attributes are Product_Name and Price.</p>
 <p>In this case, Product_Name and Price only depends on Product_ID, which is <strong>only part of the primary key</strong>. Therefore, <strong>this table does not satisfy the second Normal Form</strong>.</p>
 <p>To bring this table to Second Normal Form, we need to break the table into two parts again.</p>
 <p><img src="/post/2021-05-16-normalization-of-databases_files/p22p10.png" /></p>
 <p>Now there is no partial dependency anymore.
 For a complete view, I have included the Customer_Info_Table in the previously shown diagram.</p>
-<p><img src="/post/2021-05-16-normalization-of-databases_files/p22p.png" /></p>
 </div>
+</div>
+<div id="third-normal-form-3rd-nf" class="section level2">
+<h2>3.3 Third Normal Form (3rd NF)</h2>
+<p>Our two tables Sales_Table and Product_Table are now in the targeted normal form. Now let’s take a look at the current Customer_Info_Table.</p>
+<p><img src="/post/2021-05-16-normalization-of-databases_files/p22p11.png" /></p>
+<p><img src="/post/2021-05-16-normalization-of-databases_files/p22p.png" /></p>
 </div>
 </div>
