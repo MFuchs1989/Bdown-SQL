@@ -18,11 +18,53 @@ output:
 <div id="TOC">
 <ul>
 <li><a href="#introduction">1 Introduction</a></li>
+<li><a href="#what-is-normalization-in-a-database">2 What is Normalization in a Database?</a></li>
+<li><a href="#database-normalisation">3 Database Normalisation</a></li>
 </ul>
 </div>
 
 <div id="introduction" class="section level1">
 <h1>1 Introduction</h1>
+<p>After I have already reported on <a href="https://michael-fuchs-sql.netlify.app/2021/03/07/create-a-database/">how to set up databases</a>, we now come to a very important topic that is related to this: What should I consider when setting up the data structure?</p>
+<p>So in this post, I want to cover database normalization.</p>
+</div>
+<div id="what-is-normalization-in-a-database" class="section level1">
+<h1>2 What is Normalization in a Database?</h1>
+<p>Normalization is the process of reducing redundancy of data in the table and also improving data integrity.
+Normalization split a large table into smaller tables and define relationships between them to increases the clarity in organizing data.</p>
+<p>This is necessary because without normalization in SQL many problems can occur. These can be, for example:</p>
+<ul>
+<li><strong>Insertion Anomaly</strong>: It occurs when we cannot insert data into the table without another attribute being present.</li>
+<li><strong>Update Anomaly</strong>: It is a data inconsistency that occurs due to data redundancy and partial update of data.</li>
+<li><strong>Deletion Anomaly</strong>: It occurs when certain attributes are lost due to deletion of other attributes.</li>
+</ul>
+<p>There are three main forms:</p>
+<ul>
+<li>First Normal Form (1st NF)</li>
+<li>Second Normal Form (2nd NF)</li>
+<li>and Third Normal Form (3rd NF)</li>
+</ul>
+<p>Normalization was developed by <a href="https://history-computer.com/edgar-codd-creator-of-the-relational-database/">IBM researcher E.F. Codd</a> in the 1970s. In doing so, he established some rules for satisfying the normal forms.</p>
+<p><strong>First Normal Form (1st NF)</strong></p>
+<ul>
+<li>Same Data Type in a Column.</li>
+<li>There are only Single Valued Attributes.</li>
+<li>There is a Unique name for every Attribute/Column.</li>
+<li>Uniquely identify a Row.</li>
+</ul>
+<p><strong>Second Normal Form (2nd NF)</strong></p>
+<ul>
+<li>Be in 1st NF.</li>
+<li>The table should also not contain Partial Dependencies.</li>
+</ul>
+<p><strong>Third Normal Form (3rd NF)</strong></p>
+<ul>
+<li>Be in 2nd NF.</li>
+<li>The table should also not contain Transitive Dependencies.</li>
+</ul>
+</div>
+<div id="database-normalisation" class="section level1">
+<h1>3 Database Normalisation</h1>
 <p><img src="/post/2021-05-16-normalization-of-databases_files/p22p.png" /></p>
 <p><img src="/post/2021-05-16-normalization-of-databases_files/p22p.png" /></p>
 <p><img src="/post/2021-05-16-normalization-of-databases_files/p22p.png" /></p>

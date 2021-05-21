@@ -15,7 +15,58 @@ output:
 
 # 1 Introduction
 
+After I have already reported on [how to set up databases](https://michael-fuchs-sql.netlify.app/2021/03/07/create-a-database/), we now come to a very important topic that is related to this: What should I consider when setting up the data structure? 
 
+So in this post, I want to cover database normalization.
+
+
+# 2 What is Normalization in a Database?
+
+
+Normalization is the process of reducing redundancy of data in the table and also improving data integrity. 
+Normalization split a large table into smaller tables and define relationships between them to increases the clarity in organizing data.
+
+
+This is necessary because without normalization in SQL many problems can occur. These can be, for example:
+
++ **Insertion Anomaly**: It occurs when we cannot insert data into the table without another attribute being present.
++ **Update Anomaly**: It is a data inconsistency that occurs due to data redundancy and partial update of data.
++ **Deletion Anomaly**: It occurs when certain attributes are lost due to deletion of other attributes.
+
+
+There are three main forms: 
+
++ First Normal Form (1st NF)
++ Second Normal Form (2nd NF)
++ and Third Normal Form (3rd NF)
+
+
+Normalization was developed by [IBM researcher E.F. Codd](https://history-computer.com/edgar-codd-creator-of-the-relational-database/) in the 1970s. In doing so, he established some rules for satisfying the normal forms.
+
+
+**First Normal Form (1st NF)**
+
++ Same Data Type in a Column.
++ There are only Single Valued Attributes.
++ There is a Unique name for every Attribute/Column.
++ Uniquely identify a Row.
+
+
+**Second Normal Form (2nd NF)**
+
++ Be in 1st NF.
++ The table should also not contain Partial Dependencies.
+
+
+**Third Normal Form (3rd NF)**
+
++ Be in 2nd NF.
++ The table should also not contain Transitive Dependencies.
+
+
+
+
+# 3 Database Normalisation
 
 
 
