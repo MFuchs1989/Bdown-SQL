@@ -310,6 +310,23 @@ Now we have created three tables in [this chapter](https://michael-fuchs-sql.net
 ### 3.3.5 Why Transitive Dependencies Are Bad Database Design
 
 
+For this section we can look again at the origin table:
+
+![](/post/2021-05-16-normalization-of-databases_files/p22p17.png)
+
+
+If you delete the two customers 'Ben Smith' from Miami and 'Jill White', we will also automatically delete the nationality American from the database completely. 
+
+You cannot add a new address to the database without adding a name as well. What would happen if you were provided with a free set of locations? You would not be able to use it until you have a customer that matches one of these addresses. 
+
+If one of the customers changes their address (for example, due to a change of residence), you would need to go through all of that customer's orders and change the Address column. Having multiple records with the same customer can lead to inaccurate data. What if the person entering the data doesn't realize there are multiple records for him and changes the data in only one record?
+
+
+
+The **benefits of removing transitive dependencies** are:
+
++ Amount of data duplication is reduced.
++ Data integrity achieved.
 
 
 
@@ -318,12 +335,7 @@ Now we have created three tables in [this chapter](https://michael-fuchs-sql.net
 
 
 
-
-
-
-
-
-![](/post/2021-05-16-normalization-of-databases_files/p22p.png)
+![](/post/2021-05-16-normalization-of-databases_files/p22p18.png)
 
 
 
