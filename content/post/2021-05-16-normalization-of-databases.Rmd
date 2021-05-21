@@ -170,7 +170,7 @@ A candidate key is a set of attributes (or attribute) which uniquely identify th
 
 ### 3.2.4 Split the Table
 
-In preparation to bring this table into the second normal form, we should divide the table at this point to continue. 
+In **preparation to bring this table into the second normal form**, we should divide the table at this point to continue. 
 This may look like the following:
 
 ![](/post/2021-05-16-normalization-of-databases_files/p22p8.png)
@@ -191,7 +191,7 @@ Let's take a closer look at the Sales table that was created:
 Customer_ID and Product_ID again result in a composite primary key. The non-key attributes are Product_Name and Price.
 
 
-In this case, Product_Name and Price only depends on Product_ID, which is only part of the primary key. Therefore, this table does not satisfy the second Normal Form.
+In this case, Product_Name and Price only depends on Product_ID, which is **only part of the primary key**. Therefore, **this table does not satisfy the second Normal Form**.
 
 To bring this table to Second Normal Form, we need to break the table into two parts again.
 

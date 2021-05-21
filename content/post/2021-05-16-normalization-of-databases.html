@@ -155,7 +155,7 @@ Normalization split a large table into smaller tables and define relationships b
 </div>
 <div id="split-the-table" class="section level3">
 <h3>3.2.4 Split the Table</h3>
-<p>In preparation to bring this table into the second normal form, we should divide the table at this point to continue.
+<p>In <strong>preparation to bring this table into the second normal form</strong>, we should divide the table at this point to continue.
 This may look like the following:</p>
 <p><img src="/post/2021-05-16-normalization-of-databases_files/p22p8.png" /></p>
 </div>
@@ -166,7 +166,7 @@ Partial dependency means that a non-key attribute is functionally dependent on p
 <p>Let’s take a closer look at the Sales table that was created:</p>
 <p><img src="/post/2021-05-16-normalization-of-databases_files/p22p9.png" /></p>
 <p>Customer_ID and Product_ID again result in a composite primary key. The non-key attributes are Product_Name and Price.</p>
-<p>In this case, Product_Name and Price only depends on Product_ID, which is only part of the primary key. Therefore, this table does not satisfy the second Normal Form.</p>
+<p>In this case, Product_Name and Price only depends on Product_ID, which is <strong>only part of the primary key</strong>. Therefore, <strong>this table does not satisfy the second Normal Form</strong>.</p>
 <p>To bring this table to Second Normal Form, we need to break the table into two parts again.</p>
 <p><img src="/post/2021-05-16-normalization-of-databases_files/p22p10.png" /></p>
 <p>Now there is no partial dependency anymore.
