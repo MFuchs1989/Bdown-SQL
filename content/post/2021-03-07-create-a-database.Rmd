@@ -346,7 +346,7 @@ To do this, we right-click on the database and select *Delete*. Don't forget to 
 This was a small introduction to the topic of how to create databases and tables with SQL statements and fill them with values. Furthermore I showed how to delete columns, tables and whole databases. 
 
 
-
+If you want to know how to set up a database properly, check out this post from me as well: [Normalization of Databases](https://michael-fuchs-sql.netlify.app/2021/05/16/normalization-of-databases/)
 
 
 
