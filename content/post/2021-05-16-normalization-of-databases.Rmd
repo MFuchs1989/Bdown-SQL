@@ -79,23 +79,30 @@ In the following I will give examples that show how to bring unnormalized data i
 ## 3.1 First Normal Form (1st NF)
 
 
-**Same Data Type in a Column.**
+**Same Data Type in a Column**
 
+In order to work with data within a column in a meaningful way, it is mandatory that these data correspond to the same data type. 
 
 ![](/post/2021-05-16-normalization-of-databases_files/p22p1.png)
 
 
-**There are only Single Valued Attributes.**
+**There are only Single Valued Attributes**
+
+Likewise, unnecessary duplicate columns must be avoided.
 
 ![](/post/2021-05-16-normalization-of-databases_files/p22p2.png)
 
 
-**There is a Unique name for every Attribute/Column.**
+**There is a Unique name for every Attribute/Column**
+
+All information in an observation should be available for query. If several values are stored within one cell, this could cause problems. 
 
 ![](/post/2021-05-16-normalization-of-databases_files/p22p3.png)
 
 
-**Uniquely identify a Row.**
+**Uniquely identify a Row**
+
+Individual Observations must be identifiable. A good solution to the problem at hand would be to split the source table. 
 
 ![](/post/2021-05-16-normalization-of-databases_files/p22p4.png)
 

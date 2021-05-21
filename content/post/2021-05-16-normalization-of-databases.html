@@ -86,13 +86,17 @@ Normalization split a large table into smaller tables and define relationships b
 <p>In the following I will give examples that show how to bring unnormalized data into the next Normal Form.</p>
 <div id="first-normal-form-1st-nf" class="section level2">
 <h2>3.1 First Normal Form (1st NF)</h2>
-<p><strong>Same Data Type in a Column.</strong></p>
+<p><strong>Same Data Type in a Column</strong></p>
+<p>In order to work with data within a column in a meaningful way, it is mandatory that these data correspond to the same data type.</p>
 <p><img src="/post/2021-05-16-normalization-of-databases_files/p22p1.png" /></p>
-<p><strong>There are only Single Valued Attributes.</strong></p>
+<p><strong>There are only Single Valued Attributes</strong></p>
+<p>Likewise, unnecessary duplicate columns must be avoided.</p>
 <p><img src="/post/2021-05-16-normalization-of-databases_files/p22p2.png" /></p>
-<p><strong>There is a Unique name for every Attribute/Column.</strong></p>
+<p><strong>There is a Unique name for every Attribute/Column</strong></p>
+<p>All information in an observation should be available for query. If several values are stored within one cell, this could cause problems.</p>
 <p><img src="/post/2021-05-16-normalization-of-databases_files/p22p3.png" /></p>
-<p><strong>Uniquely identify a Row.</strong></p>
+<p><strong>Uniquely identify a Row</strong></p>
+<p>Individual Observations must be identifiable. A good solution to the problem at hand would be to split the source table.</p>
 <p><img src="/post/2021-05-16-normalization-of-databases_files/p22p4.png" /></p>
 </div>
 <div id="second-normal-form-2nd-nf" class="section level2">
