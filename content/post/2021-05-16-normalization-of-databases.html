@@ -26,19 +26,19 @@ output:
 <div id="introduction" class="section level1">
 <h1>1 Introduction</h1>
 <p>After I have already reported on <a href="https://michael-fuchs-sql.netlify.app/2021/03/07/create-a-database/">how to set up databases</a>, we now come to a very important topic that is related to this: What should I consider when setting up the data structure?</p>
-<p>So in this post, I want to cover database normalization.</p>
+<p>So in this post, I want to cover <strong>Database Normalization</strong>.</p>
 </div>
 <div id="what-is-normalization-in-a-database" class="section level1">
 <h1>2 What is Normalization in a Database?</h1>
 <p>Normalization is the process of reducing redundancy of data in the table and also improving data integrity.
 Normalization split a large table into smaller tables and define relationships between them to increases the clarity in organizing data.</p>
-<p>This is necessary because without normalization in SQL many problems can occur. These can be, for example:</p>
+<p>This is necessary because <strong>without normalization</strong> in SQL <strong>many problems can occur</strong>. These can be, for example:</p>
 <ul>
 <li><strong>Insertion Anomaly</strong>: It occurs when we cannot insert data into the table without another attribute being present.</li>
 <li><strong>Update Anomaly</strong>: It is a data inconsistency that occurs due to data redundancy and partial update of data.</li>
 <li><strong>Deletion Anomaly</strong>: It occurs when certain attributes are lost due to deletion of other attributes.</li>
 </ul>
-<p>There are three main forms:</p>
+<p>There are <strong>three main forms</strong>:</p>
 <ul>
 <li>First Normal Form (1st NF)</li>
 <li>Second Normal Form (2nd NF)</li>
