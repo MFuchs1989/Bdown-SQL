@@ -207,9 +207,106 @@ For a complete view, I have included the Customer_Info_Table in the previously s
 
 ## 3.3 Third Normal Form (3rd NF)
 
-Our two tables Sales_Table and Product_Table are now in the targeted normal form. Now let's take a look at the current Customer_Info_Table. 
+Our two tables Sales_Table and Product_Table are now in the targeted normal form. Remains only the study of the remaining Customer_Info table. 
+
+
+### 3.3.1 Transitive Dependencies
+
+The [rule](https://michael-fuchs-sql.netlify.app/2021/05/16/normalization-of-databases/#rules-for-data-normalization) for achieving the third normal form states that the table **should also not contain transitive dependencies**.
+
+Transitive dependency is nothing but, a non-prime attribute (other than candidate key) depending on another non-prime attribute which is entirely dependent on candidate key.
+
+
+
+### 3.3.2 Remove Transitive Dependencies, Part I
+
+
+
+Let's take a look at the Customer_Info table:
 
 ![](/post/2021-05-16-normalization-of-databases_files/p22p11.png)
+
+
+
+**Address -> Full_Name**: 
+Here, the Address attribute determines the Full_Name attribute. If you know the exact address, you can get the customers name. However, the customers name does not determine the address, because a customer can have multiple addresses. 
+
+
+
+**Full_Name -> Nationality**:
+Likewise, the Full_Name attribute determines the Nationality, but not the other way around, just because we know the nationality does not mean we can determine the name. 
+
+
+But this table introduces a transitive dependency:
+
+**Address - > Nationality**: 
+If we know the address, we can determine the nationality via the Full_Name column.
+
+
+
+To ensure 3rd NF, let's remove the transitive dependency. 
+We can start by removing the Address column from the Customer_Info table and creating a separate Address table: 
+
+
+
+
+![](/post/2021-05-16-normalization-of-databases_files/p22p12.png)
+
+
+### 3.3.3 Remove Transitive Dependencies, Part II
+
+
+Does this fix the problem? Let's examine our dependencies again:
+
+
+#### 3.3.3.1 Address_Table
+
+![](/post/2021-05-16-normalization-of-databases_files/p22p13.png)
+
+
+**Address_ID -> Address**:
+The Address depends on the Address_ID.
+
+**No other dependencies** in this table exist, so we are okay. Note that the foreign key Customer_ID links this table to the Customer_Info table through its primary key Customer_ID. We have created a relationship to avoid a transitive dependency, a key design of relational databases.
+
+
+
+
+#### 3.3.3.2 Customer_Info_Table:
+
+![](/post/2021-05-16-normalization-of-databases_files/p22p14.png)
+
+
+**Customer_ID -> Full_Name**:
+The Full_Name depends on the Customer_ID. 
+
+**Full_Name -> Nationality**:
+The nationality can be determined by the Full_Name attribute. 
+
+**Customer_ID -> Nationality**:
+The nationality can be determined from the Customer_ID through the Full_Name attribute. We still have a transitive dependency.
+
+
+We need to add a futher table to normalize this data:
+
+
+![](/post/2021-05-16-normalization-of-databases_files/p22p15.png)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
