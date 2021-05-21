@@ -49,9 +49,10 @@ output:
 <li><a href="#remove-transitive-dependencies-part-ii">3.3.3 Remove Transitive Dependencies, Part II</a>
 <ul>
 <li><a href="#address_table">3.3.3.1 Address_Table</a></li>
-<li><a href="#customer_info_table">3.3.3.2 Customer_Info_Table:</a></li>
+<li><a href="#customer_info_table">3.3.3.2 Customer_Info_Table</a></li>
 </ul></li>
 <li><a href="#wrap-up">3.3.4 Wrap Up</a></li>
+<li><a href="#why-transitive-dependencies-are-bad-database-design">3.3.5 Why Transitive Dependencies Are Bad Database Design</a></li>
 </ul></li>
 </ul></li>
 </ul>
@@ -218,7 +219,7 @@ The Address depends on the Address_ID.</p>
 <p><strong>No other dependencies</strong> in this table exist, so we are okay. Note that the foreign key Customer_ID links this table to the Customer_Info table through its primary key Customer_ID. We have created a relationship to avoid a transitive dependency, a key design of relational databases.</p>
 </div>
 <div id="customer_info_table" class="section level4">
-<h4>3.3.3.2 Customer_Info_Table:</h4>
+<h4>3.3.3.2 Customer_Info_Table</h4>
 <p><img src="/post/2021-05-16-normalization-of-databases_files/p22p14.png" /></p>
 <p><strong>Customer_ID -&gt; Full_Name</strong>:
 The Full_Name depends on the Customer_ID.</p>
@@ -232,13 +233,16 @@ The nationality can be determined from the Customer_ID through the Full_Name att
 </div>
 <div id="wrap-up" class="section level3">
 <h3>3.3.4 Wrap Up</h3>
-<p>Now we have created three tables in <a href="https://michael-fuchs-sql.netlify.app/2021/05/16/normalization-of-databases/#third-normal-form-3rd-nf">this chapter (3rd NF)</a>, using foreign keys to link the tables together.</p>
+<p>Now we have created three tables in <a href="https://michael-fuchs-sql.netlify.app/2021/05/16/normalization-of-databases/#third-normal-form-3rd-nf">this chapter</a>, using foreign keys to link the tables together.</p>
 <p><img src="/post/2021-05-16-normalization-of-databases_files/p22p16.png" /></p>
 <ul>
 <li>The Address table’s foreign key Customer_ID links an address to a customer in the Customer_Info table.</li>
 <li>The Customer_Info table’s foreign key Nationality_ID links a customer to a nationality in the Nationality table.</li>
 <li>The Nationality table has no foreign key because it has no need to link to another table in this design.</li>
 </ul>
+</div>
+<div id="why-transitive-dependencies-are-bad-database-design" class="section level3">
+<h3>3.3.5 Why Transitive Dependencies Are Bad Database Design</h3>
 <p><img src="/post/2021-05-16-normalization-of-databases_files/p22p.png" /></p>
 </div>
 </div>
