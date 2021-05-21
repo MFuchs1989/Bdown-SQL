@@ -102,7 +102,7 @@ In the following I will give examples that show how to bring unnormalized data i
 ![](/post/2021-05-16-normalization-of-databases_files/p22p4.png)
 
 
-
+## 3.2 Second Normal Form (2nd NF)
 
 
 
