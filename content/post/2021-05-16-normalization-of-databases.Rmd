@@ -37,7 +37,7 @@ Normalization is necessary because without normalization in SQL many problems ca
 + **Deletion Anomaly**: It occurs when certain attributes are lost due to deletion of other attributes.
 
 
-## 2.3 Normalization Forms
+## 2.3 Rules for Data Normalization
 
 There are three main forms for Data Normalization: 
 
@@ -45,8 +45,6 @@ There are three main forms for Data Normalization:
 + Second Normal Form (2nd NF)
 + and Third Normal Form (3rd NF)
 
-
-## 2.4 Rules for Data Normalization
 
 Normalization was developed by [IBM researcher E.F. Codd](https://history-computer.com/edgar-codd-creator-of-the-relational-database/) in the 1970s. In doing so, he established some rules for satisfying the normal forms.
 
