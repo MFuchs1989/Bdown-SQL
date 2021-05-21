@@ -330,15 +330,18 @@ The **benefits of removing transitive dependencies** are:
 
 
 
+### 3.3.6 Final tables (in the third normal form)
 
 
-
+Here again a short overview of all created tables in the third normal form:
 
 
 ![](/post/2021-05-16-normalization-of-databases_files/p22p18.png)
 
 
+# 4 Conclusion
 
+In this post I have explained what normalization of a database means and what rules exist for it. For all the rules I have listed examples that you can use to understand the meaning of the rules. 
 
 
 
