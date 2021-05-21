@@ -68,6 +68,31 @@ Normalization was developed by [IBM researcher E.F. Codd](https://history-comput
 
 # 3 Database Normalisation
 
+In the following I will give examples that show how to bring unnormalized data into the next normal form. 
+
+
+# 3.1 First Normal Form (1st NF)
+
+
+**Same Data Type in a Column.**
+
+
+![](/post/2021-05-16-normalization-of-databases_files/p22p1.png)
+
+
+**There are only Single Valued Attributes.**
+
+![](/post/2021-05-16-normalization-of-databases_files/p22p2.png)
+
+
+**There is a Unique name for every Attribute/Column.**
+
+![](/post/2021-05-16-normalization-of-databases_files/p22p3.png)
+
+
+**Uniquely identify a Row.**
+
+![](/post/2021-05-16-normalization-of-databases_files/p22p4.png)
 
 
 
@@ -75,174 +100,31 @@ Normalization was developed by [IBM researcher E.F. Codd](https://history-comput
 
 
 
-```{r, eval=F, echo=T}
 
-```
+
+
+
+
+
+
+
 
 ![](/post/2021-05-16-normalization-of-databases_files/p22p.png)
 
 
 
+![](/post/2021-05-16-normalization-of-databases_files/p22p.png)
 
-
-
-```{r, eval=F, echo=T}
-
-```
 
 ![](/post/2021-05-16-normalization-of-databases_files/p22p.png)
 
 
 
-
-
-
-
-
-
-
-
-
-```{r, eval=F, echo=T}
-
-```
-
 ![](/post/2021-05-16-normalization-of-databases_files/p22p.png)
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-```{r, eval=F, echo=T}
-
-```
-
 ![](/post/2021-05-16-normalization-of-databases_files/p22p.png)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-```{r, eval=F, echo=T}
-
-```
-
-![](/post/2021-05-16-normalization-of-databases_files/p22p.png)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-```{r, eval=F, echo=T}
-
-```
-
-![](/post/2021-05-16-normalization-of-databases_files/p22p.png)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-```{r, eval=F, echo=T}
-
-```
-
-![](/post/2021-05-16-normalization-of-databases_files/p22p.png)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-```{r, eval=F, echo=T}
-
-```
-
-![](/post/2021-05-16-normalization-of-databases_files/p22p.png)
-
-
-
-
-
-
-
-
-
 
 
 
