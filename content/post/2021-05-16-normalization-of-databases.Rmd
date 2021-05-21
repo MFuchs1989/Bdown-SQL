@@ -284,7 +284,7 @@ The Full_Name depends on the Customer_ID.
 The nationality can be determined by the Full_Name attribute. 
 
 **Customer_ID -> Nationality**:
-The nationality can be determined from the Customer_ID through the Full_Name attribute. We still have a transitive dependency.
+The nationality can be determined from the Customer_ID through the Full_Name attribute. **We still have a transitive dependency**!
 
 
 We need to add a futher table to normalize this data:
@@ -293,12 +293,18 @@ We need to add a futher table to normalize this data:
 ![](/post/2021-05-16-normalization-of-databases_files/p22p15.png)
 
 
+### 3.3.4 Wrap Up
 
-Now we have created three tables in this chapter, using foreign keys to link the tables together.
+Now we have created three tables in [this chapter (3rd NF)](https://michael-fuchs-sql.netlify.app/2021/05/16/normalization-of-databases/#third-normal-form-3rd-nf), using foreign keys to link the tables together.
+
+
+![](/post/2021-05-16-normalization-of-databases_files/p22p16.png)
+
 
 + The Address table’s foreign key Customer_ID links an address to a customer in the Customer_Info table.
 + The Customer_Info table’s foreign key Nationality_ID links a customer to a nationality in the Nationality table. 
 + The Nationality table has no foreign key because it has no need to link to another table in this design. 
+
 
 
 

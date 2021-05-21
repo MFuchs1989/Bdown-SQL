@@ -51,6 +51,7 @@ output:
 <li><a href="#address_table">3.3.3.1 Address_Table</a></li>
 <li><a href="#customer_info_table">3.3.3.2 Customer_Info_Table:</a></li>
 </ul></li>
+<li><a href="#wrap-up">3.3.4 Wrap Up</a></li>
 </ul></li>
 </ul></li>
 </ul>
@@ -224,17 +225,21 @@ The Full_Name depends on the Customer_ID.</p>
 <p><strong>Full_Name -&gt; Nationality</strong>:
 The nationality can be determined by the Full_Name attribute.</p>
 <p><strong>Customer_ID -&gt; Nationality</strong>:
-The nationality can be determined from the Customer_ID through the Full_Name attribute. We still have a transitive dependency.</p>
+The nationality can be determined from the Customer_ID through the Full_Name attribute. <strong>We still have a transitive dependency</strong>!</p>
 <p>We need to add a futher table to normalize this data:</p>
 <p><img src="/post/2021-05-16-normalization-of-databases_files/p22p15.png" /></p>
-<p>Now we have created three tables in this chapter, using foreign keys to link the tables together.</p>
+</div>
+</div>
+<div id="wrap-up" class="section level3">
+<h3>3.3.4 Wrap Up</h3>
+<p>Now we have created three tables in <a href="https://michael-fuchs-sql.netlify.app/2021/05/16/normalization-of-databases/#third-normal-form-3rd-nf">this chapter (3rd NF)</a>, using foreign keys to link the tables together.</p>
+<p><img src="/post/2021-05-16-normalization-of-databases_files/p22p16.png" /></p>
 <ul>
 <li>The Address table’s foreign key Customer_ID links an address to a customer in the Customer_Info table.</li>
 <li>The Customer_Info table’s foreign key Nationality_ID links a customer to a nationality in the Nationality table.</li>
 <li>The Nationality table has no foreign key because it has no need to link to another table in this design.</li>
 </ul>
 <p><img src="/post/2021-05-16-normalization-of-databases_files/p22p.png" /></p>
-</div>
 </div>
 </div>
 </div>
