@@ -15,24 +15,282 @@ output:
 
 # 1 Introduction
 
-Following on from my post about string functions, I would like to take this opportunity to discuss how to use the Dates data type.
+Following on from my post about [string functions](https://michael-fuchs-sql.netlify.app/2021/04/03/string-functions/), I would like to take this opportunity to discuss how to use the Dates data type.
 
 
+
+# 2 Preparation
+
+
+```{r, eval=F, echo=T}
+SET LANGUAGE ENGLISH
+
+
+CREATE DATABASE Dates_DB;
+
+USE Dates_DB;
+```
+
+Important! In the following I will use the English spelling of dates. For this to work with our database / table `SET LANGUAGE ENGLISH` must be executed. 
+
+
+```{r, eval=F, echo=T}
+CREATE TABLE Dates_Table
+    (ID INT NOT NULL IDENTITY(1,1) PRIMARY KEY,
+     Date_Column Date NOT NULL,
+     Datetime_Column DATETIME NOT NULL)
+    ;
+```
+
+Now we add one more line with sample data.
+
+```{r, eval=F, echo=T}
+INSERT INTO Dates_Table VALUES ('2021-05-19', '2021-05-19 15:22:15')
+```
+
+
+To get the current date, the INSERT command could also look like this:
+
+```{r, eval=F, echo=T}
+# INSERT INTO Dates_Table VALUES (GETDATE(), GETUTCDATE())
+```
+
+
+This is our data set that we will work with:
+
+```{r, eval=F, echo=T}
+SELECT * FROM Dates_Table
+```
+
+![](/post/2021-04-07-working-with-dates_files/p23p1.png)
+
+
+# 3 Working with Dates
+
+## 3.1 Extract Year, Month and Day
+
+
+Extraction of parts of a date or datetime can be done as follows:
+
+
+```{r, eval=F, echo=T}
+SELECT YEAR(Date_Column) AS _year, 
+	   MONTH(Date_Column) AS _month, 
+	   DAY(Date_Column) AS _day
+	FROM Dates_Table
+	;
+```
+
+![](/post/2021-04-07-working-with-dates_files/p23p2.png)
+
+
+
+```{r, eval=F, echo=T}
+SELECT YEAR(Datetime_Column) AS _year, 
+	   MONTH(Datetime_Column) AS _month, 
+	   DAY(Datetime_Column) AS _day
+	FROM Dates_Table
+	;
+```
+
+![](/post/2021-04-07-working-with-dates_files/p23p3.png)
+
+
+
+## 3.2 Extract Year, Month, Day, Hour, Minute, Second and iso week
+
+Of course, much more detailed information can be extracted from a date as long as the file format allows it. 
+
+For this purpose we use the DATEPART function.
+
+
+```{r, eval=F, echo=T}
+SELECT DATEPART(YEAR, Date_Column) AS _year, 
+	   DATEPART(MONTH, Date_Column) AS _month, 
+	   DATEPART(DAY, Date_Column) AS _day
+	FROM Dates_Table
+	;
+```
+
+![](/post/2021-04-07-working-with-dates_files/p23p4.png)
+
+Let's try the hours now.
+
+
+```{r, eval=F, echo=T}
+SELECT DATEPART(YEAR, Date_Column) AS _year, 
+	   DATEPART(MONTH, Date_Column) AS _month, 
+	   DATEPART(DAY, Date_Column) AS _day, 
+	   DATEPART(HOUR, Date_Column) AS _hour
+	FROM Dates_Table
+	;
+```
+
+![](/post/2021-04-07-working-with-dates_files/p23p5.png)
+
+This, of course, no longer works. This is what I meant earlier by 'as long as the file format allows'. 
+The column Date_Column contains only date values, no other as it is the case for example with the Datetime. 
+
+Let's try this column next.
+
+
+```{r, eval=F, echo=T}
+SELECT DATEPART(YEAR, Datetime_Column) AS _year, 
+	   DATEPART(MONTH, Datetime_Column) AS _month, 
+	   DATEPART(DAY, Datetime_Column) AS _day, 
+	   DATEPART(HOUR, Datetime_Column) AS _hour, 
+	   DATEPART(MINUTE, Datetime_Column) AS _minute, 
+	   DATEPART(SECOND, Datetime_Column) AS _second
+	FROM Dates_Table
+	;
+```
+
+![](/post/2021-04-07-working-with-dates_files/p23p6.png)
+
+Works perfectly. We can also output the associated calendar week:
+
+```{r, eval=F, echo=T}
+SELECT DATEPART(ISO_WEEK, Datetime_Column) AS _iso_week
+	FROM Dates_Table
+	;
+```
+
+![](/post/2021-04-07-working-with-dates_files/p23p7.png)
+
+
+For example, if we want to get the name of the day or month, we can do this with the DATENAME function (here I have all parts of the date output as a name). 
+
+```{r, eval=F, echo=T}
+SELECT DATENAME (YEAR, Datetime_Column) AS _year_name,
+	   DATENAME (MONTH, Datetime_Column) AS _month_name,
+	   DATENAME (DAY, Datetime_Column) AS _day_name,
+	   DATENAME (WEEKDAY, Datetime_Column) AS _weekday_name,
+	   DATENAME (HOUR, Datetime_Column) AS _hour_name,
+	   DATENAME (MINUTE, Datetime_Column) AS _minute_name,
+	   DATENAME (SECOND, Datetime_Column) AS _second_name
+	FROM Dates_Table
+	;
+```
+
+![](/post/2021-04-07-working-with-dates_files/p23p8.png)
+
+
+## 3.3 ORDER and GROUP BY
+
+Mostly one uses the ORDER or GROUP BY function with dates.
+
+For these examples, I am still enriching our previous table with the following sample data:
+
+
+
+```{r, eval=F, echo=T}
+INSERT INTO Dates_Table VALUES ('2021-02-12', '2021-02-12 15:22:15')
+INSERT INTO Dates_Table VALUES ('2021-01-17', '2021-01-17 15:22:15')
+INSERT INTO Dates_Table VALUES ('2021-04-22', '2021-04-22 15:22:15')
+INSERT INTO Dates_Table VALUES ('2021-05-15', '2021-05-15 15:22:15')
+INSERT INTO Dates_Table VALUES ('2021-03-01', '2021-03-01 15:22:15')
+INSERT INTO Dates_Table VALUES ('2021-05-21', '2021-05-21 15:22:15')
+INSERT INTO Dates_Table VALUES ('2021-05-20', '2021-05-20 15:22:15')
+```
+
+
+```{r, eval=F, echo=T}
+SELECT * FROM Dates_Table;
+```
+
+![](/post/2021-04-07-working-with-dates_files/p23p9.png)
+
+Now a few Order By and Group By examples:
+
+
+
+```{r, eval=F, echo=T}
+SELECT ID, Datetime_Column
+	FROM Dates_Table
+	ORDER BY Date_Column
+	;
+```
+
+![](/post/2021-04-07-working-with-dates_files/p23p10.png)
+
+
+
+```{r, eval=F, echo=T}
+SELECT ID, 
+       DATEPART (DAY, Datetime_Column) AS _day
+	FROM Dates_Table
+	ORDER BY _day
+	;
+```
+
+![](/post/2021-04-07-working-with-dates_files/p23p11.png)
 
 
 
 
 ```{r, eval=F, echo=T}
-
+SELECT DATENAME (WEEKDAY, Datetime_Column), 
+	   COUNT(*) AS count_weekday  
+	FROM Dates_Table
+	GROUP BY DATENAME (WEEKDAY, Datetime_Column)
+	ORDER BY count_weekday DESC
+	;
 ```
 
-![](/post/2021-04-07-working-with-dates_files/p23p.png)
+![](/post/2021-04-07-working-with-dates_files/p23p12.png)
 
 
+## 3.4 Time Span
 
 
+What is used at least as often are the indications of time spans that lie between two dates. 
+
+SQL Server also offers a command for this: DATEDIFF
 
 
+For this purpose we will create another example table:
+
+```{r, eval=F, echo=T}
+CREATE TABLE Time_Span_Table
+    (ID INT NOT NULL IDENTITY(1,1) PRIMARY KEY,
+     Date_1 DATETIME NOT NULL,
+     Date_2 DATETIME NOT NULL)
+    ;
+```
+
+```{r, eval=F, echo=T}
+INSERT INTO Time_Span_Table VALUES ('2021-05-19 15:22:15', '2021-05-22 18:45:59')
+```
+
+```{r, eval=F, echo=T}
+SELECT * FROM Time_Span_Table;
+```
+
+![](/post/2021-04-07-working-with-dates_files/p23p13.png)
+
+
+The [syntax for DATEDIFF](https://docs.microsoft.com/en-us/sql/t-sql/functions/datediff-transact-sql?view=sql-server-ver15) is quite simple: `DATEDIFF ( datepart , startdate , enddate )  `
+
+Here is an example:
+
+```{r, eval=F, echo=T}
+SELECT DATEDIFF (YEAR, Date_1, Date_2) AS _time_span_year,
+	   DATEDIFF (MONTH, Date_1, Date_2) AS _time_span_month,
+	   DATEDIFF (DAY, Date_1, Date_2) AS _time_span_day,
+	   DATEDIFF (HOUR, Date_1, Date_2) AS _time_span_hour,
+	   DATEDIFF (MINUTE, Date_1, Date_2) AS _time_span_minute,
+	   DATEDIFF (SECOND, Date_1, Date_2) AS _time_span_second
+	FROM Time_Span_Table
+	;
+```
+
+![](/post/2021-04-07-working-with-dates_files/p23p14.png)
+
+
+# 4 Conclusion
+
+
+In this short post I explained the functionality and uses of SQL regarding dates. 
 
 
 
