@@ -93,7 +93,7 @@ USE Dates_DB;</code></pre>
     ;</code></pre>
 <p><img src="/post/2021-04-07-working-with-dates_files/p23p5.png" /></p>
 <p>This, of course, no longer works. This is what I meant earlier by ‘as long as the file format allows’.
-The column Date_Column contains only date values, no other as it is the case for example with the Datetime.</p>
+The column ‘Date_Column’ contains only date values, no other as it is the case for example with the column ‘Datetime’.</p>
 <p>Let’s try this column next.</p>
 <pre class="r"><code>SELECT DATEPART(YEAR, Datetime_Column) AS _year, 
        DATEPART(MONTH, Datetime_Column) AS _month, 
