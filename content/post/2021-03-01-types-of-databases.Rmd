@@ -13,7 +13,6 @@ output:
 
 
 # 1 Introduction
-test test
 
 ![](/post/2021-03-01-types-of-databases_files/p1s1.png)
 
