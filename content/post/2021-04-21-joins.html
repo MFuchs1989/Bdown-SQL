@@ -12,8 +12,6 @@ output:
 ---
 
 <script src="/rmarkdown-libs/header-attrs/header-attrs.js"></script>
-<link href="/rmarkdown-libs/anchor-sections/anchor-sections.css" rel="stylesheet" />
-<script src="/rmarkdown-libs/anchor-sections/anchor-sections.js"></script>
 
 <div id="TOC">
 <ul>
@@ -30,7 +28,8 @@ output:
 <li><a href="#outer-excluding-join">3.7 Outer Excluding Join</a></li>
 </ul></li>
 <li><a href="#multiple-joins">4 Multiple Joins</a></li>
-<li><a href="#conclusion">5 Conclusion</a></li>
+<li><a href="#join-tables-from-2-different-databases">5 Join Tables from 2 different Databases</a></li>
+<li><a href="#conclusion">6 Conclusion</a></li>
 </ul>
 </div>
 
@@ -311,7 +310,49 @@ SELECT * FROM Countries_Land_Area</code></pre>
     ;</code></pre>
 <p><img src="/post/2021-04-21-joins_files/p15p26.png" /></p>
 </div>
+<div id="join-tables-from-2-different-databases" class="section level1">
+<h1>5 Join Tables from 2 different Databases</h1>
+<p>Furthermore, it is also possible to join different tables from 2 different databases.
+Let’s take another look at our main table in advance:</p>
+<p><img src="/post/2021-04-21-joins_files/p15p27.png" /></p>
+<p>Now I create another database called ‘Joins2’ and add another sample table (‘Countries_Currency’) there.
+Note: A foreign key relationship between two databases is not possible with SQL Server. Therefore I will leave out this definition when defining the columns.</p>
+<pre class="r"><code>CREATE DATABASE Joins2;
+
+USE Joins2;</code></pre>
+<p><img src="/post/2021-04-21-joins_files/p15p28.png" /></p>
+<p>Note: A foreign key relationship between two databases is not possible with SQL Server. Therefore I will leave out this definition when defining the columns.</p>
+<pre class="r"><code>CREATE TABLE Countries_Currency
+    (ID INT NOT NULL IDENTITY(1,1) PRIMARY KEY,
+     Country_ID INT NOT NULL,
+     Currency VARCHAR(100) NOT NULL)
+    ;
+
+INSERT INTO Countries_Currency (Country_ID, Currency) VALUES (1, &#39;Egyptian Pound&#39;)
+INSERT INTO Countries_Currency (Country_ID, Currency) VALUES (2, &#39;Brazilian Real&#39;)
+INSERT INTO Countries_Currency (Country_ID, Currency) VALUES (3, &#39;Euro&#39;)
+INSERT INTO Countries_Currency (Country_ID, Currency) VALUES (4, &#39;Maltese Lira&#39;)
+
+SELECT * FROM Countries_Currency</code></pre>
+<p><img src="/post/2021-04-21-joins_files/p15p29.png" /></p>
+<p>The two tables (‘Countries_Capital’ &amp; ‘Countries_Currency’) from the two databases (‘Joins’ &amp; ‘Joins2’) can be joined together using the following syntax:</p>
+<pre class="r"><code>SELECT table_1.*,
+       table_2.*
+    FROM [Database_1].[Table_Schema].[Table_Name_1] table_1
+    JOIN [Database_2].[Table_Schema].[Table_Name_2] table_2 
+        ON table_1.id = table_2.id
+    ;</code></pre>
+<p>And here is the syntax applied to our present case:</p>
+<pre class="r"><code>SELECT t1.Country_ID,
+       t1.Country_Name,
+       t2.Currency
+    FROM [Joins].[dbo].[Countries_Main] AS t1
+    LEFT JOIN [Joins2].[dbo].Countries_Currency AS t2
+        ON t1.Country_ID = t2.Country_ID
+    ;</code></pre>
+<p><img src="/post/2021-04-21-joins_files/p15p30.png" /></p>
+</div>
 <div id="conclusion" class="section level1">
-<h1>5 Conclusion</h1>
+<h1>6 Conclusion</h1>
 <p>In this post I have shown what different types of joins exist and how to use them.</p>
 </div>

@@ -470,7 +470,76 @@ SELECT t1.Country_ID,
 ![](/post/2021-04-21-joins_files/p15p26.png)
 
 
-# 5 Conclusion
+
+# 5 Join Tables from 2 different Databases
+
+Furthermore, it is also possible to join different tables from 2 different databases.
+Let's take another look at our main table in advance:
+
+![](/post/2021-04-21-joins_files/p15p27.png)
+
+
+
+Now I create another database called 'Joins2' and add another sample table ('Countries_Currency') there.
+Note: A foreign key relationship between two databases is not possible with SQL Server. Therefore I will leave out this definition when defining the columns. 
+
+```{r, eval=F, echo=T}
+CREATE DATABASE Joins2;
+
+USE Joins2;
+```
+
+![](/post/2021-04-21-joins_files/p15p28.png)
+
+
+Note: A foreign key relationship between two databases is not possible with SQL Server. Therefore I will leave out this definition when defining the columns.
+
+
+```{r, eval=F, echo=T}
+CREATE TABLE Countries_Currency
+    (ID INT NOT NULL IDENTITY(1,1) PRIMARY KEY,
+     Country_ID INT NOT NULL,
+     Currency VARCHAR(100) NOT NULL)
+    ;
+
+INSERT INTO Countries_Currency (Country_ID, Currency) VALUES (1, 'Egyptian Pound')
+INSERT INTO Countries_Currency (Country_ID, Currency) VALUES (2, 'Brazilian Real')
+INSERT INTO Countries_Currency (Country_ID, Currency) VALUES (3, 'Euro')
+INSERT INTO Countries_Currency (Country_ID, Currency) VALUES (4, 'Maltese Lira')
+
+SELECT * FROM Countries_Currency
+```
+
+![](/post/2021-04-21-joins_files/p15p29.png)
+
+
+The two tables ('Countries_Capital' & 'Countries_Currency') from the two databases ('Joins' & 'Joins2') can be joined together using the following syntax:
+
+```{r, eval=F, echo=T}
+SELECT table_1.*,
+	   table_2.*
+	FROM [Database_1].[Table_Schema].[Table_Name_1] table_1
+	JOIN [Database_2].[Table_Schema].[Table_Name_2] table_2 
+		ON table_1.id = table_2.id
+	;
+```
+
+And here is the syntax applied to our present case:
+
+```{r, eval=F, echo=T}
+SELECT t1.Country_ID,
+       t1.Country_Name,
+       t2.Currency
+    FROM [Joins].[dbo].[Countries_Main] AS t1
+    LEFT JOIN [Joins2].[dbo].Countries_Currency AS t2
+        ON t1.Country_ID = t2.Country_ID
+    ;
+```
+
+![](/post/2021-04-21-joins_files/p15p30.png)
+
+
+# 6 Conclusion
 
 
 In this post I have shown what different types of joins exist and how to use them. 
