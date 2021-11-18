@@ -473,7 +473,7 @@ SELECT t1.Country_ID,
 
 # 5 Join Tables from 2 different Databases
 
-Furthermore, it is also possible to join different tables from 2 different databases.
+Furthermore, it is also possible to **join different tables from 2 different databases**.
 Let's take another look at our main table in advance:
 
 ![](/post/2021-04-21-joins_files/p15p27.png)
@@ -481,7 +481,6 @@ Let's take another look at our main table in advance:
 
 
 Now I create another database called 'Joins2' and add another sample table ('Countries_Currency') there.
-Note: A foreign key relationship between two databases is not possible with SQL Server. Therefore I will leave out this definition when defining the columns. 
 
 ```{r, eval=F, echo=T}
 CREATE DATABASE Joins2;
