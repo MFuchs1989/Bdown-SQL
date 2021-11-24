@@ -1,0 +1,138 @@
+---
+title: How to Backup a Database
+author: Michael Fuchs
+date: '2021-08-01'
+slug: how-to-backup-a-database
+categories: []
+tags: []
+output:
+  blogdown::html_page:
+    toc: true
+    toc_depth: 5
+---
+
+<script src="/rmarkdown-libs/header-attrs/header-attrs.js"></script>
+
+<div id="TOC">
+<ul>
+<li><a href="#introduction">1 Introduction</a></li>
+<li><a href="#preparation">2 Preparation</a></li>
+<li><a href="#backup-a-database">3 Backup a Database</a>
+<ul>
+<li><a href="#via-ssms-object-explorer">3.1 via SSMS Object Explorer</a></li>
+<li><a href="#via-sql-query">3.2 via SQL Query</a></li>
+</ul></li>
+<li><a href="#restore-a-database">4 Restore a Database</a>
+<ul>
+<li><a href="#via-ssms-object-explorer-1">4.1 via SSMS Object Explorer</a></li>
+<li><a href="#via-sql-query-1">4.2 via SQL Query</a></li>
+</ul></li>
+<li><a href="#conclusion">5 Conclusion</a></li>
+</ul>
+</div>
+
+<div id="introduction" class="section level1">
+<h1>1 Introduction</h1>
+<p>If you want to work on a private database, it is advisable to back it up at regular intervals.
+How to do this with the Microsoft SQL Server Management I want to show you in this post.</p>
+</div>
+<div id="preparation" class="section level1">
+<h1>2 Preparation</h1>
+<p>For this post, I’m creating a sample database (<em>TestDB</em>) and including a sample table (<em>Example_Table</em>) here.</p>
+<p>Since I would like to have the output of <a href="https://docs.microsoft.com/en-us/sql/ssms/sql-server-management-studio-ssms?view=sql-server-ver15">SSMS</a> always in English I use the following syntax.</p>
+<pre class="r"><code>SET LANGUAGE ENGLISH</code></pre>
+<p>How I create the database and the tables can be read in my post <a href="https://michael-fuchs-sql.netlify.app/2021/03/07/create-a-database/#create-a-new-database">Create a Database</a>.</p>
+<pre class="r"><code>CREATE DATABASE TestDB;
+
+USE TestDB;
+
+
+CREATE TABLE Example_Table
+    (ID INT NOT NULL IDENTITY(1,1) PRIMARY KEY,
+    First_Name VARCHAR(100) NOT NULL,
+    Last_Name VARCHAR(100) NOT NULL)
+    ;</code></pre>
+<p>Now I’ll insert some sample data in this table.</p>
+<pre class="r"><code>INSERT INTO Example_Table VALUES (&#39;Klara&#39;, &#39;Brown&#39;)
+INSERT INTO Example_Table VALUES (&#39;Jessy&#39;, &#39;Williams&#39;)
+INSERT INTO Example_Table VALUES (&#39;Emily&#39;, &#39;Taylor&#39;)
+
+
+
+SELECT * FROM Example_Table</code></pre>
+<p><img src="/post/2021-08-01-how-to-backup-a-database_files/p24p14.png" /></p>
+<p>Okay has worked. Now we can get started.</p>
+</div>
+<div id="backup-a-database" class="section level1">
+<h1>3 Backup a Database</h1>
+<div id="via-ssms-object-explorer" class="section level2">
+<h2>3.1 via SSMS Object Explorer</h2>
+<p>On the one hand, we have the possibility to backup the database using Object Explorer.
+To do this, right-click on the database</p>
+<p><img src="/post/2021-08-01-how-to-backup-a-database_files/p24p1.png" /></p>
+<p>and select <em>Tasks and Back Up..</em>.</p>
+<p>After that this window will open:</p>
+<p><img src="/post/2021-08-01-how-to-backup-a-database_files/p24p2.png" /></p>
+<p>Backup type: Full is the right setting for our project.
+Below you can also see a suggested path for saving the backup under Destination.
+It was created automatically during the installation of <a href="https://docs.microsoft.com/en-us/sql/ssms/sql-server-management-studio-ssms?view=sql-server-ver15">SSMS</a>.</p>
+<p>Now just press OK and the backup will be created.</p>
+<p><img src="/post/2021-08-01-how-to-backup-a-database_files/p24p3.png" /></p>
+<p>Here you can also see the created backup:</p>
+<p><img src="/post/2021-08-01-how-to-backup-a-database_files/p24p4.png" /></p>
+</div>
+<div id="via-sql-query" class="section level2">
+<h2>3.2 via SQL Query</h2>
+<p>Personally, I find the way via the Object Explorer a bit cumbersome and therefore prefer to use the possibility of a SQL query.</p>
+<p>Here would be the syntax for it. You just have to name the database you want to backup and the location (I created a folder called ‘backup’ under my C drive).</p>
+<pre class="r"><code>BACKUP DATABASE TestDB TO DISK = &#39;C:\backup\TestDB.bak&#39;;</code></pre>
+<p><img src="/post/2021-08-01-how-to-backup-a-database_files/p24p5.png" /></p>
+<p>Again, we see the successfully saved file:</p>
+<p><img src="/post/2021-08-01-how-to-backup-a-database_files/p24p6.png" /></p>
+</div>
+</div>
+<div id="restore-a-database" class="section level1">
+<h1>4 Restore a Database</h1>
+<p>Now that we know how to back up databases, I would like to show you how to load these backups.</p>
+<p>However, before that we need to delete the created database (‘TestDB’). I have described how to do that in this post: <a href="https://michael-fuchs-sql.netlify.app/2021/03/07/create-a-database/#delete-the-whole-database">Create a Database 3.2.5 Delete the whole Database</a></p>
+<div id="via-ssms-object-explorer-1" class="section level2">
+<h2>4.1 via SSMS Object Explorer</h2>
+<p>For the first variant we use the Object Explorer again.</p>
+<p>To do this, right-click on the Databases folder</p>
+<p><img src="/post/2021-08-01-how-to-backup-a-database_files/p24p7.png" /></p>
+<p>and select <em>Restore Database..</em>.</p>
+<p>This window will then open:</p>
+<p><img src="/post/2021-08-01-how-to-backup-a-database_files/p24p8.png" /></p>
+<p>Select ‘Device’ as source and click on the three dots to select the path.</p>
+<p>Click on ‘Add’.</p>
+<p><img src="/post/2021-08-01-how-to-backup-a-database_files/p24p9.png" /></p>
+<p>Navigate to your backup and select it.</p>
+<p><img src="/post/2021-08-01-how-to-backup-a-database_files/p24p10.png" /></p>
+<p>Now confirm twice with OK.</p>
+<p><img src="/post/2021-08-01-how-to-backup-a-database_files/p24p11.png" /></p>
+<p><img src="/post/2021-08-01-how-to-backup-a-database_files/p24p12.png" /></p>
+<p>Done!</p>
+<p><img src="/post/2021-08-01-how-to-backup-a-database_files/p24p13.png" /></p>
+<p>Let’s test a short query:</p>
+<pre class="r"><code>SELECT * FROM Example_Table;</code></pre>
+<p><img src="/post/2021-08-01-how-to-backup-a-database_files/p24p14.png" /></p>
+<p>Perfect queries work and the database is restored.</p>
+<p>We can also see this from the fact that the two files:
++ TestDB.mdf and
+TestDB_log.ldf</p>
+<p>now appear here again:</p>
+<p><img src="/post/2021-08-01-how-to-backup-a-database_files/p24p15.png" /></p>
+</div>
+<div id="via-sql-query-1" class="section level2">
+<h2>4.2 via SQL Query</h2>
+<p>Also the recovery can be done via SQL query, if you want.</p>
+<p>Here would be the necessary syntax for it:</p>
+<pre class="r"><code>RESTORE DATABASE TestDB 
+    FROM DISK = N&#39;C:\Program Files\Microsoft SQL Server\MSSQL15.MSSQLSERVER\MSSQL\Backup\TestDB.bak&#39;
+    ;</code></pre>
+</div>
+</div>
+<div id="conclusion" class="section level1">
+<h1>5 Conclusion</h1>
+<p>In this post I showed how to create backups of databases with SQL Server and how to load them again.</p>
+</div>
