@@ -196,7 +196,7 @@ RESTORE DATABASE TestDB
 	;
 ```
 
-
+![](/post/2021-08-01-how-to-backup-a-database_files/p24p16.png)
 
 
 # 5 Conclusion
