@@ -138,9 +138,9 @@ Is this table really in the first normal form? I don't see any primary key here 
 
 **What is a composite key?**
 
-A composite key is a primary key composed of multiple columns used to identify a record uniquely. This table has a composite primary key Full_Name, Address.
+A composite key is a primary key composed of multiple columns used to identify a record uniquely. This table has a composite primary key Full_Name, Address and Zip.
 
-With these two specifications, the lines can be clearly distinguished from each other, thus the first normal form is achieved. 
+With these three specifications, the lines can be clearly distinguished from each other, thus the first normal form is achieved. 
 
 
 
@@ -218,7 +218,7 @@ Transitive dependency is nothing but, a non-prime attribute (other than candidat
 
 
 
-### 3.3.2 Remove Transitive Dependencies, Part I
+### 3.3.2 Remove Transitive Dependencies
 
 
 
@@ -233,19 +233,19 @@ Here, the Address attribute determines the Full_Name attribute. If you know the 
 
 
 
-**Full_Name -> Nationality**:
-Likewise, the Full_Name attribute determines the Nationality, but not the other way around, just because we know the nationality does not mean we can determine the name. 
+**Address -> Zip**:
+Likewise, the Address attribute determines the Zip, but not the other way around, just because we know the Zip does not mean we can determine the Address 
 
 
 But this table introduces a transitive dependency:
 
-**Address - > Nationality**: 
-If we know the address, we can determine the nationality via the Full_Name column.
+**Zip - > State**: 
+If we know the Zip, we can determine the State via the Address column.
 
 
 
 To ensure 3rd NF, let's remove the transitive dependency. 
-We can start by removing the Address column from the Customer_Info table and creating a separate Address table: 
+We can start by removing the State column from the Customer_Info table and creating a separate State table: 
 
 
 
@@ -253,61 +253,7 @@ We can start by removing the Address column from the Customer_Info table and cre
 ![](/post/2021-05-16-normalization-of-databases_files/p22p12.png)
 
 
-### 3.3.3 Remove Transitive Dependencies, Part II
-
-
-Does this fix the problem? Let's examine our dependencies again:
-
-
-#### 3.3.3.1 Address_Table
-
-![](/post/2021-05-16-normalization-of-databases_files/p22p13.png)
-
-
-**Address_ID -> Address**:
-The Address depends on the Address_ID.
-
-**No other dependencies** in this table exist, so we are okay. Note that the foreign key Customer_ID links this table to the Customer_Info table through its primary key Customer_ID. We have created a relationship to avoid a transitive dependency, a key design of relational databases.
-
-
-
-
-#### 3.3.3.2 Customer_Info_Table
-
-![](/post/2021-05-16-normalization-of-databases_files/p22p14.png)
-
-
-**Customer_ID -> Full_Name**:
-The Full_Name depends on the Customer_ID. 
-
-**Full_Name -> Nationality**:
-The nationality can be determined by the Full_Name attribute. 
-
-**Customer_ID -> Nationality**:
-The nationality can be determined from the Customer_ID through the Full_Name attribute. **We still have a transitive dependency**! 
-
-We need to add a futher table to normalize this data:
-
-
-![](/post/2021-05-16-normalization-of-databases_files/p22p15.png)
-
-
-### 3.3.4 Wrap Up
-
-Now we have created three tables in [this chapter](https://michael-fuchs-sql.netlify.app/2021/05/16/normalization-of-databases/#third-normal-form-3rd-nf), using foreign keys to link the tables together.
-
-
-![](/post/2021-05-16-normalization-of-databases_files/p22p16.png)
-
-
-+ The Address table’s foreign key Customer_ID links an address to a customer in the Customer_Info table.
-+ The Customer_Info table’s foreign key Nationality_ID links a customer to a nationality in the Nationality table. 
-+ The Nationality table has no foreign key because it has no need to link to another table in this design. 
-
-
-
-
-### 3.3.5 Why Transitive Dependencies Are Bad Database Design
+### 3.3.3 Why Transitive Dependencies Are Bad Database Design
 
 
 For this section we can look again at the origin table:
@@ -330,7 +276,7 @@ The **benefits of removing transitive dependencies** are:
 
 
 
-### 3.3.6 Final tables (in the third normal form)
+### 3.3.4 Final tables (in the third normal form)
 
 
 Here again a short overview of all created tables in the third normal form:
@@ -342,7 +288,6 @@ Here again a short overview of all created tables in the third normal form:
 # 4 Conclusion
 
 In this post I have explained what normalization of a database means and what rules exist for it. For all the rules I have listed examples that you can use to understand the meaning of the rules. 
-
 
 
 
