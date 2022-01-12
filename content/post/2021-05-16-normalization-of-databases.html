@@ -205,7 +205,7 @@ We can start by removing the State column from the Customer_Info table and creat
 <div id="why-transitive-dependencies-are-bad-database-design" class="section level3">
 <h3>3.3.3 Why Transitive Dependencies Are Bad Database Design</h3>
 <p>For this section we can look again at the origin table:</p>
-<p><img src="/post/2021-05-16-normalization-of-databases_files/p22p17.png" /></p>
+<p><img src="/post/2021-05-16-normalization-of-databases_files/p22p13.png" /></p>
 <p>If you delete the two customers ‘Ben Smith’ from Miami and ‘Jill White’, we will also automatically delete the nationality American from the database completely.</p>
 <p>You cannot add a new address to the database without adding a name as well. What would happen if you were provided with a free set of locations? You would not be able to use it until you have a customer that matches one of these addresses.</p>
 <p>If one of the customers changes their address (for example, due to a change of residence), you would need to go through all of that customer’s orders and change the Address column. Having multiple records with the same customer can lead to inaccurate data. What if the person entering the data doesn’t realize there are multiple records for him and changes the data in only one record?</p>
@@ -218,9 +218,9 @@ We can start by removing the State column from the Customer_Info table and creat
 <div id="final-tables-in-the-third-normal-form" class="section level3">
 <h3>3.3.4 Final tables (in the third normal form)</h3>
 <p>Here again a short overview of all created tables in the third normal form:</p>
-<p><img src="/post/2021-05-16-normalization-of-databases_files/p22p18.png" /></p>
-<p>And here is the view with the associated cardinality:</p>
-<p><img src="/post/2021-05-16-normalization-of-databases_files/p22p19.png" /></p>
+<p><img src="/post/2021-05-16-normalization-of-databases_files/p22p14.png" /></p>
+<p>And here is the view with the associated cardinality (<a href="https://michael-fuchs-sql.netlify.app/2021/03/03/entity-relationship-diagram-erd/#chen-notation">Chen-Notation</a>):</p>
+<p><img src="/post/2021-05-16-normalization-of-databases_files/p22p15.png" /></p>
 </div>
 </div>
 </div>

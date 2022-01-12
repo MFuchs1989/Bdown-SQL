@@ -258,7 +258,7 @@ We can start by removing the State column from the Customer_Info table and creat
 
 For this section we can look again at the origin table:
 
-![](/post/2021-05-16-normalization-of-databases_files/p22p17.png)
+![](/post/2021-05-16-normalization-of-databases_files/p22p13.png)
 
 
 If you delete the two customers 'Ben Smith' from Miami and 'Jill White', we will also automatically delete the nationality American from the database completely. 
@@ -282,17 +282,16 @@ The **benefits of removing transitive dependencies** are:
 Here again a short overview of all created tables in the third normal form:
 
 
-![](/post/2021-05-16-normalization-of-databases_files/p22p18.png)
+![](/post/2021-05-16-normalization-of-databases_files/p22p14.png)
 
 
-And here is the view with the associated cardinality:
+And here is the view with the associated cardinality ([Chen-Notation](https://michael-fuchs-sql.netlify.app/2021/03/03/entity-relationship-diagram-erd/#chen-notation)):
 
-![](/post/2021-05-16-normalization-of-databases_files/p22p19.png)
+![](/post/2021-05-16-normalization-of-databases_files/p22p15.png)
 
 
 # 4 Conclusion
 
 In this post I have explained what normalization of a database means and what rules exist for it. For all the rules I have listed examples that you can use to understand the meaning of the rules. 
-
 
 
