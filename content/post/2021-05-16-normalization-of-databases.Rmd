@@ -285,6 +285,11 @@ Here again a short overview of all created tables in the third normal form:
 ![](/post/2021-05-16-normalization-of-databases_files/p22p18.png)
 
 
+And here is the view with the associated cardinality:
+
+![](/post/2021-05-16-normalization-of-databases_files/p22p19.png)
+
+
 # 4 Conclusion
 
 In this post I have explained what normalization of a database means and what rules exist for it. For all the rules I have listed examples that you can use to understand the meaning of the rules. 
