@@ -234,7 +234,7 @@ Here, the Address attribute determines the Full_Name attribute. If you know the 
 
 
 **Address -> Zip**:
-Likewise, the Address attribute determines the Zip, but not the other way around, just because we know the Zip does not mean we can determine the Address 
+Likewise, the Address attribute determines the Zip, but not the other way around, just because we know the Zip does not mean we can determine the Address. 
 
 
 But this table introduces a transitive dependency:
