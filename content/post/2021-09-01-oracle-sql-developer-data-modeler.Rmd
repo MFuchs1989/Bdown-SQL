@@ -94,6 +94,8 @@ To create the ERD, we will first work with the Logical.
 ![](/post/2021-09-01-oracle-sql-developer-data-modeler_files/p25p4.png)
 
 
+## 3.1 Creation of an Entity
+
 Click New Entity at the top of the toolbar.
 
 ![](/post/2021-09-01-oracle-sql-developer-data-modeler_files/p25p5.png)
@@ -107,13 +109,187 @@ The following window opens:
 ![](/post/2021-09-01-oracle-sql-developer-data-modeler_files/p25p6.png)
 
 
+Now name your first table. I will call it 'Customer' in this example.
+
+
+## 3.2 Creation of an Attribute
+
+
+Next I select Attributes:
+
+![](/post/2021-09-01-oracle-sql-developer-data-modeler_files/p25p7.png)
+
+Here I click on the green plus symbol to create a new attribute.
+
+![](/post/2021-09-01-oracle-sql-developer-data-modeler_files/p25p8.png)
+
+I will call my first attribute ‘Customer_ID’.
+
+![](/post/2021-09-01-oracle-sql-developer-data-modeler_files/p25p9.png)
+
+
+### 3.2.1 NUMERIC
+
+
+Since I want to use this attribute as primary key later, I assign the source type 'numeric' to this column.
+The Data Type is 'Logical'.
+Since this field must be filled, I set a check mark at ‘Mandatory’.
+
+
+Of course, we still have the options here to make further settings such as Precision or Scale.
+
+But what are these settings?
+
+Precision (p):
+The maximum total number of decimal places to be stored. This number includes the digits to the left and right of the decimal separator. The precision must be a value between 1 and the maximum precision of 38. The default precision is 18.
+Source: [Microsoft SQL Documentation](https://docs.microsoft.com/de-de/sql/t-sql/data-types/decimal-and-numeric-transact-sql?view=sql-server-ver15) 
+
+
+Scale (s):
+The number of decimal places stored to the right of the decimal separator. This number is subtracted from p to determine the maximum number of digits to the left of the decimal point. The number of decimal places must be a value between 0 and p and can only be specified when the precision is specified.
+Source: [Microsoft SQL Documentation](https://docs.microsoft.com/de-de/sql/t-sql/data-types/decimal-and-numeric-transact-sql?view=sql-server-ver15) 
+
+
+### 3.2.2 VARCHAR
+
+
+The second attribute I want to add to the table (again with the green plus symbol) should be called 'First_Name'. 
+
+![](/post/2021-09-01-oracle-sql-developer-data-modeler_files/p25p10.png)
+
+
+This should be a column for character data, hence the source type VARCHAR with a limit of 150 characters in our example.
+
+
+## 3.3 A Glimpse on the **Logical Writer**
+
+
+I will now add two more columns ('Last_Name' and 'Age') using the same principle, specifying the 'Age' column as non-mandatory. 
+Now let's have a look at the created Customer table:
+
+![](/post/2021-09-01-oracle-sql-developer-data-modeler_files/p25p11.png)
+
+The red asterisk symbols mark columns that must be filled in. The column 'Age', on the other hand, has an o for optional.
+
+
+## 3.4 Assignment of a Primary Key
+
+
+Now I would like to assign a primary key.
+
+Double-click on the table and select 'Unique Identifiers'.
+
+![](/post/2021-09-01-oracle-sql-developer-data-modeler_files/p25p12.png)
+
+With the green plus symbol I create a new unique identifier.
+
+![](/post/2021-09-01-oracle-sql-developer-data-modeler_files/p25p13.png)
+
+Double-click again on the line marked in blue.
+
+Now go to 'Attributes and Relations' and select the column you want to make a Primary Key (here 'Customer_ID')
+and transfer it with the arrow pointing to the right into the column on the right side.
+
+![](/post/2021-09-01-oracle-sql-developer-data-modeler_files/p25p14.png)
+
+Click OK. 
+
+Now you will be kicked out of the 'Key Properties - Key_1' window. We are not done yet, so please double click on the blue marked line to get back to the previous window.
+
+![](/post/2021-09-01-oracle-sql-developer-data-modeler_files/p25p15.png)
+
+This time we go to 'General' and select the Primary Key under State.
+
+I find this opening, closing and reopening also a hindrance, but in my personal experience the Oracle Data Modeler takes over the setting of the primary key.
+
+As we can see, our Customer table (or rather the Customer_ID column) has received a # sign, which indicates the Primary Key.
+
+
+![](/post/2021-09-01-oracle-sql-developer-data-modeler_files/p25p16.png)
+
+
+Now I will create another table for cell phones. I will not list the individual steps here, since they are analogous to those shown before. 
+
+Here are my final tables:
+
+![](/post/2021-09-01-oracle-sql-developer-data-modeler_files/p25p17.png)
 
 
 
+## 3.5 Setting a Table Relationship
+
+
+Now we come to the fun part and the reason why I like Oracle Data Modeler so much. 
+We set a connection between the two tables. 
+Since a customer can have one or more cell phones or cell phone numbers, there is a 1:n relationship.
+
+
+I can set these with the green arrows in the toolbar. 
+
+![](/post/2021-09-01-oracle-sql-developer-data-modeler_files/p25p18.png)
+
+
+In this example I use the 1:n connections as mentioned before. After you have selected the correct arrow, simply click on the two tables that you want to connect.
 
 
 
+Don't worry, if you want to change the connection type later, this is possible at any time here:
 
+![](/post/2021-09-01-oracle-sql-developer-data-modeler_files/p25p19.png)
+
+Click on OK to create the connection (the name of the connection is not relevant for me here).
+
+Here we go!
+
+![](/post/2021-09-01-oracle-sql-developer-data-modeler_files/p25p20.png)
+
+
+## 3.6 Engineer to Relational Model
+
+OK great, now we have created two tables and joined them together. 
+Now let's convert the logical design into a relational one.
+
+We can do this using this icon from the toolbar:
+
+![](/post/2021-09-01-oracle-sql-developer-data-modeler_files/p25p21.png)
+
+Now we can select which entities and relations we want to transfer, of course we transfer all of them as in the default setting. 
+Don't worry about the warning signs, they are normal because we didn't set all of them manually, but the system sets the necessary ones automatically.
+
+![](/post/2021-09-01-oracle-sql-developer-data-modeler_files/p25p22.png)
+
+Click on Engineer.
+
+
+## 3.7 A Glimpse on the **Relational Writer**
+
+Great, now we have transformed the logical into a relational design:
+
+![](/post/2021-09-01-oracle-sql-developer-data-modeler_files/p25p23.png)
+
+Here we can see which column is a Primary Key and which is a Foreign Key, as well as the tables are connected with each other. 
+The source type of the respective columns is also displayed here in detail.
+
+If you now go back to the Logical Writer and restart the engineering process you will notice that the warning signs shown before have disappeared.
+
+![](/post/2021-09-01-oracle-sql-developer-data-modeler_files/p25p24.png)
+
+
+## 3.8 Generate DDL
+
+Now we come to the second reason why I like using Oracle Data Modeler so much.
+Not only have I created a beautiful ERD here, but I can also have the DDL output right away. 
+
+I now click on the following icon from the toolbar:
+
+![](/post/2021-09-01-oracle-sql-developer-data-modeler_files/p25p25.png)
+
+
+Here I can then select for which database management system I want to create the DDL.
+In my case I select SQL Server 2012 from Microsoft.
+
+
+![](/post/2021-09-01-oracle-sql-developer-data-modeler_files/p25p26.png)
 
 
 
