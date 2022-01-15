@@ -1,0 +1,135 @@
+---
+title: Oracle SQL Developer Data Modeler
+author: Michael Fuchs
+date: '2021-09-01'
+slug: oracle-sql-developer-data-modeler
+categories: []
+tags: []
+output:
+  blogdown::html_page:
+    toc: true
+    toc_depth: 5
+---
+
+
+
+# 1 Introduction
+
+In my post [Entity-Relationship-Diagram](https://michael-fuchs-sql.netlify.app/2021/03/03/entity-relationship-diagram-erd/) I talked in detail about how databases should look like and how their cardinality can be represented. 
+I have done this so far with [Drawio](https://app.diagrams.net/). 
+But now I have found a program that not only allows you to design ERDs faster and nicer, but also to use other features like the automatic creation of underlying [DDLs](https://michael-fuchs-sql.netlify.app/2021/05/13/types-of-sql-commands/#data-definition-language-ddl): 
+
+**Oracle SQL Developer Data Modeler** 
+
+
+
+# 2 Installations and Setup
+
+## 2.1 Downlaod Data Modeler
+
+First of all you need to download Oracle SQL Developer Data Modeler via this link: [Oracle SQL Developer Data Modeler -  Download](https://www.oracle.com/tools/downloads/sql-data-modeler-downloads.html)
+
+
+To download the ZIP file, you need to create an Oracle account. In the course of the download attempt, there will be a prompt for this from Oracle.
+
+Now unzip the downloaded file and place it in a location of your choice. 
+You will find the application at the highest folder level.
+Folder as well as application file can be renamed as you like.  
+
+
+## 2.2 Downlaod Java SDK
+
+To use Oracle Data Modeler you still need Java SDK (version less than 11.1).
+You can download it here: [Java SE Archive Downloads](https://www.oracle.com/de/java/technologies/javase/jdk11-archive-downloads.html
+)
+
+Tip: Download the zip file, extract it and place it in the Oracle SQL Developer Data Modeler folder. 
+
+
+The first time you run the Data Modeler (datamodeler.exe) you will be asked to set the path to the jdk file.
+
+
+![](/post/2021-09-01-oracle-sql-developer-data-modeler_files/p25p1.png)
+
+
+Set the path accordingly and the Data Modeler will work.
+
+
+
+## 2.3 Change Language
+
+
+If you want to change the language of the Data Modeler then search the datamodeler.conf file.
+You can find it under the following path:
+
+![](/post/2021-09-01-oracle-sql-developer-data-modeler_files/p25p2.png)
+
+Open the file and insert (at any place) the following lines. 
+
+
+```{r, eval=F, echo=T}
+#GUI language
+AddVMOption -Duser.language=en
+#AddVMOption -Duser.language=de
+#AddVMOption -Duser.language=fr
+#AddVMOption -Duser.language=it
+#AddVMOption -Duser.language=es
+```
+
+In this example I have chosen the language English. 
+If you like, you can set the language of your choice (just uncomment the corresponding line and comment out the rest).
+
+
+I have only listed the most common languages here. Here would be a list with other languages that can be deposited:
+
+
+![](/post/2021-09-01-oracle-sql-developer-data-modeler_files/p25p3.png)
+
+
+# 3 Oracle - Data Modeler
+
+At the beginning you will find an empty design with a Logical and a Relational Writer.
+To create the ERD, we will first work with the Logical.
+
+![](/post/2021-09-01-oracle-sql-developer-data-modeler_files/p25p4.png)
+
+
+Click New Entity at the top of the toolbar.
+
+![](/post/2021-09-01-oracle-sql-developer-data-modeler_files/p25p5.png)
+
+
+
+Then you can click anywhere in the Logical Writer to create the first table.
+
+The following window opens:
+
+![](/post/2021-09-01-oracle-sql-developer-data-modeler_files/p25p6.png)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+![](/post/2021-09-01-oracle-sql-developer-data-modeler_files/p25p.png)
+
+
+
+
+
+```{r, eval=F, echo=T}
+
+```
+
+
+
+
