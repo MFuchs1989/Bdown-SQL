@@ -1,5 +1,5 @@
 ---
-title: Create a m:m Relationship
+title: Create a n:m Relationship
 author: Michael Fuchs
 date: '2021-03-16'
 slug: create-a-m-m-relationship
@@ -16,7 +16,7 @@ output:
 # 1 Introduction
 
 
-As already announced in my post [Create a 1:m Relationship](https://michael-fuchs-sql.netlify.app/2021/03/13/create-a-1-m-relationship/), we now come to the last general type of relationship between two tables that I would like to deal with here: a **m:m relationship**
+As already announced in my post [Create a 1:m Relationship](https://michael-fuchs-sql.netlify.app/2021/03/13/create-a-1-m-relationship/), we now come to the last general type of relationship between two tables that I would like to deal with here: a **n:m relationship**
 
 
 
@@ -271,7 +271,7 @@ Again, I am aware that these joins are not particularly beautiful. I will descri
 
 # 7 Conclusion
 
-In this post I have shown how to set up an m:m relationship between two tables using an Associative Table and how to query on it.
+In this post I have shown how to set up an n:m relationship between two tables using an Associative Table and how to query on it.
 
 
 
