@@ -17,15 +17,13 @@ output:
 
 In my post [Entity-Relationship-Diagram](https://michael-fuchs-sql.netlify.app/2021/03/03/entity-relationship-diagram-erd/) I talked in detail about how databases should look like and how their cardinality can be represented. 
 I have done this so far with [Drawio](https://app.diagrams.net/). 
-But now I have found a program that not only allows you to design ERDs faster and nicer, but also to use other features like the automatic creation of underlying [DDLs](https://michael-fuchs-sql.netlify.app/2021/05/13/types-of-sql-commands/#data-definition-language-ddl): 
-
-**Oracle SQL Developer Data Modeler** 
+But now I have found a program that not only allows you to design ERDs faster and nicer, but also to use other features like the automatic creation of underlying [DDLs](https://michael-fuchs-sql.netlify.app/2021/05/13/types-of-sql-commands/#data-definition-language-ddl): **Oracle SQL Developer Data Modeler** 
 
 
 
 # 2 Installations and Setup
 
-## 2.1 Downlaod Data Modeler
+## 2.1 Downlaod the Data Modeler
 
 First of all you need to download Oracle SQL Developer Data Modeler via this link: [Oracle SQL Developer Data Modeler -  Download](https://www.oracle.com/tools/downloads/sql-data-modeler-downloads.html)
 
@@ -131,7 +129,7 @@ I will call my first attribute ‘Customer_ID’.
 ### 3.2.1 NUMERIC
 
 
-Since I want to use this attribute as primary key later, I assign the source type 'numeric' to this column.
+Since I want to use this attribute as Primary Key later, I assign the source type 'numeric' to this column.
 The Data Type is 'Logical'.
 Since this field must be filled, I set a check mark at ‘Mandatory’.
 
@@ -200,7 +198,7 @@ Now you will be kicked out of the 'Key Properties - Key_1' window. We are not do
 
 This time we go to 'General' and select the Primary Key under State.
 
-I find this opening, closing and reopening also a hindrance, but in my personal experience the Oracle Data Modeler takes over the setting of the primary key.
+I find this opening, closing and reopening also a hindrance, but in my personal experience the Oracle Data Modeler takes over the setting of the Primary Key.
 
 As we can see, our Customer table (or rather the Customer_ID column) has received a # sign, which indicates the Primary Key.
 
@@ -387,9 +385,9 @@ Also the view on the connections of the two tables is displayed correctly.
 
 Now let's try to insert some values into the created tables and test queries.
 
-The Customer table must be filled first, as the foreign key (‘Customer_ Customer_ID’) is stored in the Phone table and references the other table (Customer).
+The Customer table must be filled first, as the Foreign Key (‘Customer_ Customer_ID’) is stored in the Phone table and references the other table (Customer).
 
-
+**Filling the Customer Table **
 
 ```{r, eval=F, echo=T}
 INSERT INTO Customer VALUES (1, 'Andrew', 'Evergreen', 32)
@@ -401,6 +399,8 @@ SELECT *
 ![](/post/2021-09-01-oracle-sql-developer-data-modeler_files/p25p32.png)
 
 
+**Filling the Phone Table **
+
 ```{r, eval=F, echo=T}
 INSERT INTO Phone VALUES (1, 004185615224, 1)
 
@@ -409,6 +409,8 @@ SELECT *
 ```
 
 ![](/post/2021-09-01-oracle-sql-developer-data-modeler_files/p25p33.png)
+
+**Join Query**
 
 
 ```{r, eval=F, echo=T}
@@ -445,7 +447,7 @@ I have always created ERDs in my previous publications. Now I would like to rebu
 
 
 
-[**Create a m:m Relationship**](https://michael-fuchs-sql.netlify.app/2021/03/16/create-a-m-m-relationship/#review-of-the-created-relationships)
+[**Create a n:m Relationship**](https://michael-fuchs-sql.netlify.app/2021/03/16/create-a-m-m-relationship/#review-of-the-created-relationships)
 
 ![](/post/2021-09-01-oracle-sql-developer-data-modeler_files/p25p37.png)
 

@@ -18,7 +18,7 @@ output:
 <li><a href="#introduction">1 Introduction</a></li>
 <li><a href="#installations-and-setup">2 Installations and Setup</a>
 <ul>
-<li><a href="#downlaod-data-modeler">2.1 Downlaod Data Modeler</a></li>
+<li><a href="#downlaod-the-data-modeler">2.1 Downlaod the Data Modeler</a></li>
 <li><a href="#downlaod-java-sdk">2.2 Downlaod Java SDK</a></li>
 <li><a href="#change-language">2.3 Change Language</a></li>
 </ul></li>
@@ -47,13 +47,12 @@ output:
 <h1>1 Introduction</h1>
 <p>In my post <a href="https://michael-fuchs-sql.netlify.app/2021/03/03/entity-relationship-diagram-erd/">Entity-Relationship-Diagram</a> I talked in detail about how databases should look like and how their cardinality can be represented.
 I have done this so far with <a href="https://app.diagrams.net/">Drawio</a>.
-But now I have found a program that not only allows you to design ERDs faster and nicer, but also to use other features like the automatic creation of underlying <a href="https://michael-fuchs-sql.netlify.app/2021/05/13/types-of-sql-commands/#data-definition-language-ddl">DDLs</a>:</p>
-<p><strong>Oracle SQL Developer Data Modeler</strong></p>
+But now I have found a program that not only allows you to design ERDs faster and nicer, but also to use other features like the automatic creation of underlying <a href="https://michael-fuchs-sql.netlify.app/2021/05/13/types-of-sql-commands/#data-definition-language-ddl">DDLs</a>: <strong>Oracle SQL Developer Data Modeler</strong></p>
 </div>
 <div id="installations-and-setup" class="section level1">
 <h1>2 Installations and Setup</h1>
-<div id="downlaod-data-modeler" class="section level2">
-<h2>2.1 Downlaod Data Modeler</h2>
+<div id="downlaod-the-data-modeler" class="section level2">
+<h2>2.1 Downlaod the Data Modeler</h2>
 <p>First of all you need to download Oracle SQL Developer Data Modeler via this link: <a href="https://www.oracle.com/tools/downloads/sql-data-modeler-downloads.html">Oracle SQL Developer Data Modeler - Download</a></p>
 <p>To download the ZIP file, you need to create an Oracle account. In the course of the download attempt, there will be a prompt for this from Oracle.</p>
 <p>Now unzip the downloaded file and place it in a location of your choice.
@@ -111,7 +110,7 @@ To create the ERD, we will first work with the Logical.</p>
 <p><img src="/post/2021-09-01-oracle-sql-developer-data-modeler_files/p25p9.png" /></p>
 <div id="numeric" class="section level3">
 <h3>3.2.1 NUMERIC</h3>
-<p>Since I want to use this attribute as primary key later, I assign the source type ‘numeric’ to this column.
+<p>Since I want to use this attribute as Primary Key later, I assign the source type ‘numeric’ to this column.
 The Data Type is ‘Logical’.
 Since this field must be filled, I set a check mark at ‘Mandatory’.</p>
 <p>Of course, we still have the options here to make further settings such as Precision or Scale.</p>
@@ -152,7 +151,7 @@ and transfer it with the arrow pointing to the right into the column on the righ
 <p>Now you will be kicked out of the ‘Key Properties - Key_1’ window. We are not done yet, so please double click on the blue marked line to get back to the previous window.</p>
 <p><img src="/post/2021-09-01-oracle-sql-developer-data-modeler_files/p25p15.png" /></p>
 <p>This time we go to ‘General’ and select the Primary Key under State.</p>
-<p>I find this opening, closing and reopening also a hindrance, but in my personal experience the Oracle Data Modeler takes over the setting of the primary key.</p>
+<p>I find this opening, closing and reopening also a hindrance, but in my personal experience the Oracle Data Modeler takes over the setting of the Primary Key.</p>
 <p>As we can see, our Customer table (or rather the Customer_ID column) has received a # sign, which indicates the Primary Key.</p>
 <p><img src="/post/2021-09-01-oracle-sql-developer-data-modeler_files/p25p16.png" /></p>
 <p>Now I will create another table for cell phones. I will not list the individual steps here, since they are analogous to those shown before.</p>
@@ -271,17 +270,20 @@ GO</code></pre>
 <p><img src="/post/2021-09-01-oracle-sql-developer-data-modeler_files/p25p31.png" /></p>
 <p>Also the view on the connections of the two tables is displayed correctly.</p>
 <p>Now let’s try to insert some values into the created tables and test queries.</p>
-<p>The Customer table must be filled first, as the foreign key (‘Customer_ Customer_ID’) is stored in the Phone table and references the other table (Customer).</p>
+<p>The Customer table must be filled first, as the Foreign Key (‘Customer_ Customer_ID’) is stored in the Phone table and references the other table (Customer).</p>
+<p><strong>Filling the Customer Table </strong></p>
 <pre class="r"><code>INSERT INTO Customer VALUES (1, &#39;Andrew&#39;, &#39;Evergreen&#39;, 32)
 
 SELECT *
     FROM Customer;</code></pre>
 <p><img src="/post/2021-09-01-oracle-sql-developer-data-modeler_files/p25p32.png" /></p>
+<p><strong>Filling the Phone Table </strong></p>
 <pre class="r"><code>INSERT INTO Phone VALUES (1, 004185615224, 1)
 
 SELECT *
     FROM Phone;</code></pre>
 <p><img src="/post/2021-09-01-oracle-sql-developer-data-modeler_files/p25p33.png" /></p>
+<p><strong>Join Query</strong></p>
 <pre class="r"><code>SELECT t1.Customer_ID, 
        t1.First_Name,
        t1.Last_Name,
@@ -300,7 +302,7 @@ SELECT *
 <p><img src="/post/2021-09-01-oracle-sql-developer-data-modeler_files/p25p35.png" /></p>
 <p><a href="https://michael-fuchs-sql.netlify.app/2021/03/13/create-a-1-m-relationship/#connecting-the-two-tables"><strong>Create a 1:m Relationship</strong></a></p>
 <p><img src="/post/2021-09-01-oracle-sql-developer-data-modeler_files/p25p36.png" /></p>
-<p><a href="https://michael-fuchs-sql.netlify.app/2021/03/16/create-a-m-m-relationship/#review-of-the-created-relationships"><strong>Create a m:m Relationship</strong></a></p>
+<p><a href="https://michael-fuchs-sql.netlify.app/2021/03/16/create-a-m-m-relationship/#review-of-the-created-relationships"><strong>Create a n:m Relationship</strong></a></p>
 <p><img src="/post/2021-09-01-oracle-sql-developer-data-modeler_files/p25p37.png" /></p>
 </div>
 <div id="conclusion" class="section level1">
