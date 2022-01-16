@@ -127,6 +127,11 @@ Let's take another look at Views (via [SSMS](https://docs.microsoft.com/en-us/sq
 Now we can also see in [SSMS](https://docs.microsoft.com/en-us/sql/ssms/sql-server-management-studio-ssms?view=sql-server-ver15) that and what relationship exists between the two tables. 
 
 
+If you want to see a representation via Oracle Data Modeler, check out this chapter of my post [Oracle SQL Developer Data Modeler](https://michael-fuchs-sql.netlify.app/2021/09/01/oracle-sql-developer-data-modeler/): [ERDs from old Posts with Oracle Data Modeler](https://michael-fuchs-sql.netlify.app/2021/09/01/oracle-sql-developer-data-modeler/#erds-from-old-posts-with-oracle-data-modeler)
+
+![](/post/2021-09-01-oracle-sql-developer-data-modeler_files/p25p35.png)
+
+
 
 # 5 Filling the tables
 
