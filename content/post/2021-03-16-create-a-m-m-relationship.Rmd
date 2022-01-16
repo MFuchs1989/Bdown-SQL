@@ -154,6 +154,9 @@ Let's also have a look at the relationship of the tables under Views in [SSMS](h
 
 Using the key and infinity symbols we can see how the tables are connected. 
 
+If you want to see a representation via Oracle Data Modeler, check out this chapter of my post [Oracle SQL Developer Data Modeler](https://michael-fuchs-sql.netlify.app/2021/09/01/oracle-sql-developer-data-modeler/): [ERDs from old Posts with Oracle Data Modeler](https://michael-fuchs-sql.netlify.app/2021/09/01/oracle-sql-developer-data-modeler/#erds-from-old-posts-with-oracle-data-modeler)
+
+![](/post/2021-09-01-oracle-sql-developer-data-modeler_files/p25p37.png)
 
 
 # 5 Filling the tables
