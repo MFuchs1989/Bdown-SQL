@@ -83,7 +83,16 @@ Let's also look again at the relationship of the two tables under Views in [SSMS
 ![](/post/2021-03-13-create-a-1-m-relationship_files/p5p3.png)
 
 
-Using the infinity symbol in the output, we can see that a primary key is referencing a foreign key. 
+Using the infinity symbol in the output, we can see that a Primary Key is referencing a Foreign Key. 
+
+
+If you want to see a representation via Oracle Data Modeler, check out this chapter of my post [Oracle SQL Developer Data Modeler](https://michael-fuchs-sql.netlify.app/2021/09/01/oracle-sql-developer-data-modeler/): [ERDs from old Posts with Oracle Data Modeler](https://michael-fuchs-sql.netlify.app/2021/09/01/oracle-sql-developer-data-modeler/#erds-from-old-posts-with-oracle-data-modeler)
+
+![](/post/2021-09-01-oracle-sql-developer-data-modeler_files/p25p36.png)
+
+
+
+
 
 # 5 Filling the tables
 
