@@ -37,6 +37,9 @@ output:
 <li><a href="#a-glimpse-on-the-relational-writer">3.7 A Glimpse on the <strong>Relational Writer</strong></a></li>
 <li><a href="#generate-ddl">3.8 Generate DDL</a></li>
 </ul></li>
+<li><a href="#using-the-generated-ddl">4 Using the generated DDL</a></li>
+<li><a href="#erds-from-old-posts-with-oracle-data-modeler">5 ERDs from old Posts with Oracle Data Modeler</a></li>
+<li><a href="#conclusion">6 Conclusion</a></li>
 </ul>
 </div>
 
@@ -199,6 +202,108 @@ Not only have I created a beautiful ERD here, but I can also have the DDL output
 <p>Here I can then select for which database management system I want to create the DDL.
 In my case I select SQL Server 2012 from Microsoft.</p>
 <p><img src="/post/2021-09-01-oracle-sql-developer-data-modeler_files/p25p26.png" /></p>
-<p><img src="/post/2021-09-01-oracle-sql-developer-data-modeler_files/p25p.png" /></p>
+<p>Now all you have to do is click Generate</p>
+<p><img src="/post/2021-09-01-oracle-sql-developer-data-modeler_files/p25p27.png" /></p>
+<p>and OK.</p>
+<p><img src="/post/2021-09-01-oracle-sql-developer-data-modeler_files/p25p28.png" /></p>
+<p>Wonderful, now we have obtained the DDL syntax with which we can create all the tables from the drawn ERD as well as their connections in SQL Server 2012.</p>
+<p>Click on Save in the lower right corner to save the DDL.</p>
+<p>I do the same with the created design.
+To do this, simply go back to the Data Modeler and click File - Save as in the upper left corner.</p>
+<p>Now we have created three files:</p>
+<p><img src="/post/2021-09-01-oracle-sql-developer-data-modeler_files/p25p29.png" /></p>
 </div>
+</div>
+<div id="using-the-generated-ddl" class="section level1">
+<h1>4 Using the generated DDL</h1>
+<p>Now we use the created DDL in Microsoft SQL Server Management Studio.</p>
+<p>If you want to know how to create databases in <a href="https://docs.microsoft.com/en-us/sql/ssms/sql-server-management-studio-ssms?view=sql-server-ver15">SSMS</a>, check out this post of mine: <a href="https://michael-fuchs-sql.netlify.app/2021/03/07/create-a-database/">Create a Database</a></p>
+<p>Use a database of your choice in which you want to create the tables. I have used my ‘MyDB’ again for this.</p>
+<p>You can simply copy and paste from the .ddl file here.</p>
+<pre class="r"><code>use MyDB;
+
+
+
+CREATE TABLE Customer 
+    (
+     Customer_ID NUMERIC (28) NOT NULL , 
+     First_Name VARCHAR (150) NOT NULL , 
+     Last_Name VARCHAR (150) NOT NULL , 
+     Age NUMERIC (28) 
+    )
+GO
+
+ALTER TABLE Customer ADD CONSTRAINT Customer_PK PRIMARY KEY CLUSTERED (Customer_ID)
+     WITH (
+     ALLOW_PAGE_LOCKS = ON , 
+     ALLOW_ROW_LOCKS = ON )
+GO
+
+CREATE TABLE Phone 
+    (
+     Phone_ID NUMERIC (28) NOT NULL , 
+     Number NUMERIC (28) NOT NULL , 
+     Customer_Customer_ID NUMERIC (28) NOT NULL 
+    )
+GO
+
+ALTER TABLE Phone ADD CONSTRAINT Phone_PK PRIMARY KEY CLUSTERED (Phone_ID)
+     WITH (
+     ALLOW_PAGE_LOCKS = ON , 
+     ALLOW_ROW_LOCKS = ON )
+GO
+
+ALTER TABLE Phone 
+    ADD CONSTRAINT Phone_Customer_FK FOREIGN KEY 
+    ( 
+     Customer_Customer_ID
+    ) 
+    REFERENCES Customer 
+    ( 
+     Customer_ID 
+    ) 
+    ON DELETE NO ACTION 
+    ON UPDATE NO ACTION 
+GO</code></pre>
+<p>I always open this file with Visual Studio Code but you are free to use your program of choice.</p>
+<p><img src="/post/2021-09-01-oracle-sql-developer-data-modeler_files/p25p30.png" /></p>
+<p>Perfect worked.</p>
+<p><img src="/post/2021-09-01-oracle-sql-developer-data-modeler_files/p25p31.png" /></p>
+<p>Also the view on the connections of the two tables is displayed correctly.</p>
+<p>Now let’s try to insert some values into the created tables and test queries.</p>
+<p>The Customer table must be filled first, as the foreign key (‘Customer_ Customer_ID’) is stored in the Phone table and references the other table (Customer).</p>
+<pre class="r"><code>INSERT INTO Customer VALUES (1, &#39;Andrew&#39;, &#39;Evergreen&#39;, 32)
+
+SELECT *
+    FROM Customer;</code></pre>
+<p><img src="/post/2021-09-01-oracle-sql-developer-data-modeler_files/p25p32.png" /></p>
+<pre class="r"><code>INSERT INTO Phone VALUES (1, 004185615224, 1)
+
+SELECT *
+    FROM Phone;</code></pre>
+<p><img src="/post/2021-09-01-oracle-sql-developer-data-modeler_files/p25p33.png" /></p>
+<pre class="r"><code>SELECT t1.Customer_ID, 
+       t1.First_Name,
+       t1.Last_Name,
+       t1.Age,
+       t2.Number
+    FROM Customer AS t1
+    LEFT JOIN Phone AS t2
+        ON t1.Customer_ID = t2.Customer_Customer_ID
+    ;</code></pre>
+<p><img src="/post/2021-09-01-oracle-sql-developer-data-modeler_files/p25p34.png" /></p>
+</div>
+<div id="erds-from-old-posts-with-oracle-data-modeler" class="section level1">
+<h1>5 ERDs from old Posts with Oracle Data Modeler</h1>
+<p>I have always created ERDs in my previous publications. Now I would like to rebuild the created ERDs from three posts here with Oracle Data Modeler.</p>
+<p><a href="https://michael-fuchs-sql.netlify.app/2021/03/10/create-a-1-1-relationship/#connecting-the-two-tables"><strong>Create a 1:1 Relationship</strong></a></p>
+<p><img src="/post/2021-09-01-oracle-sql-developer-data-modeler_files/p25p35.png" /></p>
+<p><a href="https://michael-fuchs-sql.netlify.app/2021/03/13/create-a-1-m-relationship/#connecting-the-two-tables"><strong>Create a 1:m Relationship</strong></a></p>
+<p><img src="/post/2021-09-01-oracle-sql-developer-data-modeler_files/p25p36.png" /></p>
+<p><a href="https://michael-fuchs-sql.netlify.app/2021/03/16/create-a-m-m-relationship/#review-of-the-created-relationships"><strong>Create a m:m Relationship</strong></a></p>
+<p><img src="/post/2021-09-01-oracle-sql-developer-data-modeler_files/p25p37.png" /></p>
+</div>
+<div id="conclusion" class="section level1">
+<h1>6 Conclusion</h1>
+<p>In this post I showed how to use Oracle Data Modeler to create ERDs, define relationships between tables, and output the associated DDL.</p>
 </div>
