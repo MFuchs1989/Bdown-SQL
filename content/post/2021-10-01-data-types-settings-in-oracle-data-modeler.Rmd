@@ -1,0 +1,36 @@
+---
+title: Data Types Settings in Oracle Data Modeler
+author: Michael Fuchs
+date: '2021-10-01'
+slug: data-types-settings-in-oracle-data-modeler
+categories: []
+tags: []
+output:
+  blogdown::html_page:
+    toc: true
+    toc_depth: 5
+---
+
+
+
+# 1 Introduction
+
+
+
+
+
+
+
+
+```{r, eval=F, echo=T}
+
+```
+
+![](/post/2021-10-01-data-types-settings-in-oracle-data-modeler_files/p26p1.png)
+
+
+
+
+
+
+
