@@ -16,10 +16,198 @@ output:
 <div id="TOC">
 <ul>
 <li><a href="#introduction">1 Introduction</a></li>
+<li><a href="#overview-of-the-most-common-data-types">2 Overview of the most common Data Types</a>
+<ul>
+<li><a href="#string-data-types">2.1 String Data Types</a></li>
+<li><a href="#numeric-data-types">2.2 Numeric Data Types</a></li>
+<li><a href="#date-and-time-data-types">2.3 Date and Time Data Types</a></li>
+</ul></li>
+<li><a href="#deep-dive-numeric-data-types">3 Deep Dive: Numeric Data Types</a>
+<ul>
+<li><a href="#decimal">3.1 DECIMAL</a></li>
+<li><a href="#nummeric">3.2 NUMMERIC</a></li>
+<li><a href="#float">3.3 FLOAT</a></li>
+</ul></li>
+<li><a href="#conclusion">4 Conclusion</a></li>
 </ul>
 </div>
 
 <div id="introduction" class="section level1">
 <h1>1 Introduction</h1>
+<p>In my last post (Oracle SQL Developer Data Modeler) I showed, among other things, how to create tables with variables of different data types.</p>
+<p>In this post I would like to go into more detail on the topic of data types and their settings.</p>
+<p>Here I will show which settings you can make in Oracle Data Modeler and how they affect SQL Server Management Studio (SSMS).</p>
+<p>For this post, I would advise you to read through the following posts first:</p>
+<ul>
+<li><a href="https://michael-fuchs-sql.netlify.app/2021/03/07/create-a-database/">Create a Database</a></li>
+<li><a href="https://michael-fuchs-sql.netlify.app/2021/09/01/oracle-sql-developer-data-modeler/">Oracle SQL Developer Data Modeler</a></li>
+</ul>
+</div>
+<div id="overview-of-the-most-common-data-types" class="section level1">
+<h1>2 Overview of the most common Data Types</h1>
+<p>Here I show the most used data types for me, divided by the main categories, when I develop databases.</p>
+<div id="string-data-types" class="section level2">
+<h2>2.1 String Data Types</h2>
 <p><img src="/post/2021-10-01-data-types-settings-in-oracle-data-modeler_files/p26p1.png" /></p>
+<p>Source: <a href="https://www.w3schools.com/sql/sql_datatypes.asp">w3schools</a></p>
+</div>
+<div id="numeric-data-types" class="section level2">
+<h2>2.2 Numeric Data Types</h2>
+<p><img src="/post/2021-10-01-data-types-settings-in-oracle-data-modeler_files/p26p2.png" /></p>
+<p>Comment on the graphic: * usually uses less storage and have better speed (up to 20x)</p>
+<p>The <strong>p</strong> parameter indicates the maximum total number of digits that can be stored (both to the left and to the right of the decimal point). p must be a value from 1 to 38. Default is 18.</p>
+<p>The <strong>s</strong> parameter indicates the maximum number of digits stored to the right of the decimal point. s must be a value from 0 to p. Default value is 0.</p>
+<p>Source: <a href="https://www.w3schools.com/sql/sql_datatypes.asp">w3schools</a></p>
+</div>
+<div id="date-and-time-data-types" class="section level2">
+<h2>2.3 Date and Time Data Types</h2>
+<p><img src="/post/2021-10-01-data-types-settings-in-oracle-data-modeler_files/p26p3.png" /></p>
+<p>Source: <a href="https://www.w3schools.com/sql/sql_datatypes.asp">w3schools</a></p>
+</div>
+</div>
+<div id="deep-dive-numeric-data-types" class="section level1">
+<h1>3 Deep Dive: Numeric Data Types</h1>
+<p>Since most individual settings are possible with this data type, I would like to go into detail about them.</p>
+<p>In the following I will show how I will create the tables and the settings for the variables in Oracle Data Modeler and apply the subsequently generated DDL in SQL Server Management Studio.</p>
+<p>The creation of variables with the data type bit, tinyint and int should not need a deeper explanation.</p>
+<p>Therefore we will concentrate on the data types decimal, numeric and float.</p>
+<p>For each of these three data types, we have the option to specify the ‘Precision’ and ‘Scale’.
+The different effects of these settings will be explained in the following chapters.</p>
+<div id="decimal" class="section level2">
+<h2>3.1 DECIMAL</h2>
+<p>See the following possible settings for the DECIMAL data type:</p>
+<p><strong>Setting: Precision = default, Scale = default</strong></p>
+<p><img src="/post/2021-10-01-data-types-settings-in-oracle-data-modeler_files/p26p4.png" /></p>
+<p><strong>Setting: Precision = 2, Scale = default</strong></p>
+<p><img src="/post/2021-10-01-data-types-settings-in-oracle-data-modeler_files/p26p5.png" /></p>
+<p><strong>Setting: Precision = default, Scale = 2</strong></p>
+<p><img src="/post/2021-10-01-data-types-settings-in-oracle-data-modeler_files/p26p6.png" /></p>
+<p><strong>Setting: Precision = 0, Scale = 0</strong></p>
+<p><img src="/post/2021-10-01-data-types-settings-in-oracle-data-modeler_files/p26p7.png" /></p>
+<p><strong>Setting: Precision = 0, Scale = 2</strong></p>
+<p><img src="/post/2021-10-01-data-types-settings-in-oracle-data-modeler_files/p26p8.png" /></p>
+<p><strong>Setting: Precision = 5, Scale = 2</strong></p>
+<p><img src="/post/2021-10-01-data-types-settings-in-oracle-data-modeler_files/p26p9.png" /></p>
+<p>Here is an overview of the generated table (logical and relational writer):</p>
+<p><img src="/post/2021-10-01-data-types-settings-in-oracle-data-modeler_files/p26p10.png" /></p>
+<p>If you now display the corresponding DDL for this table, it looks like this:</p>
+<pre class="r"><code>CREATE TABLE DECIMAL_Table 
+    (
+     DEC_VAR_def_def DECIMAL (28) , 
+     DEC_VAR_2_def DECIMAL (2) , 
+     DEC_VAR_def_2 DECIMAL (28,2) , 
+     DEC_VAR_0_0 DECIMAL , 
+     DEC_VAR_0_2 DECIMAL , 
+     DEC_VAR_5_2 DECIMAL (5,2) 
+    )
+GO</code></pre>
+<p>Now it is <strong>important</strong> to know that the default settings of Oracle Data Modeler are different from those of SQL Server Management Studio:</p>
+<ul>
+<li>Oracle Data Modeler: 28 digits</li>
+<li>SSMS: 18 digits</li>
+</ul>
+<p>This means that for the variables DEC_VAR_0_0 DECIMAL and DEC_VAR_0_2 DECIMAL a maximum length of 18 digits would apply, whereas the variables DEC_VAR_def_def DECIMAL and DEC_VAR_def_2 DECIMAL should have a total length of 28 digits.</p>
+<p>Now let’s use this DDL in SQL Server Management Studio and insert a few values to illustrate the meaning of the settings:</p>
+<pre class="r"><code>SET LANGUAGE ENGLISH
+
+use MyDB
+
+
+CREATE TABLE DECIMAL_Table 
+    (
+     DEC_VAR_def_def DECIMAL (28) , 
+     DEC_VAR_2_def DECIMAL (2) , 
+     DEC_VAR_def_2 DECIMAL (28,2) , 
+     DEC_VAR_0_0 DECIMAL , 
+     DEC_VAR_0_2 DECIMAL , 
+     DEC_VAR_5_2 DECIMAL (5,2) 
+    )
+GO
+
+INSERT INTO DECIMAL_Table VALUES (2.25, 2.25, 2.25, 2.25, 2.25, 2.25)
+INSERT INTO DECIMAL_Table VALUES (2.225, 2.225, 2.225, 2.225, 2.225, 2.225)
+
+SELECT * FROM DECIMAL_Table</code></pre>
+<p><img src="/post/2021-10-01-data-types-settings-in-oracle-data-modeler_files/p26p11.png" /></p>
+<p>Here we see, only where also a scale of 2 (DEC_VAR_def_2 DECIMAL (28,2) and DEC_VAR_5_2 DECIMAL (5,2)) is set, decimal places are allowed. For all other columns, the decimal places are rounded. The same applies if you exceed the specified number of decimal places.</p>
+</div>
+<div id="nummeric" class="section level2">
+<h2>3.2 NUMMERIC</h2>
+<p>In the overview I wrote that the two data types DECIMAL and NUMERIC do not differ functionally. Let’s test this.</p>
+<p>When creating the table ‘NUMERIC_Table’ I will make exactly the same settings for the different variables as for those from the DECIMAL table.</p>
+<p>Here is again an overview of the generated table (logical and relational writer):</p>
+<p><img src="/post/2021-10-01-data-types-settings-in-oracle-data-modeler_files/p26p12.png" /></p>
+<p>Here is the generated associated DDL:</p>
+<pre class="r"><code>CREATE TABLE NUMERIC_Table 
+    (
+     NUM_VAR_def_def NUMERIC (28) , 
+     NUM_VAR_2_def NUMERIC (2) , 
+     NUM_VAR_def_2 NUMERIC (28,2) , 
+     NUM_VAR_0_0 NUMERIC , 
+     NUM_VAR_0_2 NUMERIC , 
+     NUM_VAR_5_2 NUMERIC (5,2) 
+    )
+GO</code></pre>
+<p>Let’s again use this DDL in SQL Server Management Studio and insert the same values as for the DECIMAL table:</p>
+<pre class="r"><code>CREATE TABLE NUMERIC_Table 
+    (
+     NUM_VAR_def_def NUMERIC (28) , 
+     NUM_VAR_2_def NUMERIC (2) , 
+     NUM_VAR_def_2 NUMERIC (28,2) , 
+     NUM_VAR_0_0 NUMERIC , 
+     NUM_VAR_0_2 NUMERIC , 
+     NUM_VAR_5_2 NUMERIC (5,2) 
+    )
+GO
+
+INSERT INTO NUMERIC_Table VALUES (2.25, 2.25, 2.25, 2.25, 2.25, 2.25)
+INSERT INTO NUMERIC_Table VALUES (2.225, 2.225, 2.225, 2.225, 2.225, 2.225)
+
+SELECT * FROM NUMERIC_Table</code></pre>
+<p><img src="/post/2021-10-01-data-types-settings-in-oracle-data-modeler_files/p26p13.png" /></p>
+<p>As we can see, the same rounding is done as in the example with the DECIMAL table. The two data types are therefore functionally the same.</p>
+<p><img src="/post/2021-10-01-data-types-settings-in-oracle-data-modeler_files/p26p14.png" /></p>
+</div>
+<div id="float" class="section level2">
+<h2>3.3 FLOAT</h2>
+<p>Finally, I would like to go into detail about the FLOAT data type, which is an approximate numeric data type. Here we also have the settings of Precision and Scale in the Oracle Data Modeler but how much influence do they have?</p>
+<p>Let’s test it by using the same variables with the same settings as in the two previous examples.</p>
+<p><img src="/post/2021-10-01-data-types-settings-in-oracle-data-modeler_files/p26p15.png" /></p>
+<p>Here is the generated associated DDL:</p>
+<pre class="r"><code>CREATE TABLE FLOAT_Table 
+    (
+     FL_VAR_def_def FLOAT , 
+     FL_VAR_2_def FLOAT (2) , 
+     FL_VAR_def_2 FLOAT , 
+     FL_VAR_0_0 FLOAT , 
+     FL_VAR_0_2 FLOAT , 
+     FL_VAR_5_2 FLOAT (5) 
+    )
+GO</code></pre>
+<p>Now let’s take a look at this DDL in SQL Server Management Studio:</p>
+<pre class="r"><code>CREATE TABLE FLOAT_Table 
+    (
+     FL_VAR_def_def FLOAT , 
+     FL_VAR_2_def FLOAT (2) , 
+     FL_VAR_def_2 FLOAT , 
+     FL_VAR_0_0 FLOAT , 
+     FL_VAR_0_2 FLOAT , 
+     FL_VAR_5_2 FLOAT (5) 
+    )
+GO
+
+INSERT INTO FLOAT_Table VALUES (333.25, 333.25, 333.25, 333.25, 333.25, 333.25)
+INSERT INTO FLOAT_Table VALUES (666666.25, 666666, 666666.25, 666666.25, 666666.25, 666666.25)
+INSERT INTO FLOAT_Table VALUES (25.12345, 25.12345, 25.12345, 25.12345, 25.12345, 25.12345)
+INSERT INTO FLOAT_Table VALUES (25.1234567, 25.1234567, 25.1234567, 25.1234567, 25.1234567, 25.1234567)
+
+SELECT * FROM FLOAT_Table</code></pre>
+<p><img src="/post/2021-10-01-data-types-settings-in-oracle-data-modeler_files/p26p16.png" /></p>
+<p>Here we see the problem I have with the FLOAT data type. I can set Precision and Scale, but it has no effect at all, because no matter if I limit the digits before or after the decimal point, it is still possible to insert more digits into the variable.</p>
+<p>The only advantage this data type has is that it requires less memory and is more performant in the analysis.</p>
+</div>
+</div>
+<div id="conclusion" class="section level1">
+<h1>4 Conclusion</h1>
+<p>In this post, I have shown what common data types there are and what effects the settings have on the individual data types.</p>
 </div>
