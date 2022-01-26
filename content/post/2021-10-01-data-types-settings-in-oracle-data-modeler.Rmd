@@ -74,9 +74,9 @@ Since most individual settings are possible with this data type, I would like to
 In the following I will show how I will create the tables and the settings for the variables in Oracle Data Modeler and apply the subsequently generated DDL in SQL Server Management Studio.
 
 
-The creation of variables with the data type bit, tinyint and int should not need a deeper explanation. 
+The creation of variables with the data type BIT, TINYINT and INT should not need a deeper explanation. 
 
-Therefore we will concentrate on the data types decimal, numeric and float.
+Therefore we will concentrate on the data types DECIMAL, NUMERIC and FLOAT.
 
 For each of these three data types, we have the option to specify the 'Precision' and 'Scale'. 
 The different effects of these settings will be explained in the following chapters.
@@ -87,32 +87,32 @@ The different effects of these settings will be explained in the following chapt
 
 See the following possible settings for the DECIMAL data type:
 
-**Setting: Precision = default, Scale = default**
+Setting: **Precision = default, Scale = default**
 
 ![](/post/2021-10-01-data-types-settings-in-oracle-data-modeler_files/p26p4.png)
 
 
-**Setting: Precision = 2, Scale = default**
+Setting: **Precision = 2, Scale = default**
 
 ![](/post/2021-10-01-data-types-settings-in-oracle-data-modeler_files/p26p5.png)
 
 
-**Setting: Precision = default, Scale = 2**
+Setting: **Precision = default, Scale = 2**
 
 ![](/post/2021-10-01-data-types-settings-in-oracle-data-modeler_files/p26p6.png)
 
 
-**Setting: Precision = 0, Scale = 0**
+Setting: **Precision = 0, Scale = 0**
 
 ![](/post/2021-10-01-data-types-settings-in-oracle-data-modeler_files/p26p7.png)
 
 
-**Setting: Precision = 0, Scale = 2**
+Setting: **Precision = 0, Scale = 2**
 
 ![](/post/2021-10-01-data-types-settings-in-oracle-data-modeler_files/p26p8.png)
 
 
-**Setting: Precision = 5, Scale = 2**
+Setting: **Precision = 5, Scale = 2**
 
 
 ![](/post/2021-10-01-data-types-settings-in-oracle-data-modeler_files/p26p9.png)
