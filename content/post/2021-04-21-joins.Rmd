@@ -3,8 +3,10 @@ title: Joins
 author: Michael Fuchs
 date: '2021-04-21'
 slug: joins
-categories: []
-tags: []
+categories:
+  - R
+tags:
+  - R Markdown
 output:
   blogdown::html_page:
     toc: true
