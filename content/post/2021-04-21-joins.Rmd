@@ -355,7 +355,7 @@ SELECT t1.Country_ID AS Country_ID_t1,
 
 ## 3.6 Right Excluding Join
 
-![](/post/2021-04-21-joins_files/p15s6.png)
+![](/post/2021-04-21-joins_files/p15s7.png)
 
 Source: [C.L. Moffatt](https://www.codeproject.com/Articles/33052/Visual-Representation-of-SQL-Joins)
 
@@ -387,7 +387,7 @@ SELECT t1.Country_ID AS Country_ID_t1,
 
 ## 3.7 Outer Excluding Join
 
-![](/post/2021-04-21-joins_files/p15s7.png)
+![](/post/2021-04-21-joins_files/p15s8.png)
 
 Source: [C.L. Moffatt](https://www.codeproject.com/Articles/33052/Visual-Representation-of-SQL-Joins)
 
