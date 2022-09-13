@@ -11,7 +11,6 @@ output:
     toc_depth: 5
 ---
 
-<script src="/rmarkdown-libs/header-attrs/header-attrs.js"></script>
 
 <div id="TOC">
 <ul>
@@ -206,7 +205,7 @@ We can start by removing the State column from the Customer_Info table and creat
 <h3>3.3.3 Why Transitive Dependencies Are Bad Database Design</h3>
 <p>For this section we can look again at the origin table:</p>
 <p><img src="/post/2021-05-16-normalization-of-databases_files/p22p13.png" /></p>
-<p>If you delete the two customers ‘Ben Smith’ from Miami and ‘Jill White’, we will also automatically delete the nationality American from the database completely.</p>
+<p>If you delete the two customers ‘Ben Smith’ from Miami and ‘Jill White’, we would also lose all the information we have enriched on East America in this dataset (if we had done that).</p>
 <p>You cannot add a new address to the database without adding a name as well. What would happen if you were provided with a free set of locations? You would not be able to use it until you have a customer that matches one of these addresses.</p>
 <p>If one of the customers changes their address (for example, due to a change of residence), you would need to go through all of that customer’s orders and change the Address column. Having multiple records with the same customer can lead to inaccurate data. What if the person entering the data doesn’t realize there are multiple records for him and changes the data in only one record?</p>
 <p>The <strong>benefits of removing transitive dependencies</strong> are:</p>

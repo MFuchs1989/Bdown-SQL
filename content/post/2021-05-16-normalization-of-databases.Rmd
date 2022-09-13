@@ -261,7 +261,7 @@ For this section we can look again at the origin table:
 ![](/post/2021-05-16-normalization-of-databases_files/p22p13.png)
 
 
-If you delete the two customers 'Ben Smith' from Miami and 'Jill White', we will also automatically delete the nationality American from the database completely. 
+If you delete the two customers ‘Ben Smith’ from Miami and ‘Jill White’, we would also lose all the information we have enriched on East America in this dataset (if we had done that). 
 
 You cannot add a new address to the database without adding a name as well. What would happen if you were provided with a free set of locations? You would not be able to use it until you have a customer that matches one of these addresses. 
 
