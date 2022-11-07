@@ -15,8 +15,6 @@ output:
 
 # 1 Introduction
 
-TEST
-
 
 In my last post (Oracle SQL Developer Data Modeler) I showed, among other things, how to create tables with variables of different data types. 
 
