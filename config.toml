@@ -23,7 +23,7 @@ ignoreFiles = ["\\.Rmd$", "\\.Rmarkdown$", "_cache$", "\\.knit\\.md$", "\\.utf8\
     url = "https://michael-fuchs.netlify.app/"
 [[menu.main]]
     name = "Python-Blog"
-    url = "https://michael-fuchs-python.netlify.app/"
+    url = "https://michael-fuchs-python.netlify.app/post/"
 
 
 
