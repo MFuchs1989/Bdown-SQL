@@ -3,7 +3,7 @@ date: "2016-05-05T21:48:51-07:00"
 title: About
 ---
 
-<img src = "/post/MFuchs.png", width = "600", height = "800">
+![](/images/MFuchs2.png)
 
 
 Data Science enthusiastic !
